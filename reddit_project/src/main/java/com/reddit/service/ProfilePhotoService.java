@@ -52,6 +52,8 @@ public class ProfilePhotoService {
             profilePhoto.setFileName(filename);
             profilePhoto.setUser(user);
             profilePhotoRepository.save(profilePhoto);
+            user.setProfilePhoto(profilePhoto);
+            userService.saveUser(user);
         }
     }
 

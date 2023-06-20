@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
@@ -438,7 +445,7 @@
   <div class="box">
     <div class="drafts">
       <b><a href="">Drafts</a></b>
-      <span id="number" th:text="${draftedPosts}"></span>
+      <span id="number">0</span>
     </div>
   </div>
 </div>
@@ -450,13 +457,11 @@
     <select id="selection" onclick="dropdown(event)"></select>
   </div>
 </div>
-<form th:action="@{/save-post}" method="post" enctype="multipart/form-data">
-  <input type="hidden" name="userId" th:value="${userId}">
+<form th:action="@{/save-post}" method="post">
   <div id="communitydropdown">
     <div class="profile">
       <h6>Your Profile</h6>
       <img class="profilepic"src="https://cdn2.iconfinder.com/data/icons/itty-bitty-animal-avatars/128/itty_bitty_tiger_01-64.png"/>
-
       <label class="username"><input type="radio" name="profilename" value="u/arun">
         u/arun</label>
     </div>
@@ -495,13 +500,14 @@
       </div>
     </div>
     <div class="title">
-      <input type="text" placeholder="Tittle" name="title" required />
+      <input type="hidden" th:value="${editDraft.draftId}" name="draftId">
+      <input type="text" placeholder="Tittle" th:value="${editDraft.title}"  name="title" required />
     </div>
     <div class="postbody" id="post">
-      <textarea name="content" placeholder="Text(optional)"></textarea>
+      <textarea name="content" th:text="${editDraft.content}" placeholder="Text(optional)"></textarea>
       <div class="buttons">
         <div class="postsave">
-          <input type="submit" name="draft" class="draft" value="save Draft" />
+          <input type="submit" name="edit-draft" class="draft" value="save Draft" />
           <input class="save" type="submit" value="Post" />
         </div>
       </div>
@@ -509,7 +515,7 @@
     <div class="imagebody" id="image">
 
       <div class="imagefile">
-        <input type="file"  name="image" multiple accept="image/*,video/*">
+        <input type="file"  name="image" multiple accept="image/*,video/*" enctype="multipart/form-data" />
       </div>
       <div class="buttons">
         <div class="imagesave">

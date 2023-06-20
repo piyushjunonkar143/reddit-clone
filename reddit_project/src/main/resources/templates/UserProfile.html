@@ -148,10 +148,12 @@ body{
       }
 
       .post-container {
+      width:582px;
     border: 2px solid #ccc;
     padding: 20px;
     border-radius: 8px;
     background-color: #f9f9f9;
+    flex: auto;
   }
 
   .view_post {
@@ -162,6 +164,8 @@ body{
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fff;
+        width: 219px;
+         flex: auto;
   }
 .post{
     border: #0a6cc2;
@@ -368,10 +372,11 @@ body{
         </div>
       </div><br>
       <div class="button2"><button>Add Social link &plus; </button></div><br><br>
-      <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br><br>
-
-<!--      <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>-->
-
+      <form th:action="@{/new-post}">
+          <input type="hidden" name="userId" th:value="${user.userId}">
+        <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br><br>
+      </form>
+  <!--      <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>-->
 <!--      <form id="form" style="display: none;">-->
 <!--        <div class="more_option">-->
 <!--          <a href="#">profile moderation</a><br>-->
@@ -428,7 +433,7 @@ body{
           <p>No posts found.</p>
         </div>
         <a th:each="post : ${user.userPosts}" class="view_post">
-          <div class="post" th:if="${not listPosts.empty}">
+          <div class="post" th:if="${not user.userPosts.empty}">
             <h2 th:text="${post.title}"></h2>
             <p><strong>Community:</strong> <span th:text="${post.community}"></span></p>
             <p><strong>Posted by:</strong> <span th:text="${post.user}"></span></p>

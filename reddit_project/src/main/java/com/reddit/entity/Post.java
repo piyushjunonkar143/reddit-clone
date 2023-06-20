@@ -28,6 +28,9 @@ import java.util.List;
         @Column(name = "content")
         private String content;
 
+        @Column(name = "url")
+        private String url;
+
         @Column(name = "is_published")
         private Boolean isPublished;
 
@@ -49,6 +52,10 @@ import java.util.List;
         @ManyToOne(targetEntity = User.class)
         @JoinColumn(name = "user_id")
         private User user;
+
+        @OneToMany
+        @JoinColumn(name = "post_id")
+        private List<Media> mediaList;
 
         @OneToMany(mappedBy = "post")
         private List<Comment> comments;

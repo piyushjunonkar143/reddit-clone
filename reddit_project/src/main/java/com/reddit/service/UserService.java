@@ -13,7 +13,8 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
      public void saveUser(User user){
-         String displayName="u/"+user.getUsername().replaceAll(" ", "_");
+         String displayName=user.getUsername().replaceAll(" ", "_");
+         user.setDisplayName(displayName);
          userRepository.save(user);
      }
 

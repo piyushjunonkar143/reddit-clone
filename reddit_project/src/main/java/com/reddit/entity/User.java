@@ -60,4 +60,7 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProfilePhoto profilePhoto;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Draft> userDrafts;
 }

@@ -65,4 +65,7 @@ public class Community {
 
     @ManyToMany(mappedBy = "communities")
     private List<Categories> categories;
+
+    @OneToMany(mappedBy = "community")
+    private List<Post> communityPosts;
 }
