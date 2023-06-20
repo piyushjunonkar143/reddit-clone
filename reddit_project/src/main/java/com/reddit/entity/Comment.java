@@ -19,13 +19,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long commentId;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "commented_date")
+    @Column(name = "content")
+    private String content;
+    @Column(name = "commented_at")
     @CreationTimestamp
-    private Timestamp commentedDate;
+    private Timestamp commentedAt;
 
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id")

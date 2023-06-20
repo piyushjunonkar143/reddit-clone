@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.hibernate.annotations.CreationTimestamp;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +38,10 @@ public class User {
     @Column(name = "karma_value")
     private Long karma;
 
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private Timestamp createdAt;
+
     @OneToMany(mappedBy = "ownerId",cascade = CascadeType.ALL)
     private Set<Community> ownedCommunities;
 
@@ -63,4 +68,5 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Draft> userDrafts;
+
 }

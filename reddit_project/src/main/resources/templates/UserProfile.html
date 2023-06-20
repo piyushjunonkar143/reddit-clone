@@ -351,9 +351,12 @@ body{
        </form>
 
 
-        <button class="setting-img-btn" onclick="location.href='/'">
-          <img width="35px" src="https://images.cdn4.stockunlimited.net/preview1300/setting-button_1386478.jpg" style="border-radius: 50%;">
-        </button>
+          <form th:action="@{/change_password_email}" method="get">
+              <input type="hidden" name="userId" th:value="${user.userId}">
+              <button class="setting-img-btn">
+                  <img width="35px" src="https://images.cdn4.stockunlimited.net/preview1300/setting-button_1386478.jpg" style="border-radius: 50%;">
+              </button>
+          </form>
       </div>
     </div>
 
@@ -374,8 +377,12 @@ body{
       <div class="button2"><button>Add Social link &plus; </button></div><br><br>
       <form th:action="@{/new-post}">
           <input type="hidden" name="userId" th:value="${user.userId}">
-        <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br><br>
+        <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br>
       </form>
+        <form th:action="@{/new-community}">
+            <input type="hidden" name="userId" th:value="${user.userId}">
+            <div class="button3"><button class="round-button2">New Community &rarr;</button></div><br><br>
+        </form>
   <!--      <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>-->
 <!--      <form id="form" style="display: none;">-->
 <!--        <div class="more_option">-->
@@ -408,7 +415,7 @@ body{
           </div>
           <a th:each="community : ${user.communityMembers}" >
             <div class="community" th:if="${not user.communityMembers.empty}">
-              <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>
+              <p><strong>Community Name:</strong> <span th:text="${community.communityName}"></span></p>
             </div>
           </a>
         </div>
@@ -420,9 +427,21 @@ body{
           </div>
           <a th:each="community : ${user.communityModerators}" >
             <div class="community" th:if="${not user.communityModerators.empty}">
-              <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>
+              <p><strong>Community Name:</strong> <span th:text="${community.communityName}"></span></p>
             </div>
           </a>
+        </div>
+        <br><br><br>
+        <div class="owned-community-container">
+            <h2>owned-community</h2>
+            <div th:if="${user.ownedCommunities.empty}">
+                <p>No Community found.</p>
+            </div>
+            <a th:each="community : ${user.ownedCommunities}" >
+                <div class="community" th:if="${not user.ownedCommunities.empty}">
+                    <p><strong>Community Name:</strong> <span th:text="${community.communityName}"></span></p>
+                </div>
+            </a>
         </div>
         <br><br><br>
 </div>

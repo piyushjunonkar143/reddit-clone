@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -77,7 +77,7 @@
 </head>
 <body>
 <div class="createcommunity">
-    <form action="/arun">
+    <form th:action="@{/save_community}"  method="post">
         <div class="heading">
             <h2>Create a Community</h2>
         </div>
@@ -86,14 +86,15 @@
             <span>community names including capitalizatiion cannot be changed</span>
         </div>
         <div class="communitynameinput">
-            <input type="text" max="21" name="communityname" placeholder="r/" />
+            <input type="text" max="21" name="community_name" placeholder="r/" />
         </div>
+        <input type="hidden" name="userId" th:value="${userId}">
         <div class="communitytypes">
             <div class="types">
                 <h2>Community type</h2>
             </div>
             <div class="public">
-                <input value="1" name="radio" type="radio" />
+                <input value="public" name="radio" type="radio" />
                 <img
                         src="https://cdn2.iconfinder.com/data/icons/app-user-interface-6/48/User-64.png"
                         width="20px"
@@ -104,7 +105,7 @@
                 >
             </div>
             <div class="restricted">
-                <input value="1" name="radio" type="radio" />
+                <input value="restricted" name="radio" type="radio" />
                 <img
                         src="https://cdn0.iconfinder.com/data/icons/editing-10/60/invisible__hide__no__stop__restricted-64.png"
                         width="20px"
@@ -118,7 +119,7 @@
                 >
             </div>
             <div class="private">
-                <input type="radio" name="radio" />
+                <input value="private" type="radio" name="radio" />
                 <img
                         src="https://cdn4.iconfinder.com/data/icons/basic-ui-2-line/32/padlock-lock-locked-private-hide-64.png"
                         width="20px"

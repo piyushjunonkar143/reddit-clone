@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-    @Entity
+import java.sql.Timestamp;
+
+@Entity
     @Table(name = "reply_tbl")
     @Getter
     @Setter
@@ -15,8 +18,11 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyId;
 
-    @Column(name = "email")
-    private String email;
+    private String content;
+
+    @CreationTimestamp
+    @Column(name="replied_at")
+    private Timestamp repliedAt;
 
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id")

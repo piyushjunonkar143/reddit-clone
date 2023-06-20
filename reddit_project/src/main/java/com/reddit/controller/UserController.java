@@ -115,4 +115,46 @@ public class UserController {
         model.addAttribute("userId",userId);
         return "ChooseProfilePhoto";
     }
+
+    @GetMapping("/change_password_email")
+    public String changePasswordAndEmail(@RequestParam("userId")Long userId,Model model){
+        System.out.println(userId);
+        model.addAttribute("userId",userId);
+        return "user-setting";
+    }
+    @PostMapping("/save_password")
+    public String saveNewPassword(@RequestParam("userId")Long userId,@RequestParam("password")String password,@RequestParam("confirm-password")String confirmPassword,Model model){
+        System.out.println("userId"+userId);
+        System.out.println("password="+password);
+        System.out.println("confirmPassword"+confirmPassword);
+        model.addAttribute("userId",userId);
+        if(password.equals(confirmPassword)){
+            User user=userService.getUserByID(userId);
+            user.setPassword(confirmPassword);
+            userService.saveUser(user);
+            User savedUser=userService.getUserByID(userId);
+            model.addAttribute("user",savedUser);
+            return "UserProfile";
+        }
+        return "user-setting";
+    }
+
+    @PostMapping("/save_email")
+    public String saveNewEmail(@RequestParam("userId")Long userId,@RequestParam("email")String email,Model model){
+        model.addAttribute("userId",userId);
+        System.out.println("email ="+email);
+        User user=userService.getUserByID(userId);
+        user.setEmail(email);
+        userService.saveUser(user);
+        User savedUser=userService.getUserByID(userId);
+        model.addAttribute("user",savedUser);
+        return "UserProfile";
+    }
+
+    @GetMapping("/cancel_changes")
+    public String cancelChanges(@RequestParam("userId")Long userId,Model model){
+        User user=userService.getUserByID(userId);
+        model.addAttribute("user",user);
+        return "UserProfile";
+    }
 }
