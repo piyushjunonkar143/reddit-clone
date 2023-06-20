@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+      body {
+        background-color: rgb(219, 219,219);
+      }
+      .post {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+      .postheader {
+        padding-top: 34px;
+      }
+      .box {
+        padding-top: 55px;
+      }
+      a {
+        font-size: 13px;
+        text-decoration: none;
+      }
+      span {
+        background-color: grey;
+        padding: 0px 2px;
+      }
+      hr {
+        width: 700px;
+      }
+      .circle-dot {
+        width: 20px;
+        height: 20px;
+        border: 1px dashed #000;
+        border-radius: 50%;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        left: 11px;
+      }
+      .dropdown {
+        display: flex;
+        align-items: center;
+        width: 244px;
+        position: relative;
+        left: 283px;
+        padding: 5px;
+        top: 3px;
+      }
+      select {
+        background: white;
+        position: relative;
+        border: 0px;
+        outline: 0px;
+        left: 32px;
+        border: 0px;
+        cursor: pointer;
+      }
+      .dropdown-input {
+        padding: 10px;
+        width: 200px;
+        border: 1px solid white;
+        cursor: pointer;
+        margin: 3px;
+      }
+      input[type="text"]:focus {
+        outline: 2px solid rgb(241, 241, 241);
+      }
+      #communitydropdown {
+        display: none;
+        position: absolute;
+        z-index: 2;
+        left: 298px;
+        top: 174px;
+        width: 250px;
+        background-color: rgb(226, 226, 248);
+      }
+      .profile {
+        display: flex;
+        width: 185px;
+        height: 46px;
+        border: 0 px solid;
+        margin-top: 7px;
+      }
+      h6 {
+        position: relative;
+        bottom: 20px;
+        color: grey;
+      }
+      h5 {
+        position: relative;
+        right: 39px;
+        top: 4px;
+      }
+      .bottomline {
+        width: 250px;
+      }
+      .communitybox {
+        display: flex;
+        align-items: center;
+        width: 211px;
+      }
+      .createCommunity {
+        text-decoration: none;
+        position: relative;
+        left: 10px;
+      }
+      .community {
+        width: 250px;
+        display: contents;
+        outline: 2px;
+        height: 590px;
+        background-color: ghostwhite;
+      }
+      .postbox {
+        border: 2px solid rgb(255, 255, 255);
+        outline: 2px;
+        width: 700px;
+        height: 450px;
+        display: flex;
+        position: relative;
+        left: 288px;
+        background-color: rgb(226, 226, 248);
+      }
+      .postsection,
+      .imagesection,
+      .Link,
+      .poll {
+        display: flex;
+        height: 65px;
+        width: 165px;
+        border-right: 1px solid rgb(192, 192, 198);
+        border-bottom: 1px solid rgb(192, 192, 198);
+      }
+      img {
+        height: 60px;
+      }
+      .postsection {
+        width: 165px;
+        justify-content: center;
+      }
+      .imagesection {
+        width: 232px;
+        justify-content: center;
+      }
+      .Link {
+        width: 130px;
+        justify-content: center;
+      }
+      .poll {
+        justify-content: center;
+        width: 180px;
+      }
+      .postbody {
+        display: grid;
+        justify-content: center;
+        position: relative;
+        bottom: 365px;
+      }
+      .postbody input {
+        width: 530px;
+        height: 30px;
+      }
+      .postbody textarea {
+        width: 534px;
+        height: 200px;
+        margin: 7px;
+        resize: none;
+      }
+      .title {
+        margin: 7px;
+      }
+      .imagebody {
+        display: none;
+        text-align: center;
+        position: relative;
+        bottom: 365px;
+      }
+      .imagetitle {
+        padding-right: 58px;
+        height: 30px;
+        margin: 7px;
+        margin-left: 170px;
+      }
+      .imagetitle input {
+        padding-right: 388px;
+        margin-right: 45px;
+        padding-bottom: 20px;
+      }
+      .imagefile {
+        display: block;
+        margin: 23px;
+        margin-left: 162px;
+        padding: 9px;
+      }
+      .pollbody {
+        display: none;
+        text-align: center;
+        position: relative;
+        bottom: 365px;
+      }
+      .linkbody {
+        display: none;
+        text-align: center;
+        position: relative;
+        bottom: 365px;
+      }
+      .linktitle {
+        margin: 7px;
+      }
+      .linkurl input {
+        padding-right: 313px;
+        padding-bottom: 70px;
+      }
+      .linktitle input {
+        padding-right: 313px;
+        padding-bottom: 20px;
+      }
+      .polltitle input {
+        margin: 10px;
+        width: 501px;
+        height: 30px;
+      }
+      .polltextarea {
+        width: 501px;
+        padding-bottom: 80px;
+        resize: none;
+      }
+      .postsave {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        position: relative;
+        left: 49px;
+        top: 45px;
+      }
+      .postsave .draft {
+        border: 2px solid blueviolet;
+        width: 100px;
+        border-radius: 18px;
+        background-color: white;
+        color: blueviolet;
+        font-size: 16px;
+        margin: 6px;
+      }
+      .postsave .save {
+        width: 100px;
+        border-radius: 18px;
+        background-color: rgba(236, 225, 225, 0.51);
+        color: rgb(27, 25, 25);
+        font-size: 16px;
+      }
+      .imagesave {
+        position: relative;
+        top: 187px;
+        left: 200px;
+      }
+      .imagesave .draft {
+        border: 2px solid blueviolet;
+        padding: 5px;
+        width: 100px;
+        border-radius: 18px;
+        background-color: white;
+        color: blueviolet;
+        font-size: 16px;
+        margin: 6px;
+      }
+      .imagesave .save {
+        padding: 5px;
+        width: 100px;
+        border-radius: 18px;
+        background-color: rgba(236, 225, 225, 0.51);
+        color: rgb(27, 25, 25);
+        font-size: 16px;
+      }
+      .linksave {
+        position: relative;
+        top: 170px;
+        left: 200px;
+      }
+      .linksave .save {
+        padding: 5px;
+        width: 100px;
+        border-radius: 18px;
+        background-color: rgba(236, 225, 225, 0.51);
+        color: rgb(27, 25, 25);
+        font-size: 16px;
+      }
+      .linksave .draft {
+        padding: 5px;
+        border: 2px solid blueviolet;
+        width: 100px;
+        border-radius: 18px;
+        background-color: white;
+        color: blueviolet;
+        font-size: 16px;
+        margin: 6px;
+      }
+      .pollsave {
+        position: relative;
+        top: 140px;
+        left: 200px;
+      }
+      .pollsave .save {
+        padding: 5px;
+        width: 100px;
+        border-radius: 18px;
+        background-color: rgba(236, 225, 225, 0.51);
+        color: rgb(27, 25, 25);
+        font-size: 16px;
+      }
+      .choosecommunity {
+        position: relative;
+        left: 29px;
+        display: flex;
+        align-items: center;
+      }
+      .pollsave .draft {
+        padding: 5px;
+        border: 2px solid blueviolet;
+        width: 100px;
+        border-radius: 18px;
+        background-color: white;
+        color: blueviolet;
+        font-size: 16px;
+        margin: 6px;
+      }
+      .circlecommunity {
+        display: flex;
+        background-color: white;
+        padding: 5px;
+        width: 300px;
+      }
+    </style>
+  <script>
+      function dropdown(event) {
+        let targetDiv = document.getElementById("communitydropdown");
+        if (targetDiv.style.display === "none") {
+          targetDiv.style.display = "block";
+        } else {
+          targetDiv.style.display = "none";
+        }
+      }
+
+      function dropdownclick(event) {
+        let targetDiv = document.getElementById("communitydropdown");
+        if (targetDiv.style.display === "block") {
+          targetDiv.style.display = "none";
+        }
+      }
+
+      function imagepage(event) {
+        let targetDiv = document.getElementById("post");
+        let imageDiv = document.getElementById("image");
+        let linkdiv = document.getElementById("link");
+        let polldiv = document.getElementById("poll");
+        targetDiv.style.display = "none";
+        imageDiv.style.display = "grid";
+        linkdiv.style.display = "none";
+        polldiv.style.display = "none";
+      }
+      function postpage(event) {
+        let targetDiv = document.getElementById("post");
+        let imageDiv = document.getElementById("image");
+        let linkdiv = document.getElementById("link");
+        let polldiv = document.getElementById("poll");
+        targetDiv.style.display = "grid";
+        imageDiv.style.display = "none";
+        linkdiv.style.display = "none";
+        polldiv.style.display = "none";
+      }
+      function linkpage(event) {
+        let targetDiv = document.getElementById("post");
+        let imageDiv = document.getElementById("image");
+        let linkdiv = document.getElementById("link");
+        let polldiv = document.getElementById("poll");
+        targetDiv.style.display = "none";
+        imageDiv.style.display = "none";
+        linkdiv.style.display = "grid";
+        polldiv.style.display = "none";
+      }
+      function pollpage(event) {
+        let targetDiv = document.getElementById("post");
+        let imageDiv = document.getElementById("image");
+        let linkdiv = document.getElementById("link");
+        let polldiv = document.getElementById("poll");
+        targetDiv.style.display = "none";
+        imageDiv.style.display = "none";
+        linkdiv.style.display = "none";
+        polldiv.style.display = "grid";
+      }
+    </script>
+</head>
+<body>
+<div class="post" onclick="dropdownclick(event)">
+  <h3 class="postheader">Create a post</h3>
+  <div class="box">
+    <b><a href="">DRAFTS</a></b>
+    <span id="number">0</span>
+  </div>
+</div>
+<hr />
+<div class="dropdown">
+  <div class="circlecommunity">
+    <div class="circle-dot"></div>
+    <div class="choosecommunity">Choose a community</div>
+    <select id="selection" onclick="dropdown(event)"></select>
+  </div>
+</div>
+<div id="communitydropdown">
+  <div class="profile">
+    <h6>Your Profile</h6>
+    <h5>UserName</h5>
+  </div>
+  <hr class="bottomline" />
+  <div class="community">
+    <div class="communitybox">
+      <p>Your communities</p>
+      <a href="" class="createCommunity">Create New</a>
+    </div>
+    <div class="communitynames">
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+      <p>rftgtrhyh</p>
+
+    </div>
+  </div>
+</div>
+<div>
+  <div class="postbox">
+    <div class="postsection" onclick="postpage(event)">
+      <img
+              width="50px"
+              src="https://cdn0.iconfinder.com/data/icons/ui-essence/32/_48ui-64.png"
+      />
+      <h3>Post</h3>
+    </div>
+    <div class="imagesection" onclick="imagepage(event)">
+      <img
+              width="50px"
+              src="https://cdn2.iconfinder.com/data/icons/photo-and-video-ui/140/_gallery-64.png"
+      />
+      <h3>Images and videos</h3>
+    </div>
+    <div class="Link" onclick="linkpage(event)">
+      <img
+              width="50px"
+              src="https://cdn3.iconfinder.com/data/icons/streamline-icon-set-free-pack/48/Streamline-67-256.png"
+      />
+      <h3>Link</h3>
+    </div>
+    <div class="poll" onclick="pollpage(event)">
+      <img
+              width="50px"
+              src="https://cdn3.iconfinder.com/data/icons/ui-ux-web-application-simplicon-set/102/list-items-64.png"
+      />
+      <h3>Poll</h3>
+    </div>
+  </div>
+  <div class="postbody" id="post">
+    <div class="title">
+      <input type="text" placeholder="Tittle" name="title" />
+    </div>
+    <textarea placeholder="Text(optional)"></textarea>
+    <div class="buttons">
+      <form class="postsave">
+        <input class="draft" type="submit" value="save Draft" />
+        <input class="save" type="submit" value="Post" />
+      </form>
+    </div>
+  </div>
+  <div class="imagebody" id="image">
+    <div class="imagetitle">
+      <input type="text" placeholder="Title" name="title" />
+    </div>
+    <div class="imagefile">
+      <input type="file" value="upload" multiple />
+    </div>
+    <div class="buttons">
+      <form class="imagesave">
+        <input class="draft" type="submit" value="Cancel" />
+        <input class="save" type="submit" value="Post" />
+      </form>
+    </div>
+  </div>
+
+  <div class="linkbody" id="link">
+    <div class="linktitle">
+      <input type="text" placeholder="Title" name="title" />
+    </div>
+    <div class="linkurl">
+      <input type="url" placeholder="url" />
+    </div>
+    <div class="buttons">
+      <form class="linksave">
+        <input class="draft" type="submit" value="save Draft" />
+        <input class="save" type="submit" value="Post" />
+      </form>
+    </div>
+  </div>
+
+  <div class="pollbody" id="poll">
+    <div class="polltitle">
+      <input type="text" placeholder="Tittle" name="title" />
+    </div>
+    <div class="textarea">
+          <textarea
+                  class="polltextarea"
+                  placeholder="Text(optional)"
+          ></textarea>
+      <div class="buttons">
+        <form class="pollsave">
+          <input class="draft" type="submit" value="Cancel" />
+          <input class="save" type="submit" value="Post" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

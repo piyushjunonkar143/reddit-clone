@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <style>
+body{
+        background-color: rgb(222, 219, 245);
+<!--        margin-left: 15vw;-->
+<!--        margin-right: 10vw;-->
+        /* margin-top: 200px; */
+      }
+    .container1{
+      position: relative;
+      display: inline;
+      width: 301px;
+      height: 431px;
+      padding: 0px;
+      padding-right: 0px;
+      text-align: left;
+      margin-right: 50px;
+      margin-top: 10px;
+      justify-content: space-around;
+      float: right;
+ }
+
+  .profile {
+        display: flex;
+        height: 50vh;
+        align-items: center;
+        background-color: rgb(95, 196, 226);
+        height: 146px;
+
+    }
+    .user-profile-picture{
+        position: relative;
+    width: 301px;
+    height: 146px;
+    margin-left: -10px;
+    margin-top: -48px;
+    }
+    .add-img-btn{
+    position: absolute;
+    top: 98px;
+    background: none;
+    border: none;
+    padding: 0;
+    }
+    .setting-img-btn{
+        position: absolute;
+    top: 96px;
+    left: 254px;
+    background: none;
+    border: none;
+    padding: 0;
+    }
+
+    .profile-picture {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-left: 10px;
+        border-radius: 0;
+    }
+
+    .profile-name {
+            position: relative;
+    font-weight: bold;
+    top: 41px;
+    left: 89px;
+    }
+
+    .profile-description {
+      position: relative;
+    top: 20px;
+    left: 73px;
+    }
+    .profile-details{
+      padding-top: 5px;
+      padding-left: 20px;
+      background-color: #f1f4f8;
+
+    }
+
+ .button1 , .button2,.button3{
+  border-radius: 12px;
+  }
+
+ .round-button1 {
+      display: flex;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      background-color: #d8481c;
+      color: #fff;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      width: 90%;
+      height: 100%;
+    }
+    .round-button2 {
+        display: flex;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      background-color: #5278f7;
+      color: #fff;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      width: 90%;
+      height: 100%;
+    }
+    .dob{
+        margin-right: 10px;
+    }
+    .button4 {
+        position: relative;
+        bottom: 10px;
+        right: 10px;
+      }
+
+    .round-button1,.round-button2:hover {
+      background-color: #ec8d4d;
+    }
+    input#image:focus{
+      background-color:#f5f8fa !important;
+      border:1px solid #dadada;
+    }
+    img.avatar{
+    position: relative;
+    margin-left: 78px;
+    margin-top: -74px;
+    width: 104px;
+      }
+      .karma_dob{
+       margin-top: 10px;
+       display: flex;
+       justify-content: space-between;
+
+      }
+      .more-option{
+        margin-top: 10px;
+        display: inline-block;
+       justify-content: space-between;
+
+      }
+
+      .post-container {
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+  .view_post {
+    display: block;
+    text-decoration: none;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+.post{
+    border: #0a6cc2;
+    background-color: silver;
+    width: 182px;
+}
+  .view_post:hover {
+    background-color: #f5f5f5;
+  }
+
+  .post h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .post p {
+    margin: 0;
+  }
+
+  .post strong {
+    font-weight: bold;
+  }
+
+
+   .moderator-container {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .moderator-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .community {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .community p {
+    margin: 0;
+  }
+
+  .community strong {
+    font-weight: bold;
+  }
+
+  .empty-message {
+    color: #999;
+    font-style: italic;
+  }
+
+  .community_moderator-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .community_moderator-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .community {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .community p {
+    margin: 0;
+  }
+
+  .community strong {
+    font-weight: bold;
+  }
+
+  .empty-message {
+    color: #999;
+    font-style: italic;
+  }
+  </style>
+</head>
+<body>
+<!--<div class="main-container">-->
+<!--  <div class="container">-->
+<!--    <h1>User Profile</h1>-->
+<!--    <div class="field-container">-->
+<!--      <label class="field-label">User Name:</label>-->
+<!--      <div id="name" th:text="${user.username}"></div>-->
+<!--    </div>-->
+
+<!--    <div class="field-container">-->
+<!--      <label class="field-label">User Email:</label>-->
+<!--      <div id="email" th:text="${user.email}"></div>-->
+<!--    </div>-->
+
+<!--    <div class="field-container">-->
+<!--      <label class="field-label">Gender:</label>-->
+<!--      <div id="gender" th:text="${user.gender}"></div>-->
+<!--    </div>-->
+
+<!--    <div class="field-container">-->
+<!--      <label class="field-label">Display Name:</label>-->
+<!--      <div id="display-name" th:text="${user.displayName}"></div>-->
+<!--    </div>-->
+
+<!--    <div class="field-container">-->
+<!--      <label class="field-label">Karma Value:</label>-->
+<!--      <div id="karma-value" th:text="${user.karma}"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="container post-container">-->
+<!--    <h2>Post Details</h2>-->
+<!--    <div th:if="${user.userPosts.empty}">-->
+<!--      <p>No posts found.</p>-->
+<!--    </div>-->
+<!--    <a th:each="post : ${user.userPosts}" class="view_post">-->
+<!--      <div class="post" th:if="${not listPosts.empty}">-->
+<!--        <h2 th:text="${post.title}"></h2>-->
+<!--        <p><strong>Community:</strong> <span th:text="${post.community}"></span></p>-->
+<!--        <p><strong>Posted by:</strong> <span th:text="${post.user}"></span></p>-->
+<!--        <p><strong>Published At:</strong> <span th:text="${post.publishedAt}"></span></p>-->
+<!--      </div>-->
+<!--    </a>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="community moderator-container">-->
+<!--  <h2>Joined Community Details</h2>-->
+<!--  <div th:if="${user.communityMembers.empty}">-->
+<!--    <p>No Community found.</p>-->
+<!--  </div>-->
+<!--  <a th:each="community : ${user.communityMembers}" >-->
+<!--    <div class="community" th:if="${not user.communityMembers.empty}">-->
+<!--      <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>-->
+<!--    </div>-->
+<!--  </a>-->
+<!--</div>-->
+
+<!--<div class="community_moderator-container">-->
+<!--  <h2>moderator Details</h2>-->
+<!--  <div th:if="${user.communityModerators.empty}">-->
+<!--    <p>No Community found.</p>-->
+<!--  </div>-->
+<!--  <a th:each="community : ${user.communityModerators}" >-->
+<!--    <div class="community" th:if="${not user.communityModerators.empty}">-->
+<!--      <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>-->
+<!--    </div>-->
+<!--  </a>-->
+<!--</div>-->
+<!--<a href="/newPost" class="btn btn-primary">New Post</a>-->
+
+
+<div class="user_profile">
+
+  <div class="container1">
+    <div class="profile">
+      <div class="profile-picture">
+<!--        <img class="user-profile-picture" src="${user.profilePhoto.filename}">-->
+<!--          <img class="user-profile-picture" src="/images/85e1001d-2179-42d1-abe7-130ba0a77c0b.png">-->
+          <div th:if="${user?.profilePhoto?.fileName != null and user?.profilePhoto?.fileName != ''}">
+          <img class="user-profile-picture" th:src="@{/uploads/__${user.profilePhoto.fileName}__}">
+          </div>
+        <img class="avatar" src="https://i.redd.it/snoovatar/avatars/84676aee-4389-407c-be62-68182ed59e6f.png">
+       <form th:action="@{/selectPhoto}" method="get">
+           <input type="hidden" name="userId" th:value="${user.userId}">
+        <button class="add-img-btn">
+          <img width="30px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThGnzqP2A8anXXPUVtVHg828_lWK3QMwAFSUq8FmVMMyfqCf5SmOLNLkajY5b39D8VY1s&usqp=CAU">
+<!--            <input id="file-input" type="file" name="file" accept="image/*" >-->
+        </button>
+       </form>
+
+
+        <button class="setting-img-btn" onclick="location.href='/'">
+          <img width="35px" src="https://images.cdn4.stockunlimited.net/preview1300/setting-button_1386478.jpg" style="border-radius: 50%;">
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-details">
+      <h3 class="profile-name"><span id="name" th:text="${user.username}"></span></h3>
+      <div class="profile-description"><span id="displayName" th:text="${user.displayName}"></span></div><br>
+      <div class="button1"><button class="round-button1">Create Avatar &rarr;</button></div>
+      <div class="karma_dob">
+        <div class="karma_points">
+          <h4>Karma</h4>
+          <p><span id="karma" th:text="${user.karma}"></span></p>
+        </div>
+        <div class="dob">
+          <h4>Cake Day</h4>
+          <p>June 16, 2023</p>
+        </div>
+      </div><br>
+      <div class="button2"><button>Add Social link &plus; </button></div><br><br>
+      <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br><br>
+
+<!--      <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>-->
+
+<!--      <form id="form" style="display: none;">-->
+<!--        <div class="more_option">-->
+<!--          <a href="#">profile moderation</a><br>-->
+<!--          <a href="#">Add custom feed</a><br><br></div>-->
+<!--      </form>-->
+        <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>
+
+        <form id="form" style="display: none;">
+            <div class="more_option">
+                <a href="#">Profile Moderation</a><br>
+                <a href="#">Add Custom Feed</a><br><br>
+            </div>
+        </form>
+
+        <script>
+  function toggleForm() {
+    var form = document.getElementById("form");
+    if (form.style.display === "none") {
+      form.style.display = "block";
+    } else {
+      form.style.display = "none";
+    }
+  }
+</script>
+        <div class="moderator-container">
+          <h2>Joined Community Details</h2>
+          <div th:if="${user.communityMembers.empty}">
+            <p>No Community found.</p>
+          </div>
+          <a th:each="community : ${user.communityMembers}" >
+            <div class="community" th:if="${not user.communityMembers.empty}">
+              <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>
+            </div>
+          </a>
+        </div>
+        <br><br>
+        <div class="community_moderator-container">
+          <h2>moderator Details</h2>
+          <div th:if="${user.communityModerators.empty}">
+            <p>No Community found.</p>
+          </div>
+          <a th:each="community : ${user.communityModerators}" >
+            <div class="community" th:if="${not user.communityModerators.empty}">
+              <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>
+            </div>
+          </a>
+        </div>
+        <br><br><br>
+</div>
+</div>
+      <div class="post-container">
+        <h2>Post Details</h2>
+        <div th:if="${user.userPosts.empty}">
+          <p>No posts found.</p>
+        </div>
+        <a th:each="post : ${user.userPosts}" class="view_post">
+          <div class="post" th:if="${not listPosts.empty}">
+            <h2 th:text="${post.title}"></h2>
+            <p><strong>Community:</strong> <span th:text="${post.community}"></span></p>
+            <p><strong>Posted by:</strong> <span th:text="${post.user}"></span></p>
+            <p><strong>Published At:</strong> <span th:text="${post.publishedAt}"></span></p>
+          </div>
+        </a>
+      </div>
+  </div>
+
+<!--<form method="POST" th:action="@{/upload}" enctype="multipart/form-data">-->
+<!--  <input type="hidden" name="userId" th:value="${user.userId}">-->
+<!--  <input type="file" name="file" accept="image/*" />-->
+<!--  <button type="submit">Upload</button>-->
+<!--</form>-->
+</body>
+</html>
