@@ -39,9 +39,9 @@
 </head>
 <body>
 <div class="back-communtiy">
- <a th:href="@{/view-community/r/communityName(communityName=${community.communityName})}" class="btn btn-primary">
-&#8592; Back
-</a></div>
+    <a th:href="@{/view-community/{communityName}(communityName=${community.communityName})}"   class="btn btn-primary">
+        &#8592; Back
+    </a></div>
     <div  class="community-userinfo" th:each="members : ${community.communityMembers}" >
         <p th:text=" 'u/'+ ${members.username}"></p>
 

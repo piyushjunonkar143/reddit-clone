@@ -103,7 +103,7 @@
                              th:remove="tag">
                             <div th:with="media=${postData.getMediaList().get(0)}" th:remove="tag" >
 
-                                <div class="post-media" th:if="${media.isVideo()}">
+                                <div class="post-media" th:if="${media.getIsVideo()}">
                                     <div class="video-container" style="--aspect-ratio: 2 / 3">
                                         <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
                                         <video controls>
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
 
-                                <div th:if="${!media.isVideo()}" th:remove="tag">
+                                <div th:if="${!media.getIsVideo()}" th:remove="tag">
 
                                     <div class="post-media">
                                         <div class="image-container" style="--aspect-ratio: 2 / 3">

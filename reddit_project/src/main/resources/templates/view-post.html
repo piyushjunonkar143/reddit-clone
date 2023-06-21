@@ -102,7 +102,6 @@
                             <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
                                  th:remove="tag">
                                 <div th:each="media : ${postData.getMediaList()}" th:remove="tag">
-
                                     <div class="post-media" th:if="${media.isVideo()}">
                                         <div class="video-container" style="--aspect-ratio: 2 / 3">
                                             <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
