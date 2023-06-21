@@ -1,5 +1,6 @@
 package com.reddit.controller;
 
+import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
 import com.reddit.entity.Media;
 import com.reddit.service.DraftService;
@@ -7,9 +8,13 @@ import com.reddit.service.FileService;
 import com.reddit.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,5 +91,26 @@ public class PostController {
             }
         }
         return "file-response";
+    }
+
+    //yashavant
+    @GetMapping("/media/{filename:.+}")
+    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+        System.out.println("image controller");
+        Resource file = fileService.load(path,filename);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    @GetMapping("/{typeOfAccount}/{username}/comments/{postId}")
+    public String viewPost(@PathVariable Long postId,
+                           @PathVariable String typeOfAccount,
+                           @PathVariable String username,
+                           Model model){
+        System.out.println(username);
+        model.addAttribute("postData",postService.getPostByType(typeOfAccount,username,postId));
+        model.addAttribute("commentDto",new CommentDto());
+        return "view-post";
     }
 }

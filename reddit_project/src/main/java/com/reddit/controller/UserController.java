@@ -33,7 +33,7 @@ public class UserController {
     private static Logger log =  LoggerFactory.getLogger(UserController.class);
    public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String userLogin(Model model){
         System.out.println("its working");
         return "LoginPage.html";
@@ -51,11 +51,13 @@ public class UserController {
         return "LoginPage.html";
     }
     @PostMapping("/addUser")
-    public void addUser(@ModelAttribute("user")User user){
+    public String addUser(@ModelAttribute("user")User user,Model model){
         System.out.println("username= "+user.getUsername());
         System.out.println("email= "+user.getEmail());
         userService.saveUser(user);
-
+       //User displayUser=userService.getUserByID(userResult.getUserId());
+       // model.addAttribute("user",userResult);
+        return "redirect:/login";
     }
     @GetMapping("/newRegister")
     public String registerPage(Model model){

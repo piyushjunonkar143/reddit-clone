@@ -21,19 +21,16 @@ public class Comment {
     private Long commentId;
     @Column(name = "content")
     private String content;
+
     @Column(name = "commented_at")
     @CreationTimestamp
     private Timestamp commentedAt;
 
-    @ManyToOne(targetEntity = Post.class)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "repliedComments")
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "comment_id")
     private List<Reply> replyComments;
 }

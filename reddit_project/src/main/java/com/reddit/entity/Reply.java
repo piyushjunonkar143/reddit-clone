@@ -32,8 +32,5 @@ public class Reply {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(targetEntity = Comment.class)
-    @JoinColumn(name="comment_id")
-    private Comment comment;
 }
 

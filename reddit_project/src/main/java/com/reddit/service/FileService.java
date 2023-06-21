@@ -3,16 +3,23 @@ package com.reddit.service;
 import com.reddit.entity.Media;
 import com.reddit.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class FileService {
+
     @Autowired
     FileRepository fileRepository;
     public List<Media> uploadImage(String path, List<MultipartFile> images) {
@@ -38,5 +45,21 @@ public class FileService {
             }
         }
         return mediaList;
+    }
+
+
+    public Resource load(String mediaPath,String filename) {
+        String filePath = mediaPath+File.separator+filename;
+        Path path = Paths.get(filePath);
+        try{
+            Resource resource = new UrlResource(path.toUri());
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }else{
+                throw  new RuntimeException("could not read the file");
+            }
+        }catch (MalformedURLException e){
+            throw  new RuntimeException(e.getMessage());
+        }
     }
 }
