@@ -439,7 +439,7 @@ body{
             </div>
             <a th:each="community : ${user.ownedCommunities}" >
                 <div class="community" th:if="${not user.ownedCommunities.empty}">
-                    <p><strong>Community Name:</strong> <span th:text="${community.communityName}"></span></p>
+                    <p><strong>Community Name:</strong> <a th:href="@{'/view-community/' + ${community.communityName}}"><span th:text="${community.communityName}"></span></a></p>
                 </div>
             </a>
         </div>

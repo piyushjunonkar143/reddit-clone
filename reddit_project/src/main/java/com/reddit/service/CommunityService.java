@@ -6,6 +6,8 @@ import com.reddit.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 
 @Service
 public class CommunityService {
@@ -15,9 +17,10 @@ public class CommunityService {
     @Autowired
     UserService userService;
 
-    public void saveNewCommunity(Long userId, String communityName, String radio) {
-        Community community=new Community();
-        community.setCommunityName(communityName);
+    public Community saveNewCommunity(Long userId, Community community, String radio) {
+//        Community community=new Community();
+      community.setCommunityName(community.getCommunityName().replaceAll(" ",""));
+
         User user=userService.getUserByID(userId);
         community.setOwnerId(user);
         if(radio.equals("restricted")){
@@ -32,6 +35,38 @@ public class CommunityService {
             community.setIsPrivate(false);
             community.setIsRestrict(false);
         }
+       return  communityRepository.save(community);
+    }
+
+    public Community findCommunityByCommunityName(String communityName) {
+        return communityRepository.findByCommunityName(communityName);
+    }
+
+    public boolean isCommunityNameExists(String communityName) {
+        return communityRepository.existsByCommunityName(communityName);
+    }
+
+    public void addMemberToModerator(Community community, User user) {
+        Set<User> moderators = community.getCommunityModerators();
+        moderators.add(user);
+        community.setCommunityModerators(moderators);
+        communityRepository.save(community);
+    }
+
+    public void removeMemberFromModerator(Community community, User user) {
+        Set<User> moderators = community.getCommunityModerators();
+        moderators.remove(user);
+        community.setCommunityModerators(moderators);
+        communityRepository.save(community);
+    }
+
+    public void removeUserFromCommunity(Community community, User user) {
+        Set<User> communityMembers = community.getCommunityMembers();
+        Set<User> communityModerators = community.getCommunityModerators();
+
+        communityMembers.remove(user);
+        communityModerators.remove(user);
+
         communityRepository.save(community);
     }
 }

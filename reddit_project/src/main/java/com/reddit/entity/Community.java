@@ -35,9 +35,6 @@ public class Community {
     @Column(name = "about")
     private String about;
 
-    @Column(name = "wiki")
-    private String wiki;
-
     @Column(name = "is_private")
     private Boolean isPrivate;
 

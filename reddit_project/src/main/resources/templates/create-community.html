@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
     <style>
       body {
         display: flex;
@@ -73,28 +74,39 @@
         border: 1px solid blue;
         background-color: white;
       }
+      .error {
+          color: red;
+          font-size: 14px;
+          font-weight: bold;
+        }
     </style>
 </head>
 <body>
+
 <div class="createcommunity">
-    <form th:action="@{/save_community}"  method="post">
+
+    <form th:action="@{/save_community}" th:object="${community}" method="post">
         <div class="heading">
             <h2>Create a Community</h2>
         </div>
+        <input type="hidden" name="userId" th:value="${userId}">
         <div class="name">
             <span>Name</span>
             <span>community names including capitalizatiion cannot be changed</span>
+            <span th:if="${message}" class="error">Community name already exists!</span>
         </div>
+
         <div class="communitynameinput">
-            <input type="text" max="21" name="community_name" placeholder="r/" />
+            <input type="text" max="21" th:field="*{communityName}" placeholder="r/" />
         </div>
-        <input type="hidden" name="userId" th:value="${userId}">
         <div class="communitytypes">
-            <div class="types">
+            <div class="tyes">
                 <h2>Community type</h2>
             </div>
             <div class="public">
-                <input value="public" name="radio" type="radio" />
+
+
+                <input value="th:public" name="communityType" type="radio" th:checked="${true}"/>
                 <img
                         src="https://cdn2.iconfinder.com/data/icons/app-user-interface-6/48/User-64.png"
                         width="20px"
@@ -105,7 +117,7 @@
                 >
             </div>
             <div class="restricted">
-                <input value="restricted" name="radio" type="radio" />
+                <input th:value="restricted" name="communityType" type="radio" />
                 <img
                         src="https://cdn0.iconfinder.com/data/icons/editing-10/60/invisible__hide__no__stop__restricted-64.png"
                         width="20px"
@@ -119,7 +131,7 @@
                 >
             </div>
             <div class="private">
-                <input value="private" type="radio" name="radio" />
+                <input th:value="private" name="communityType" type="radio" />
                 <img
                         src="https://cdn4.iconfinder.com/data/icons/basic-ui-2-line/32/padlock-lock-locked-private-hide-64.png"
                         width="20px"
