@@ -38,15 +38,15 @@ import java.util.List;
         @CreationTimestamp
         private Timestamp publishedAt;
 
-        @Column(name = "updated_at")
-        @UpdateTimestamp
-        private Timestamp updatedAt;
-
-        @Column(name = "up_votes")
+        @Column(name = "Up_votes")
         private Long upVotes;
 
         @Column(name = "down_votes")
         private Long downVotes;
+
+        @Column(name = "updated_at")
+        @UpdateTimestamp
+        private Timestamp updatedAt;
 
         @Column(name = "is_community")
         private Boolean isCommunity;

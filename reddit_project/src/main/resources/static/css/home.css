@@ -427,6 +427,7 @@ article {
 }
 .post-title{
     font-size: 2rem;
+
     margin-bottom: 1rem;
 }
 .post-title-content{
@@ -452,4 +453,5 @@ article {
 .register {
     background-color: rgb(0, 71, 116);
     color: white;
+
 }

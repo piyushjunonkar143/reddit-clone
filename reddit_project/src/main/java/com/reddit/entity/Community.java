@@ -62,9 +62,4 @@ public class Community {
 
     @OneToMany(mappedBy = "community")
     private List<Post> communityPosts;
-
-//    @ManyToOne
-//    @JoinColumn(name = "owner_id",nullable = false)
-//    private User owner;
-
 }

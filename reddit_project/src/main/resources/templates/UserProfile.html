@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>User Profile</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
   <style>
 body{
-        background-color: rgb(222, 219, 245);
-<!--        margin-left: 15vw;-->
-<!--        margin-right: 10vw;-->
-        /* margin-top: 200px; */
+        background-color: rgb(237 237 237);
       }
     .container1{
       position: relative;
-      display: inline;
-      width: 301px;
-      height: 431px;
-      padding: 0px;
-      padding-right: 0px;
-      text-align: left;
-      margin-right: 50px;
-      margin-top: 10px;
-      justify-content: space-around;
-      float: right;
+    display: inline;
+    width: 451px;
+    height: 908px;
+    padding: 0px;
+    padding-right: 0px;
+    text-align: left;
+    margin-right: 202px;
+    margin-top: 17px;
+    justify-content: space-around;
+    float: right;
+    overflow: auto;
+    height: 979px;
  }
 
   .profile {
@@ -34,7 +34,7 @@ body{
     }
     .user-profile-picture{
         position: relative;
-    width: 301px;
+    width: 436px;
     height: 146px;
     margin-left: -10px;
     margin-top: -48px;
@@ -49,7 +49,7 @@ body{
     .setting-img-btn{
         position: absolute;
     top: 96px;
-    left: 254px;
+    left: 364px;
     background: none;
     border: none;
     padding: 0;
@@ -66,17 +66,17 @@ body{
     .profile-name {
             position: relative;
     font-weight: bold;
-    top: 41px;
-    left: 89px;
+    top: 9px;
+    left: 150px;
     }
 
     .profile-description {
       position: relative;
-    top: 20px;
-    left: 73px;
+        top: 14px;
+    left: 154px;
     }
     .profile-details{
-      padding-top: 5px;
+      padding-top: 55px;
       padding-left: 20px;
       background-color: #f1f4f8;
 
@@ -130,7 +130,7 @@ body{
     }
     img.avatar{
     position: relative;
-    margin-left: 78px;
+    margin-left: 125px;
     margin-top: -74px;
     width: 104px;
       }
@@ -167,35 +167,17 @@ body{
         width: 219px;
          flex: auto;
   }
-.post{
-    border: #0a6cc2;
-    background-color: silver;
-    width: 182px;
-}
+
   .view_post:hover {
     background-color: #f5f5f5;
   }
-
-  .post h2 {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-
-  .post p {
-    margin: 0;
-  }
-
-  .post strong {
-    font-weight: bold;
-  }
-
-
    .moderator-container {
     background-color: #f2f2f2;
     padding: 20px;
     border: 2px solid #ccc;
     border-radius: 8px;
     text-align: center;
+    margin-right: 22px
   }
 
   .moderator-container h2 {
@@ -230,6 +212,7 @@ body{
     border: 2px solid #ccc;
     border-radius: 8px;
     text-align: center;
+    margin-right: 22px
   }
 
   .community_moderator-container h2 {
@@ -244,6 +227,14 @@ body{
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+  .owned-community-container{
+     background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #ccbfbf;
+    border-radius: 4px;
+    margin-right: 22px;
+  }
 
   .community p {
     margin: 0;
@@ -257,87 +248,41 @@ body{
     color: #999;
     font-style: italic;
   }
+ .all-posts{
+ top: -432px;
+ width: 90%;
+    min-height: 10%;
+<!--    /* border: 2px solid black; */-->
+    display: flex;
+    padding-left: 10%;
+ }
+ #post-div {
+        width: 52%;
+
+    margin-right: 2.5rem;
+    background-color: white;
+    top: 16px;
+    left: 50px;
+    position: relative;
+}
+.posts {
+    /* border: 2px solid red; */
+    min-height: 8.6rem;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: flex;
+    background-color: ##ffffff;
+    margin-bottom: 2rem;
+    padding-left: 85px;
+}
   </style>
 </head>
 <body>
-<!--<div class="main-container">-->
-<!--  <div class="container">-->
-<!--    <h1>User Profile</h1>-->
-<!--    <div class="field-container">-->
-<!--      <label class="field-label">User Name:</label>-->
-<!--      <div id="name" th:text="${user.username}"></div>-->
-<!--    </div>-->
-
-<!--    <div class="field-container">-->
-<!--      <label class="field-label">User Email:</label>-->
-<!--      <div id="email" th:text="${user.email}"></div>-->
-<!--    </div>-->
-
-<!--    <div class="field-container">-->
-<!--      <label class="field-label">Gender:</label>-->
-<!--      <div id="gender" th:text="${user.gender}"></div>-->
-<!--    </div>-->
-
-<!--    <div class="field-container">-->
-<!--      <label class="field-label">Display Name:</label>-->
-<!--      <div id="display-name" th:text="${user.displayName}"></div>-->
-<!--    </div>-->
-
-<!--    <div class="field-container">-->
-<!--      <label class="field-label">Karma Value:</label>-->
-<!--      <div id="karma-value" th:text="${user.karma}"></div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  <div class="container post-container">-->
-<!--    <h2>Post Details</h2>-->
-<!--    <div th:if="${user.userPosts.empty}">-->
-<!--      <p>No posts found.</p>-->
-<!--    </div>-->
-<!--    <a th:each="post : ${user.userPosts}" class="view_post">-->
-<!--      <div class="post" th:if="${not listPosts.empty}">-->
-<!--        <h2 th:text="${post.title}"></h2>-->
-<!--        <p><strong>Community:</strong> <span th:text="${post.community}"></span></p>-->
-<!--        <p><strong>Posted by:</strong> <span th:text="${post.user}"></span></p>-->
-<!--        <p><strong>Published At:</strong> <span th:text="${post.publishedAt}"></span></p>-->
-<!--      </div>-->
-<!--    </a>-->
-<!--  </div>-->
-<!--</div>-->
-
-<!--<div class="community moderator-container">-->
-<!--  <h2>Joined Community Details</h2>-->
-<!--  <div th:if="${user.communityMembers.empty}">-->
-<!--    <p>No Community found.</p>-->
-<!--  </div>-->
-<!--  <a th:each="community : ${user.communityMembers}" >-->
-<!--    <div class="community" th:if="${not user.communityMembers.empty}">-->
-<!--      <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>-->
-<!--    </div>-->
-<!--  </a>-->
-<!--</div>-->
-
-<!--<div class="community_moderator-container">-->
-<!--  <h2>moderator Details</h2>-->
-<!--  <div th:if="${user.communityModerators.empty}">-->
-<!--    <p>No Community found.</p>-->
-<!--  </div>-->
-<!--  <a th:each="community : ${user.communityModerators}" >-->
-<!--    <div class="community" th:if="${not user.communityModerators.empty}">-->
-<!--      <p><strong>Community Name:</strong> <span th:text="${community.title}"></span></p>-->
-<!--    </div>-->
-<!--  </a>-->
-<!--</div>-->
-<!--<a href="/newPost" class="btn btn-primary">New Post</a>-->
-
-
 <div class="user_profile">
 
   <div class="container1">
     <div class="profile">
       <div class="profile-picture">
-<!--        <img class="user-profile-picture" src="${user.profilePhoto.filename}">-->
-<!--          <img class="user-profile-picture" src="/images/85e1001d-2179-42d1-abe7-130ba0a77c0b.png">-->
           <div th:if="${user?.profilePhoto?.fileName != null and user?.profilePhoto?.fileName != ''}">
           <img class="user-profile-picture" th:src="@{/uploads/__${user.profilePhoto.fileName}__}">
           </div>
@@ -346,10 +291,8 @@ body{
            <input type="hidden" name="userId" th:value="${user.userId}">
         <button class="add-img-btn">
           <img width="30px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThGnzqP2A8anXXPUVtVHg828_lWK3QMwAFSUq8FmVMMyfqCf5SmOLNLkajY5b39D8VY1s&usqp=CAU">
-<!--            <input id="file-input" type="file" name="file" accept="image/*" >-->
         </button>
        </form>
-
 
           <form th:action="@{/change_password_email}" method="get">
               <input type="hidden" name="userId" th:value="${user.userId}">
@@ -374,7 +317,6 @@ body{
           <p>June 16, 2023</p>
         </div>
       </div><br>
-      <div class="button2"><button>Add Social link &plus; </button></div><br><br>
       <form th:action="@{/new-post}">
           <input type="hidden" name="userId" th:value="${user.userId}">
         <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br>
@@ -383,31 +325,7 @@ body{
             <input type="hidden" name="userId" th:value="${user.userId}">
             <div class="button3"><button class="round-button2">New Community &rarr;</button></div><br><br>
         </form>
-  <!--      <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>-->
-<!--      <form id="form" style="display: none;">-->
-<!--        <div class="more_option">-->
-<!--          <a href="#">profile moderation</a><br>-->
-<!--          <a href="#">Add custom feed</a><br><br></div>-->
-<!--      </form>-->
-        <button class="button4" id="moreButton" onclick="toggleForm()">More Options</button>
 
-        <form id="form" style="display: none;">
-            <div class="more_option">
-                <a href="#">Profile Moderation</a><br>
-                <a href="#">Add Custom Feed</a><br><br>
-            </div>
-        </form>
-
-        <script>
-  function toggleForm() {
-    var form = document.getElementById("form");
-    if (form.style.display === "none") {
-      form.style.display = "block";
-    } else {
-      form.style.display = "none";
-    }
-  }
-</script>
         <div class="moderator-container">
           <h2>Joined Community Details</h2>
           <div th:if="${user.communityMembers.empty}">
@@ -446,26 +364,94 @@ body{
         <br><br><br>
 </div>
 </div>
-      <div class="post-container">
-        <h2>Post Details</h2>
-        <div th:if="${user.userPosts.empty}">
-          <p>No posts found.</p>
-        </div>
-        <a th:each="post : ${user.userPosts}" class="view_post">
-          <div class="post" th:if="${not user.userPosts.empty}">
-            <h2 th:text="${post.title}"></h2>
-            <p><strong>Community:</strong> <span th:text="${post.community}"></span></p>
-            <p><strong>Posted by:</strong> <span th:text="${post.user}"></span></p>
-            <p><strong>Published At:</strong> <span th:text="${post.publishedAt}"></span></p>
-          </div>
-        </a>
-      </div>
-  </div>
+    <div class="all-posts">
+        <div id="post-div">
+            <div class="posts" th:each="post : ${user.userPosts}">
+                            <div class="post-vote-container">
+                                <a href=""><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
+                                <p>34567</p>
+                                <a href=""
+                                ><img th:src="@{images/downvote.png}" alt="" class="vote-img"
+                                /></a>
+                            </div>
+                <div th:if="${not user.userPosts.empty}">
+                    <div class="post-data">
+                        <div class="post-user-data">
+                            <a href="" class="post-c-name" th:if="${post.getIsCommunity()}">
+                                <h4 th:text="${'r/' + post.getCommunity()}"></h4>
+                            </a>
 
-<!--<form method="POST" th:action="@{/upload}" enctype="multipart/form-data">-->
-<!--  <input type="hidden" name="userId" th:value="${user.userId}">-->
-<!--  <input type="file" name="file" accept="image/*" />-->
-<!--  <button type="submit">Upload</button>-->
-<!--</form>-->
+                            <!--                    <a href="" class="post-c-name" th:if="${!postData.getIsCommunity()}">-->
+                            <!--                        <h th:text="${'u/' + postData.getUser().getUsername()}"></h>-->
+                            <!--                    </a>-->
+
+                            <p style="margin:0px 5px">. posted by</p>
+                            <a href="" class="post-c-name">
+                                <h4 th:text="${'u/' + user.getUsername()}"></h4>
+                            </a>
+                            <p style="margin-left: 5px">on
+                                <span th:text="${#dates.format(post.getPublishedAt(),'dd-MMMM-yyyy')}"></span>
+                            </p>
+                        </div>
+                        <a href="">
+                            <!--                   th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}"-->
+                            <div class="post-content">
+                                <h5 th:text="${post.getTitle()}" class="post-title"></h5>
+                                <p th:if="${post.getContent() != null}" th:text="${post.getContent()}"></p>
+                            </div>
+                        </a>
+                        <div th:if="${post.getMediaList() != null && post.getMediaList().size() > 0 }"
+                             th:remove="tag">
+                            <div th:with="media=${post.getMediaList().get(0)}" th:remove="tag" >
+
+                                <div class="post-media" th:if="${media.getIsVideo()}">
+                                    <div class="video-container" style="--aspect-ratio: 2 / 3">
+                                        <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
+                                        <video controls>
+                                            <source th:src="${media.getPathUrl()}" type="video/mp4"/>
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+
+                                <div th:if="${!media.getIsVideo()}" th:remove="tag">
+
+                                    <div class="post-media">
+                                        <div class="image-container" style="--aspect-ratio: 2 / 3">
+                                            <img th:src="${media.getPathUrl()}" alt=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-options">
+                            <a href="">
+                                <div class="post-comments">
+                                    <img th:src="@{images/comments.png}" alt="" class="comments-img"/>
+                                    <p>35 Comments</p>
+                                </div>
+                            </a>
+
+                            <a href="">
+                                <div class="post-share">
+                                    <img th:src="@{images/share.png}" alt="" class="share-img"/>
+                                    <p>share</p>
+                                </div>
+                            </a>
+
+                            <a href="">
+                                <div class="post-save">
+                                    <img th:src="@{images/save.png}" alt="" class="save-img"/>
+                                    <p>Save</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
 </body>
 </html>

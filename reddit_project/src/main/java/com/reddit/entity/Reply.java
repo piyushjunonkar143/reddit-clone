@@ -33,5 +33,6 @@ public class Reply {
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
+
 }
 

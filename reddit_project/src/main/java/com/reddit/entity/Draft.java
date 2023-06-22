@@ -21,6 +21,8 @@ public class Draft {
 
     private String content;
 
+    private String draftUrl;
+
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;

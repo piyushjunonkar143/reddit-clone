@@ -372,6 +372,10 @@
         top: 24px;
         right: 39px;
       }
+      .container{
+      width:1280px;
+      margin:0 auto;
+      }
     </style>
   <script>
       function dropdown(event) {
@@ -433,6 +437,7 @@
     </script>
 </head>
 <body>
+<div class="container">
 <div class="post" onclick="dropdownclick(event)">
   <h3 class="postheader">Create a post</h3>
   <div class="box">
@@ -451,6 +456,7 @@
   </div>
 </div>
 <form th:action="@{/save-post}" method="post" enctype="multipart/form-data">
+  <input type="hidden" th:name="communityName" th:value="${communityName}">
   <input type="hidden" name="userId" th:value="${userId}">
   <div id="communitydropdown">
     <div class="profile">
@@ -466,11 +472,10 @@
         <p>Your communities</p>
         <a href="" class="createCommunity">Create New</a>
       </div>
-      <div class="communitynames">
-        <select id="communityoptions" name="communityname">
-          <option value="arun">arun</option>
-          <option value="rahul">rahul</option>
-          <option value="yash">yash</option>
+      <div class="communitynames" >
+        <select  id="communityoptions" name="communityName">
+          <option value="">-- Select a community --</option>
+          <option th:each="community :${communityList}" th:value="${community.communityName}" th:text="${community.communityName}" ></option>
         </select>
       </div>
     </div>
@@ -525,7 +530,7 @@
       </div>
       <div class="buttons">
         <div class="linksave">
-          <input class="draft" type="submit" value="save Draft" />
+          <input class="draft" name="link draft" type="submit" value="save Draft" />
           <input class="save" type="submit" value="Post" />
         </div>
       </div>
@@ -539,7 +544,7 @@
           ></textarea>
         <div class="buttons">
           <div class="pollsave">
-            <input class="draft" type="submit" value="Cancel" />
+            <input class="draft" type="submit" name="cancel" value="Cancel" />
             <input class="save" type="submit" value="Post" />
           </div>
         </div>
@@ -547,5 +552,6 @@
     </div>
   </div>
 </form>
+</div>
 </body>
 </html>

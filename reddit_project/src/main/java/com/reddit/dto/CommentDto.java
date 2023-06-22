@@ -11,5 +11,4 @@ import lombok.ToString;
 @Setter
 public class CommentDto {
     private String comment;
-
 }

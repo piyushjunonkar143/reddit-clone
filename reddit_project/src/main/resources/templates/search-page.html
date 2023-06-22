@@ -30,14 +30,10 @@
                 />
             </form>
         </div>
-        <div id="header-options">es
+        <div id="header-options">
             <a href="" class="login">Login</a>
             <a href="" class="register">Register</a>
         </div>
-
-        <form action="/login" method="get">
-            <button class="login-button" type="submit">Login</button>
-        </form>
     </header>
 
     <article id="mainArticle">
@@ -90,18 +86,16 @@
                                 </div>
                                 <div class="result-post-data">
                                     <div class="result-post-content">
-                                        <p th:text="${post.getTitle()}"></p> </br>
-                                        <p th:if="${post.getContent() != null}">
-                                            <span th:text="post.getContent()"></span>
-                                        </p>
+                                        <p th:text="${post.getTitle()}"></p>
+
                                     </div>
                                 </div>
                                 <div class="result-post-values">
                                     <p class="value-name">
-                                        <span class="result-values">37</span>upvote
+                                        <span class="result-values" th:text="${post.getUpVotes()}"></span>upvote
                                     </p>
                                     <p class="value-name">
-                                        <span class="result-values">37</span>Comments
+                                        <span class="result-values" th:text="${post.getComments() != null ? post.getComments().size() : '0' }"></span>Comments
                                     </p>
                                 </div>
                             </div>

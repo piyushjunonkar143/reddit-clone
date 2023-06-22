@@ -12,8 +12,16 @@
       padding: 0;
     }
 
-    .container {
+    .bottom-container {
       max-width: 400px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .top-container{
+    max-width: 400px;
       margin: 100px auto;
       padding: 30px;
       background-color: #fff;
@@ -48,6 +56,16 @@
       justify-content: space-between;
       align-items: center;
     }
+    .cancel-email{
+       position: relative;
+       top: -58px;
+       left: 279px;
+    }
+    .cancel-password{
+        top: -58px;
+        position: relative;
+        left: 267px;
+    }
 
     button {
       padding: 12px 20px;
@@ -70,7 +88,7 @@
   </style>
 </head>
 <body>
-<div class="container">
+<div class="top-container">
   <h1>Change Password</h1>
   <form th:action="@{/save_password}" method="POST">
     <label for="password">New Password</label>
@@ -84,13 +102,15 @@
     </div>
   </form>
   <br>
+  <div class="cancel-password">
   <form th:action="@{/cancel_changes}" method="get">
     <input type="hidden" name="userId" th:value="${userId}">
     <button type="submit" class="cancel-button">Cancel</button>
   </form>
+  </div>
 </div>
 
-<div class="container">
+<div class="bottom-container">
   <h1>Change Email</h1>
   <form action="/save_email" method="POST">
     <label for="email">New Email</label>
@@ -101,10 +121,12 @@
     </div>
   </form>
   <br>
+  <div class="cancel-email">
   <form th:action="@{/cancel_changes}" method="get">
     <input type="hidden" name="userId" th:value="${userId}">
     <button type="submit" class="cancel-button">Cancel</button>
   </form>
+  </div>
 </div>
 </body>
 </html>

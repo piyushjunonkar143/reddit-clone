@@ -29,16 +29,12 @@
                 />
             </form>
         </div>
-        <div id="header-options">es
-            <a href="" class="login">Login</a>
-            <a href="" class="register">Register</a>
+
+        <div id="header-options">
+            <a href="/login" class="login">Login</a>
+            <a href="/newRegister" class="register">Register</a>
         </div>
-
-        <form action="/login" method="get">
-            <button class="login-button" type="submit">Login</button>
-        </form>
     </header>
-
     <article id="mainArticle">
         <div id="community-header"></div>
         <div id="posts-main">
@@ -48,6 +44,7 @@
                         <a href=""><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
                         <p th:text="${postData.getUpVotes() -  postData.getDownVotes()}"></p>
                         <a href=""
+
                         ><img th:src="@{images/downvote.png}" alt="" class="vote-img"
                         /></a>
                     </div>

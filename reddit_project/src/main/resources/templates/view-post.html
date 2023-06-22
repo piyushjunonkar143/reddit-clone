@@ -72,7 +72,8 @@
                 <div class="post">
                     <div class="post-container-1">
                         <div class="post-vote-container">
-<!--                            {accountType}/{username}/{postId}/upvote")-->
+
+
                             <form action="" method="post" id="up-form"
                                   th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()}  + '/upvote'}"
                             >
@@ -95,7 +96,7 @@
                         <div class="post-data">
                             <div class="post-user-data">
                                 <a href="" class="post-c-name" th:if="${postData.getIsCommunity()}">
-                                    <h4 th:text="${'r/' + postData.getCommunity().getCommunity_name()}"></h4>
+                                    <h4 th:text="${'r/' + postData.getCommunity().getCommunityName()}"></h4>
                                 </a>
 
                                 <a href="" class="post-c-name" th:if="${!postData.getIsCommunity()}">
@@ -120,9 +121,11 @@
                             <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
                                  th:remove="tag">
                                 <div th:each="media : ${postData.getMediaList()}" th:remove="tag">
+
                                     <div class="post-media" th:if="${media.getIsVideo()}">
+
                                         <div class="video-container" style="--aspect-ratio: 2 / 3">
-                                            <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
+
                                             <video controls>
                                                 <source th:src="${media.getPathUrl()}" type="video/mp4"/>
                                                 Your browser does not support the video tag.
@@ -131,6 +134,7 @@
                                     </div>
 
                                     <div th:if="${!media.getIsVideo()}" th:remove="tag">
+
 
                                         <div class="post-media">
                                             <div class="image-container" style="--aspect-ratio: 2 / 3">
@@ -324,7 +328,7 @@
                             <img th:src="@{/images/dp.png}" alt=""/>
                         </div>
                         <div class="community-nav-name" th:if="${postData.getIsCommunity()}">
-                            <h2 th:text="${postData.getCommunity().getCommunity_name()}"></h2>
+                            <h2 th:text="${postData.getCommunity().getCommunityName()}"></h2>
                         </div>
                         <div class="community-nav-name" th:if="${!postData.getIsCommunity()}">
                             <h2 th:text="${postData.getUser().getUsername()}"></h2>
@@ -341,7 +345,7 @@
                     <div id="div-community-created" th:if="${postData.getIsCommunity()}">
                         <img th:src="@{/images/bday.png}" alt=""/>
                         <p>Created
-                            <span th:text="${#dates.format(postData.getCommunity().getCreation_date(),'dd-MMMM-yyyy')}"></span>
+                            <span th:text="${#dates.format(postData.getCommunity().getCreatedAt(),'dd-MMMM-yyyy')}"></span>
                         </p>
                     </div>
 
@@ -364,10 +368,10 @@
 
                     <div id="div-community-people" th:if="${postData.getIsCommunity()}">
                         <h4>Total Members : <span
-                                th:text="${postData.getCommunity().getCommunityPeople().size()}"></span></h4>
+                                th:text="${postData.getCommunity().getCommunityMembers().size()}"></span></h4>
                     </div>
                     <div id="nav-create-post">
-                        <a href="">Create Post</a>
+                        <a th:href="@{/new-post}">Create Post</a>
                     </div>
                 </div>
 

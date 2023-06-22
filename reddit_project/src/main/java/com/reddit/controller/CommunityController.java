@@ -43,6 +43,8 @@ public class CommunityController {
     public String viewCommunity(@PathVariable("communityName") String communityName, Model model){
         Community community = communityService.findCommunityByCommunityName(communityName);
         model.addAttribute("community",community);
+        User owner =community.getOwnerId();
+        model.addAttribute("user",owner);
         return "community";
     }
 
@@ -90,5 +92,17 @@ public class CommunityController {
         communityService.removeUserFromCommunity(community, user);
         model.addAttribute("community", community);
         return "redirect:/users/r?communityName="+communityName;
+    }
+
+    @GetMapping("/join-communtiy")
+    public String joinCommunity(@RequestParam("communityName") String communityName,
+                                @RequestParam("userId") Long userId,
+                                Model model){
+        User user = userService.getUserByID(userId);
+        Community community = communityService.findCommunityByCommunityName(communityName);
+        communityService.joinUserIntoCommunity(community,user);
+        model.addAttribute("community", community);
+        model.addAttribute("user", user);
+        return "community";
     }
 }

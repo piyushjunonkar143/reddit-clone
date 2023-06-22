@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -27,6 +28,100 @@
                         class="search-bar"
                         placeholder="Search Reddit"
                 />
+=======
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashbord</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <style>
+    .new-post-button{
+      width: 107px;
+      height: 37px;
+      border-radius: 10px;
+      background-color: #29a4fb;
+    }
+  </style>
+
+</head>
+<body>
+<main>
+  <header id="pageHeader">
+    <div id="header-logo">
+      <a href="">
+        <img th:src="@{/images/Reddit-logo.png}" alt="logo" class="header-img"/>
+      </a>
+    </div>
+    <div id="home-nav">
+      <img th:src="@{/images/home.png}" alt="home" class="header-img"/>
+      <h4 class="header-text">Home</h4>
+    </div>
+    <div id="home-search">
+      <input type="search" class="search-bar" placeholder="Search Reddit"/>
+    </div>
+    <div id="header-options">
+      <a href="">
+        <img th:src="@{/images/popular.png}" alt="home" class=".header-options-img"/>
+      </a>
+
+      <a href="">
+        <img th:src="@{/images/notify.png}" alt="home"/>
+      </a>
+
+      <a href="">
+        <img th:src="@{/images/message.png}" alt="home"/>
+      </a>
+
+      <a href="">
+        <img th:src="@{/images/plus.png}" alt="home"/>
+      </a>
+    </div>
+    <div id="header-profile">
+      <div id="header-profile-pic">
+        <img th:src="@{/images/dp.png}" alt="picture"/>
+      </div>
+
+    <div id="header-profile-details">
+      <div id="username-div">
+        <p class="profile-name"><span id="name" th:text="${user.username}"></span></p>
+
+      </div>
+
+      <div id="karma-div">
+        <img th:src="@{/images/karma-star.png}" alt="star"/>
+        <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>
+          <span>karma</span>
+        </p>
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <article id="mainArticle">
+    <div id="community-header">
+      <div id="community-color-banner"></div>
+      <div id="community-data-banner">
+        <div id="community-data">
+          <div id="community-banner-dp">
+            <div id="dp-img-div"><img th:src="@{/images/download.jpeg}" alt=""/></div>
+          </div>
+
+          <div id="community-banner-name">
+            <h1 th:text="'r/' + ${community.communityName}" ></h1>
+            <a href=""><p th:text="'r/' + ${community.communityName}"></p></a>
+          </div>
+
+          <div id="community-banner-btn">
+            <form th:action="@{/join-communtiy}" method="get">
+              <input type="hidden" name="userId" th:value="${user.userId}" />
+              <input type="hidden" name="communityName" th:value="${community.communityName}" />
+              <input type="submit" value="Join"/>
+            </form>
+          </div>
+          <div id="community-banner-settings">
+            <form action="" method="post">
+              <input type="submit" value="Settings"/>
+>>>>>>> 64205ee60d9320882a89c8c0bfadfa654ffa7070
             </form>
         </div>
         <div id="header-options">
@@ -180,6 +275,7 @@
                             </div>
                         </div>
 
+<<<<<<< HEAD
                         <div class="post-options">
                             <a href="">
                                 <div class="post-comments">
@@ -203,6 +299,37 @@
                             </a>
                         </div>
                     </div>
+=======
+          <div id="div-community-created">
+            <img th:src="@{/images/bday.png}" alt=""/>Created On
+            <span  th:text="${#dates.format(community.createdAt, 'dd-MMMM-YYYY')}"></span>
+          </div>
+          <div id="div-community-people">
+            <h4>Total Members :
+              <span th:text="${community.communityMembers != null ? community.communityMembers.size() + 1 : 1}" ></span></h4>
+          </div>
+<!--          <div id="nav-create-post">-->
+<!--            <a href="@{'/view-community/' + ${community.communityName}}">Create Post</a>-->
+<!--          </div>-->
+         <div id="nav-create-post">
+        <form th:action="@{/new-post}">
+          <input type="hidden" name="userId" th:value="${community.ownerId.userId}">
+          <div class="button3"><button class="new-post-button">Create Post &rarr;</button></div><br>
+        </form>
+           </div>
+        </div>
+        <!-- Moderators List -->
+        <div id="div-about-moderators">
+          <div class="div-about-community-heading">
+            <h3>Moderators</h3>
+          </div>
+          <div id="nav-contact-moderators">
+            <a href="" id="message-mod">Message Moderator </a>
+            <div id="mod-names">
+              <div th:each="item, moderator : ${community.communityModerators}" th:if="${moderator.count} &lt;= 4">
+                <div>
+                  <span th:text=" 'u/' + ${item.username}"></span>
+>>>>>>> 64205ee60d9320882a89c8c0bfadfa654ffa7070
                 </div>
 
                 <!-- General Media post's End -->
