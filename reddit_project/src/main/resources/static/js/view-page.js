@@ -11,3 +11,17 @@ allReplyBtns.forEach((btn, index) =>
         }
     })
 );
+
+const postUpVote = document.getElementById("post-up");
+const postDownVote = document.getElementById("post-down");
+const upForm = document.getElementById("up-form");
+const downForm = document.getElementById("down-form");
+postUpVote.addEventListener("click", () => {
+    console.log("hello");
+    upForm.submit();
+});
+
+postDownVote.addEventListener("click", () => {
+    console.log("hello");
+    downForm.submit();
+});

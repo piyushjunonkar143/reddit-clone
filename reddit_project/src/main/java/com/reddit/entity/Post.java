@@ -42,6 +42,12 @@ import java.util.List;
         @UpdateTimestamp
         private Timestamp updatedAt;
 
+        @Column(name = "up_votes")
+        private Long upVotes;
+
+        @Column(name = "down_votes")
+        private Long downVotes;
+
         @Column(name = "is_community")
         private Boolean isCommunity;
 
@@ -61,10 +67,6 @@ import java.util.List;
         @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
         @JoinColumn(name = "post_id")
         private List<Comment> comments;
-
-        @OneToMany(orphanRemoval = true)
-        @JoinColumn(name = "comment_id")
-        private List<Reply> replies;
 
         @OneToMany(orphanRemoval = true)
         @JoinColumn(name = "post_votes")

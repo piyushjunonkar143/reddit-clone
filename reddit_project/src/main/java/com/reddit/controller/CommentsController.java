@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("{accountType}/{username}/comments")
 @RequiredArgsConstructor
 public class CommentsController {
     private final FileService fileService;
@@ -23,21 +23,17 @@ public class CommentsController {
 
     // r/{communityName}/comments/{postId}/add
     @PostMapping("/{postId}/add")
-    public String addComment(@PathVariable Long postId, @ModelAttribute CommentDto commentDto, Model model) {
+    public String addComment(@PathVariable Long postId, @ModelAttribute CommentDto commentDto, Model model, @PathVariable String accountType, @PathVariable String username) {
         commentService.addComment(postId, commentDto);
-        model.addAttribute("postData", postsService.getPost(postId));
-        model.addAttribute("commentDto", new CommentDto());
-        return "view-post";
+        return "redirect:/"+accountType+'/'+username+"/comments/"+postId;
     }
 
     @PostMapping("/{postId}/reply/{commentId}")
-    public String addReply(@PathVariable Long commentId,
+    public String addReply(@PathVariable("commentId") Long commentId,
                            @ModelAttribute CommentDto commentDto,
-                           @PathVariable Long postId, Model model) {
+                           @PathVariable("postId") Long postId, Model model, @PathVariable String accountType, @PathVariable String username) {
 
         commentService.addReply(commentId, commentDto);
-        model.addAttribute("postData", postsService.getPost(postId));
-        model.addAttribute("commentDto", new CommentDto());
-        return "view-post";
+        return "redirect:/"+accountType+'/'+username+"/comments/"+postId;
     }
 }

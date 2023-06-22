@@ -20,17 +20,18 @@ public class Reply {
 
     private String content;
 
+    @Column(name = "up_votes")
+    private Long upVotes;
+
+    @Column(name = "down_votes")
+    private Long downVotes;
+
     @CreationTimestamp
     @Column(name="replied_at")
     private Timestamp repliedAt;
 
-    @ManyToOne(targetEntity = Post.class)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
-
 }
 

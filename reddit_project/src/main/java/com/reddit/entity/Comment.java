@@ -30,6 +30,12 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "up_votes")
+    private Long upVotes;
+
+    @Column(name = "down_votes")
+    private Long downVotes;
+
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "comment_id")
     private List<Reply> replyComments;

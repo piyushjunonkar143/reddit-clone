@@ -84,11 +84,11 @@ article {
     font-weight: 500;
     font-family: "Courier New", Courier, monospace;
 }
-#home-search {
+#home-search form input {
     display: flex;
     align-items: center;
     /* border: 2px solid black; */
-    padding: 0.3rem;
+    padding: 0.8rem;
 }
 .search-bar {
     width: 800px;
@@ -332,7 +332,7 @@ article {
     margin-right: 1.2rem;
 }
 .comments-img {
-    width: 15%;
+    width: 30px;
     margin-right: 0.9rem;
 }
 
@@ -427,4 +427,29 @@ article {
 }
 .post-title{
     font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.post-title-content{
+    margin-bottom: 1rem;
+}
+.login,
+.register {
+    /* border: 1px solid red; */
+    width: 20%;
+    padding: 0.4rem 3.5rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    /* text-align: center; */
+    display: flex;
+    font-weight: 600;
+    justify-content: center;
+    border-radius: 2.1rem;
+}
+.login {
+    background-color: red;
+    color: white;
+}
+.register {
+    background-color: rgb(0, 71, 116);
+    color: white;
 }
