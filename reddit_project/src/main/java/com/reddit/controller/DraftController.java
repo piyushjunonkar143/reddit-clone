@@ -1,6 +1,7 @@
 package com.reddit.controller;
 
 import com.reddit.entity.Draft;
+import com.reddit.service.CommunityService;
 import com.reddit.service.DraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import java.util.UUID;
 public class DraftController {
     @Autowired
     DraftService draftService;
+    @Autowired
+    CommunityService communityService;
 
     @GetMapping("/draft")
     public String viewDraft(Model model){
@@ -39,10 +42,13 @@ public class DraftController {
     public String editDraft(@RequestParam(value = "draftId") UUID draftId,Model model){
         Draft draft = draftService.getDraftById(draftId);
         model.addAttribute("editDraft",draft);
+        model.addAttribute("communityList",communityService.findAllCommunities());
+        List<Draft> draftPosts = draftService.findAllDraftedPosts();
+        model.addAttribute("draftedPosts",draftPosts.size());
         return "edit";
     }
     @GetMapping("/update/draft")
-    public void updateDraft(UUID draftId, String title, String content){
-        draftService.updateDraftById(draftId,title,content);
+    public void updateDraft(UUID draftId, String title, String content,Long userId){
+        draftService.updateDraftById(draftId,title,content,userId);
     }
 }

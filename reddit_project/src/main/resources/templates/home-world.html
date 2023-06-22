@@ -22,52 +22,18 @@
         <div id="home-search">
             <input type="search" class="search-bar" placeholder="Search Reddit"/>
         </div>
-        <div id="header-options">es
-            <a href="">
-                <img th:src="@{/images/popular.png}" alt="home" class=".header-options-img"/>
-            </a>
-
-            <a href="">
-                <img th:src="@{/images/notify.png}" alt="home"/>
-            </a>
-
-            <a href="">
-                <img th:src="@{/images/message.png}" alt="home"/>
-            </a>
-
-            <a href="">
-                <img th:src="@{/images/plus.png}" alt="home"/>
-            </a>
+        <div id="header-options">
+            <a href="/login" class="login">Login</a>
+            <a href="/newRegister" class="register">Register</a>
         </div>
-
-        <div id="header-profile">
-            <div id="header-profile-pic">
-                <img th:src="@{/images/dp.png}" alt="picture"/>
-            </div>
-
-            <div id="header-profile-details">
-                <div id="username-div">
-                    <p>sham_yaswanth</p>
-                </div>
-
-                <div id="karma-div">
-                    <img th:src="@{/images/karma-star.png}" alt="star"/>
-                    <p>100786 karma</p>
-                </div>
-            </div>
-        </div>
-        <form action="/login" method="get">
-            <button class="login-button" type="submit">Login</button>
-        </form>
     </header>
-
     <article id="mainArticle">
         <div id="community-header"></div>
         <div id="posts-main">
             <div id="posts-div">
                 <div class="post" th:each="postData : ${allPosts}">
                     <div class="post-vote-container">
-                        <a href=""><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
+                        <a th:href="@{/notify/upvote(postId=${postData.getPostId})}"><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
                         <p>34567</p>
                         <a href=""
                         ><img th:src="@{images/downvote.png}" alt="" class="vote-img"
@@ -77,7 +43,7 @@
                     <div class="post-data">
                         <div class="post-user-data">
                             <a href="" class="post-c-name" th:if="${postData.getIsCommunity()}">
-                                <h4 th:text="${'r/' + postData.getCommunity().getCommunity_name()}"></h4>
+                                <h4 th:text="${'r/' + postData.getCommunity().getCommunityName()}"></h4>
                             </a>
 
                             <a href="" class="post-c-name" th:if="${!postData.getIsCommunity()}">

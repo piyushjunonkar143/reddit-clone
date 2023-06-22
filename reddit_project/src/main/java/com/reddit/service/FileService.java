@@ -43,7 +43,7 @@ public class FileService {
                     media.setIsVideo(false);
                 }
                 Files.copy(image.getInputStream(),Paths.get(filePath));
-                media.setPathUrl(filePath);
+                media.setPathUrl('/'+filePath);
                 mediaList.add(fileRepository.save(media));
             }
         }
