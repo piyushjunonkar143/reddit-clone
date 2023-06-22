@@ -444,8 +444,8 @@
   <h3 class="postheader">Create a post</h3>
   <div class="box">
     <div class="drafts">
-      <b><a href="">Drafts</a></b>
-      <span id="number">0</span>
+      <b><a th:href="@{/draft}">Drafts</a></b>
+      <span id="number" th:text="${draftedPosts}"></span>
     </div>
   </div>
 </div>
@@ -472,10 +472,9 @@
         <a href="" class="createCommunity">Create New</a>
       </div>
       <div class="communitynames">
-        <select id="communityoptions" name="communityname">
-          <option value="arun">arun</option>
-          <option value="rahul">rahul</option>
-          <option value="yash">yash</option>
+        <select  id="communityoptions" name="communityName">
+          <option value="">-- Select a community --</option>
+          <option th:each="community :${communityList}" th:value="${community.communityName}" th:text="${community.communityName}" ></option>
         </select>
       </div>
     </div>
@@ -508,7 +507,7 @@
       <div class="buttons">
         <div class="postsave">
           <input type="submit" name="edit-draft" class="draft" value="save Draft" />
-          <input class="save" type="submit" value="Post" />
+          <input class="save" name="post-draft" type="submit" value="Post" />
         </div>
       </div>
     </div>
@@ -519,7 +518,7 @@
       </div>
       <div class="buttons">
         <div class="imagesave">
-          <input class="draft" type="submit" value="Cancel" />
+          <input class="draft" name="cancel" type="submit" value="Cancel" />
           <input class="save" type="submit" value="Post" />
         </div>
       </div>
@@ -527,12 +526,12 @@
 
     <div class="linkbody" id="link">
       <div class="linkurl">
-        <input type="url" name="url" placeholder="url" />
+        <input type="url" th:value="${editDraft.draftUrl}" name="url" placeholder="url" />
       </div>
       <div class="buttons">
         <div class="linksave">
-          <input class="draft" type="submit" value="save Draft" />
-          <input class="save" type="submit" value="Post" />
+          <input class="draft" type="submit"  name="update draft" value="update Draft" />
+          <input class="save" name="post-draft" type="submit" value="Post" />
         </div>
       </div>
     </div>
@@ -545,7 +544,7 @@
           ></textarea>
         <div class="buttons">
           <div class="pollsave">
-            <input class="draft" type="submit" value="Cancel" />
+            <input class="draft" name="cancel" type="submit" value="Cancel" />
             <input class="save" type="submit" value="Post" />
           </div>
         </div>

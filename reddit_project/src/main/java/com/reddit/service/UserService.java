@@ -25,7 +25,7 @@ public class UserService {
     }
 
     public User getUserByID(Long userId) {
-         return userRepository.findByUserId(userId);
+         return userRepository.findById(userId).get();
     }
     public boolean saveUserPhoto(User user) throws IOException {
         try {

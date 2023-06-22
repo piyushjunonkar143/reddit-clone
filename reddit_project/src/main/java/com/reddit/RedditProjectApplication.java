@@ -8,10 +8,8 @@ import java.io.File;
 
 @SpringBootApplication
 public class RedditProjectApplication {
-
 	public static void main(String[] args) {
 		new File(UserController.uploadDirectory).mkdir();
 		SpringApplication.run(RedditProjectApplication.class, args);
 	}
-
 }

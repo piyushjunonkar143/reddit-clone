@@ -33,4 +33,3 @@ public class Reply {
     private User user;
 
 }
-

@@ -3,6 +3,8 @@ package com.reddit.controller;
 import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
 import com.reddit.entity.Media;
+import com.reddit.entity.Post;
+import com.reddit.service.CommunityService;
 import com.reddit.service.DraftService;
 import com.reddit.service.FileService;
 import com.reddit.service.PostService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,63 +35,64 @@ public class PostController {
     DraftController draftController;
     @Autowired
     DraftService draftService;
+    @Autowired
+    CommunityService communityService;
 
     @Value("${project.image}")
     private String path;
+
+    @GetMapping("/community-post")
+    public String communityPost(@RequestParam(value = "communityName") String communityName, Model model) {
+        model.addAttribute("communityName", communityName);
+        model.addAttribute("communityList",communityService.findAllCommunities());
+        return "NewPost";
+    }
+
     @GetMapping("/new-post")
-    public String viewPost(@RequestParam("userId")Long userId,Model model){
-        model.addAttribute("draftedPosts",draftService.findAllDraftedPosts().size());
-        model.addAttribute("userId",userId);
+    public String viewPost(@RequestParam(value = "userId",required = false) Long userId, Model model) {
+        model.addAttribute("draftedPosts", draftService.findAllDraftedPosts().size());
+        model.addAttribute("userId", userId);
+        model.addAttribute("communityList",communityService.findAllCommunities());
         return "NewPost";
     }
 
     @PostMapping("/save-post")
-    public String fileUpload(@RequestParam("userId") Long userId,
-                             @RequestParam(value = "draft",required = false)String draft,
-                             @RequestParam(value = "title")String title,
-                             @RequestParam(value = "image",required = false) List<MultipartFile> images,
-                             @RequestParam(value = "content",required = false) String content,
-                             @RequestParam(value = "url",required = false) String url,
-                             @RequestParam(value = "poll",required = false) String poll,
-                             @RequestParam(value = "draftId",required = false) UUID draftId,
-                             Model model){
-        if(draftId!=null){
-            System.out.println("1111111111");
-            draftController.updateDraft(draftId,title,content);
+    public String fileUpload(@RequestParam(value = "userId", required = false) Long userId,
+                             @RequestParam(value = "communityName", required = false) String communityName,
+                             @RequestParam(value = "link draft", required = false) String linkDraft,
+                             @RequestParam(value = "post-draft", required = false) String postDraft,
+                             @RequestParam(value = "draft", required = false) String draft,
+                             @RequestParam(value = "title") String title,
+                             @RequestParam(value = "image", required = false) List<MultipartFile> images,
+                             @RequestParam(value = "content", required = false) String content,
+                             @RequestParam(value = "url", required = false) String url,
+                             @RequestParam(value = "poll", required = false) String poll,
+                             @RequestParam(value = "update draft", required = false) String updateDraftLink,
+                             @RequestParam(value = "cancel", required = false) String cancelButton,
+                             @RequestParam(value = "draftId", required = false) UUID draftId,
+                             Model model) throws IOException {
+        if (cancelButton != null && (!cancelButton.isEmpty())) {
+            return "redirect:/new-post";
+        } else if (updateDraftLink != null && updateDraftLink.equals("update Draft")) {
+            draftService.updateDraftLink(title, url, draftId,1L);
             return "redirect:/draft";
-        }
-        else if(draft!=null && !draft.isEmpty()){
-            System.out.println("22222222222");
-            draftController.saveDraftPost(title,content,model,userId);
+        } else if (linkDraft != null && linkDraft.equals("save Draft")) {
+            draftService.draftPostUrl(title, url, userId);
+            return "redirect:/draft";
+        } else if (postDraft != null && postDraft.equals("Post")) {
+            postService.saveDraftedPost(title, content, draftId, url,1L,communityName);
+            draftService.deleteDraftById(draftId);
+            return "file-response";
+        } else if (draftId != null) {
+            draftController.updateDraft(draftId, title, content,1l);
+            return "redirect:/draft";
+        } else if (draft != null && !draft.isEmpty()) {
+            draftController.saveDraftPost(title, content, model,1L);
             List<Draft> draftPosts = draftService.findAllDraftedPosts();
-            model.addAttribute("draftedPosts",draftPosts);
+            model.addAttribute("draftedPosts", draftPosts);
             return "draft";
-        }
-        else {
-            System.out.println("3333333333");
-            if ((images != null && (!images.isEmpty())) && (url != null && (!url.isEmpty())) && (content != null
-                    && (!content.isEmpty()))) {
-                System.out.println("44444444");
-                List<Media> savedMediaList = fileService.uploadImage(path, images);
-                postService.savePost(title, savedMediaList, url, content,userId);
-                return "file-response";
-            }
-            else if (images != null && (!images.isEmpty())) {
-                System.out.println("55555555");
-                List<Media> savedMediaList = fileService.uploadImage(path, images);
-                postService.saveMedia(title, savedMediaList,userId);
-                return "file-response";
-            }
-           else  if (url != null && (!url.isEmpty())) {
-                System.out.println("6666666666");
-                postService.savePostUrl(title, url,userId);
-                return "file-response";
-            }
-            else if (content != null && (!content.isEmpty())) {
-                System.out.println("77777777777");
-                postService.savePostContent(title, content,userId);
-                return "file-response";
-            }
+        } else{
+            postService.post(title,images,url,content,userId,communityName,path);
         }
         return "file-response";
     }
@@ -97,7 +101,7 @@ public class PostController {
     @GetMapping("/media/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         System.out.println("image controller");
-        Resource file = fileService.load(path,filename);
+        Resource file = fileService.load(path, filename);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
@@ -107,10 +111,10 @@ public class PostController {
     public String viewPost(@PathVariable Long postId,
                            @PathVariable String typeOfAccount,
                            @PathVariable String username,
-                           Model model){
+                           Model model) {
         System.out.println(username);
-        model.addAttribute("postData",postService.getPostByType(typeOfAccount,username,postId));
-        model.addAttribute("commentDto",new CommentDto());
+        model.addAttribute("postData", postService.getPostByType(typeOfAccount, username, postId));
+        model.addAttribute("commentDto", new CommentDto());
         return "view-post";
     }
 }

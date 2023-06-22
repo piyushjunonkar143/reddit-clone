@@ -69,4 +69,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Draft> userDrafts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
+
 }

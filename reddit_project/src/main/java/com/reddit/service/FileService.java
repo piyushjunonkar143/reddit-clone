@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class FileService {
 
     @Autowired
     FileRepository fileRepository;
-    public List<Media> uploadImage(String path, List<MultipartFile> images) {
+    public List<Media> uploadImage(String path, List<MultipartFile> images) throws IOException {
         List<Media> mediaList = new ArrayList<>();
         for(MultipartFile image: images) {
             Media media = new Media();
@@ -40,6 +42,7 @@ public class FileService {
                 } else {
                     media.setIsVideo(false);
                 }
+                Files.copy(image.getInputStream(),Paths.get(filePath));
                 media.setPathUrl(filePath);
                 mediaList.add(fileRepository.save(media));
             }

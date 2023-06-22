@@ -254,7 +254,7 @@
               <span th:text="${community.communityMembers != null ? community.communityMembers.size() + 1 : 1}" ></span></h4>
           </div>
           <div id="nav-create-post">
-            <a href="">Create Post</a>
+            <a th:href="@{/community-post(communityName=${community.communityName})}">Create Post</a>
           </div>
         </div>
 
