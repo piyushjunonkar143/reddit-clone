@@ -23,7 +23,7 @@ public class DraftController {
     @GetMapping("/draft")
     public String viewDraft(Model model){
         List<Draft> draftPosts = draftService.findAllDraftedPosts();
-        model.addAttribute("draftedPosts",draftPosts.size());
+        model.addAttribute("draftedPosts",draftPosts);
         return "draft";
     }
     @PostMapping("/draft-posts")
@@ -48,7 +48,7 @@ public class DraftController {
         return "edit";
     }
     @GetMapping("/update/draft")
-    public void updateDraft(UUID draftId, String title, String content, Long userId){
+    public void updateDraft(UUID draftId, String title, String content,Long userId){
         draftService.updateDraftById(draftId,title,content,userId);
     }
 }

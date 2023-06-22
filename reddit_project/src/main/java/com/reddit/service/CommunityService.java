@@ -7,6 +7,7 @@ import com.reddit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,5 +84,14 @@ public class CommunityService {
 
     public Community getByName(String name) {
         return communityRepository.findBycommunityName(name);
+    }
+
+    public void joinUserIntoCommunity(Community community, User user) {
+        if(!community.getOwnerId().getUserId().equals(user.getUserId()))
+        {
+            Set<User> members = community.getCommunityMembers();
+            members.add(user);
+            communityRepository.save(community);
+        }
     }
 }

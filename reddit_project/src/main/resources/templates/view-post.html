@@ -101,8 +101,7 @@
                             <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
                                  th:remove="tag">
                                 <div th:each="media : ${postData.getMediaList()}" th:remove="tag">
-
-                                    <div class="post-media" th:if="${media.isVideo()}">
+                                    <div class="post-media" th:if="${media.isVideo}">
                                         <div class="video-container" style="--aspect-ratio: 2 / 3">
                                             <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
                                             <video controls>
@@ -112,7 +111,7 @@
                                         </div>
                                     </div>
 
-                                    <div th:if="${!media.isVideo()}" th:remove="tag">
+                                    <div th:if="${!media.isVideo}" th:remove="tag">
 
                                         <div class="post-media">
                                             <div class="image-container" style="--aspect-ratio: 2 / 3">
@@ -296,7 +295,7 @@
                     <div id="div-community-created" th:if="${postData.getIsCommunity()}">
                         <img th:src="@{/images/bday.png}" alt=""/>
                         <p>Created
-                            <span th:text="${#dates.format(postData.getCommunity().getCreatedAt,'dd-MMMM-yyyy')}"></span>
+                            <span th:text="${#dates.format(postData.getCommunity().getCreatedAt(),'dd-MMMM-yyyy')}"></span>
                         </p>
                     </div>
 
@@ -319,7 +318,7 @@
 
                     <div id="div-community-people" th:if="${postData.getIsCommunity()}">
                         <h4>Total Members : <span
-                                th:text="${postData.getCommunity().getCommunityMembers.size()}"></span></h4>
+                                th:text="${postData.getCommunity().getCommunityMembers().size()}"></span></h4>
                     </div>
                     <div id="nav-create-post">
                         <a th:href="@{/new-post}">Create Post</a>

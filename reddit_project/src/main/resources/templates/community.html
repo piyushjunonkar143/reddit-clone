@@ -7,6 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashbord</title>
   <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <style>
+    .new-post-button{
+      width: 107px;
+      height: 37px;
+      border-radius: 10px;
+      background-color: #29a4fb;
+    }
+  </style>
+
 </head>
 <body>
 <main>
@@ -40,21 +49,23 @@
         <img th:src="@{/images/plus.png}" alt="home"/>
       </a>
     </div>
-
     <div id="header-profile">
       <div id="header-profile-pic">
         <img th:src="@{/images/dp.png}" alt="picture"/>
       </div>
 
-      <div id="header-profile-details">
-        <div id="username-div">
-          <p>sham_yaswanth</p>
-        </div>
+    <div id="header-profile-details">
+      <div id="username-div">
+        <p class="profile-name"><span id="name" th:text="${user.username}"></span></p>
 
-        <div id="karma-div">
-          <img th:src="@{/images/karma-star.png}" alt="star"/>
-          <p>100786 karma</p>
-        </div>
+      </div>
+
+      <div id="karma-div">
+        <img th:src="@{/images/karma-star.png}" alt="star"/>
+        <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>
+          <span>karma</span>
+        </p>
+      </div>
       </div>
     </div>
   </header>
@@ -74,7 +85,9 @@
           </div>
 
           <div id="community-banner-btn">
-            <form action="" method="post">
+            <form th:action="@{/join-communtiy}" method="get">
+              <input type="hidden" name="userId" th:value="${user.userId}" />
+              <input type="hidden" name="communityName" th:value="${community.communityName}" />
               <input type="submit" value="Join"/>
             </form>
           </div>
@@ -253,11 +266,16 @@
             <h4>Total Members :
               <span th:text="${community.communityMembers != null ? community.communityMembers.size() + 1 : 1}" ></span></h4>
           </div>
-          <div id="nav-create-post">
-            <a th:href="@{/community-post(communityName=${community.communityName})}">Create Post</a>
-          </div>
+<!--          <div id="nav-create-post">-->
+<!--            <a href="@{'/view-community/' + ${community.communityName}}">Create Post</a>-->
+<!--          </div>-->
+         <div id="nav-create-post">
+        <form th:action="@{/new-post}">
+          <input type="hidden" name="userId" th:value="${community.ownerId.userId}">
+          <div class="button3"><button class="new-post-button">Create Post &rarr;</button></div><br>
+        </form>
+           </div>
         </div>
-
         <!-- Moderators List -->
         <div id="div-about-moderators">
           <div class="div-about-community-heading">

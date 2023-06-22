@@ -38,7 +38,7 @@ public class UserController {
         System.out.println("its working");
         return "LoginPage.html";
     }
-    @PostMapping("/authenticateTheUser")
+    @GetMapping("/chuck-user")
     public String checkLoginUser(@RequestParam("username")String username,@RequestParam("password")String password,Model model){
         System.out.println("username="+username+" password="+password);
 

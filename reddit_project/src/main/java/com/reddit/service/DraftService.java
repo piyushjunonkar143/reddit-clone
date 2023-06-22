@@ -7,7 +7,10 @@ import com.reddit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class DraftService {
@@ -51,6 +54,7 @@ public class DraftService {
         user.setUserDrafts(existingDrafts);
         userRepository.save(user);
     }
+
 
     public void draftPostUrl(String title, String url, Long userId) {
         User user = userService.getUserByID(userId);

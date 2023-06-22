@@ -2,8 +2,6 @@ package com.reddit.controller;
 
 import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
-import com.reddit.entity.Media;
-import com.reddit.entity.Post;
 import com.reddit.service.CommunityService;
 import com.reddit.service.DraftService;
 import com.reddit.service.FileService;

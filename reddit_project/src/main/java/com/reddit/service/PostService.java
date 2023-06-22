@@ -10,7 +10,6 @@ import com.reddit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -21,14 +20,15 @@ public class PostService {
     @Autowired
     UserService userService;
     @Autowired
-    FileService fileService;
-    @Autowired
-    CommunityService communityService;
+
+    UserRepository userRepository;
     @Autowired
     CommunityRepository communityRepository;
+    @Autowired
+    CommunityService communityService;
 
     @Autowired
-    UserRepository userRepository;
+    FileService fileService;
 
     public void savePostUrl(String title, String url, Long userId, String communityName) {
         String name = "";
@@ -158,8 +158,10 @@ public class PostService {
         post.setUser(user);
         post.setMediaList(savedMediaList);
         post.setIsPublished(true);
+
         post.setUpVotes(0L);
         post.setDownVotes(0L);
+
         Post savePost = postRepository.save(post);
         userPosts.add(savePost);
         user.setUserPosts(userPosts);
@@ -194,6 +196,7 @@ public class PostService {
         post.setDownVotes(0L);
         post.setContent(content);
         post.setIsPublished(true);
+        post.setUser(user);
         Post savePost = postRepository.save(post);
         userPosts.add(savePost);
         user.setUserPosts(userPosts);
@@ -203,7 +206,9 @@ public class PostService {
             community.setCommunityPosts(communityPosts);
             communityRepository.save(community);
         }
+
     }
+
 
     //yashvant
     public Post getPostByType(String typeOfAccount, String username, Long postId) {
@@ -221,8 +226,18 @@ public class PostService {
         return postRepository.findById(postId).get();
     }
 
-    public void saveCommunityPost(String title, String content, String url) {
-        Post post = new Post();
+
+    public String splitCommunityName(String communityNames) {
+        if (communityNames != null && !communityNames.isEmpty()) {
+            String[] name = communityNames.split(",");
+            if (name.length == 1) {
+                return name[0];
+            } else {
+                return name[1];
+            }
+        }
+        return null;
+
     }
 
     public void post(String title, List<MultipartFile> images, String url, String content, Long userId, String communityName, String path) throws IOException {
@@ -238,17 +253,5 @@ public class PostService {
             List<Media> savedMediaList = fileService.uploadImage(path, images);
             saveMedia(title, savedMediaList, 1L, communityName);
         }
-    }
-
-    public String splitCommunityName(String communityNames) {
-        if (communityNames != null && !communityNames.isEmpty()) {
-            String[] name = communityNames.split(",");
-            if (name.length == 1) {
-                return name[0];
-            } else {
-                return name[1];
-            }
-        }
-        return null;
     }
 }
