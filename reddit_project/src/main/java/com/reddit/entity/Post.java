@@ -40,6 +40,7 @@ import java.util.List;
 
         @Column(name = "Up_votes")
         private Long upVotes;
+
         @Column(name = "down_votes")
         private Long downVotes;
 
@@ -66,10 +67,6 @@ import java.util.List;
         @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL)
         @JoinColumn(name = "post_id")
         private List<Comment> comments;
-
-        @OneToMany(orphanRemoval = true)
-        @JoinColumn(name = "comment_id")
-        private List<Reply> replies;
 
         @OneToMany(orphanRemoval = true)
         @JoinColumn(name = "post_votes")

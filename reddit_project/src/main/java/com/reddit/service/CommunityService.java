@@ -83,7 +83,7 @@ public class CommunityService {
     }
 
     public Community getByName(String name) {
-        return communityRepository.findBycommunityName(name);
+        return communityRepository.findByCommunityName(name);
     }
 
     public void joinUserIntoCommunity(Community community, User user) {

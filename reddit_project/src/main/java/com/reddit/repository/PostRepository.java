@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
-    @Query("select p from Post p join p.community c where c.communityName ILIKE :name and p.postId = :postId")
+    @Query("SELECT p FROM Post p JOIN p.community c WHERE c.communityName ILIKE :name AND p.postId = :postId")
     Optional<Post> findPostsByCommunityName(@Param("name") String communityName,
                                             @Param("postId") Long postId);
 
-    @Query("select p from Post p join p.user u where (u.username ILIKE :name) and (p.postId = :postId)")
+    @Query("SELECT p FROM Post p JOIN p.user u WHERE (u.username ILIKE :name) AND (p.postId = :postId)")
     Optional<Post> findPostsByUsername(@Param("name") String username,
                                        @Param("postId") Long postId);
 
@@ -24,4 +24,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
             "(c.isPrivate = FALSE AND c.isRestrict = FALSE) OR " +
             "(p.community = NULL)")
     Page<Post> findPostsOrderByPublishedAt(Pageable pageable);
+
+    @Query("SELECT p FROM Post p  WHERE " +
+            "(p.title ILIKE %:word%) OR (p.content ILIKE %:word%)")
+    Page<Post> findPostsBySearchOrderByPublishedAt(@Param("word") String keyword,Pageable pageable);
 }

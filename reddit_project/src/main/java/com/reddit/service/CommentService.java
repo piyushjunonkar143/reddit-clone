@@ -30,6 +30,8 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setContent(commentDto.getComment());
         comment.setUser(user);
+        comment.setUpVotes(0L);
+        comment.setDownVotes(0L);
 
         postComments.add(comment);
         post.setComments(postComments);
@@ -40,11 +42,14 @@ public class CommentService {
     public void addReply(Long commentId,CommentDto commentDto){
         User user = userRepository.findById(1L).orElseThrow(); //have to replace it with authorization user
         Comment comment = commentRepository.findById(commentId).orElseThrow();
+        System.out.println(comment.getCommentId());
         List<Reply> commentReplies = comment.getReplyComments();
 
         Reply reply = new Reply();
         reply.setContent(commentDto.getComment());
         reply.setUser(user);
+        reply.setUpVotes(0L);
+        reply.setDownVotes(0L);
         commentReplies.add(reply);
         comment.setReplyComments(commentReplies);
         commentRepository.save(comment);

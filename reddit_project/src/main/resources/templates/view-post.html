@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dashbord</title>
+    <title>Post | Reddit</title>
     <link rel="stylesheet" th:href="@{/css/view.css}"/>
 </head>
 <body>
@@ -21,7 +21,14 @@
             <h4 class="header-text">Home</h4>
         </div>
         <div id="home-search">
-            <input type="search" class="search-bar" placeholder="Search Reddit"/>
+            <form action="/search/">
+                <input
+                        name="q"
+                        type="search"
+                        class="search-bar"
+                        placeholder="Search Reddit"
+                />
+            </form>
         </div>
         <div id="header-options">es
             <a href="">
@@ -65,12 +72,25 @@
                 <div class="post">
                     <div class="post-container-1">
                         <div class="post-vote-container">
-                            <a><img th:src="@{/images/upvote.png}" alt="" class="vote-img"
-                            /></a>
-                            <p>34567</p>
-                            <a href=""
-                            ><img th:src="@{/images/downvote.png}" alt="" class="vote-img"
-                            /></a>
+
+
+                            <form action="" method="post" id="up-form"
+                                  th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()}  + '/upvote'}"
+                            >
+
+                            </form>
+
+                            <img th:src="@{/images/upvote.png}" alt="" class="vote-img" id = "post-up"
+                            />
+                            <p th:text="${postData.getUpVotes() - postData.getDownVotes()}"></p>
+                            <form action="" method="post" id="down-form"
+                                  th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()}  + '/down-vote'}"
+                            >
+
+                            </form>
+
+                            <img th:src="@{/images/downvote.png}" alt="" class="vote-img" id="post-down"
+                            />
                         </div>
 
                         <div class="post-data">
@@ -94,16 +114,18 @@
                             </div>
 
                             <div class="post-content">
-                                <h5 th:text="${postData.getTitle()}"></h5>
+                                <h5 th:text="${postData.getTitle()}" class="post-title"></h5>
                                 <p th:if="${postData.getContent() != null}" th:text="${postData.getContent()}"></p>
                             </div>
 
                             <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
                                  th:remove="tag">
                                 <div th:each="media : ${postData.getMediaList()}" th:remove="tag">
-                                    <div class="post-media" th:if="${media.isVideo}">
+
+                                    <div class="post-media" th:if="${media.getIsVideo()}">
+
                                         <div class="video-container" style="--aspect-ratio: 2 / 3">
-                                            <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
+
                                             <video controls>
                                                 <source th:src="${media.getPathUrl()}" type="video/mp4"/>
                                                 Your browser does not support the video tag.
@@ -111,7 +133,8 @@
                                         </div>
                                     </div>
 
-                                    <div th:if="${!media.isVideo}" th:remove="tag">
+                                    <div th:if="${!media.getIsVideo()}" th:remove="tag">
+
 
                                         <div class="post-media">
                                             <div class="image-container" style="--aspect-ratio: 2 / 3">
@@ -126,7 +149,9 @@
                             <div class="post-options">
                                 <div class="post-comments">
                                     <img th:src="@{/images/comments.png}" alt="" class="comments-img"/>
-                                    <p>35 Comments</p>
+                                    <p th:if="${postData.getComments() != null}" th:text="${postData.getComments().size() + '  comments'}" style="margin-right: 10px">
+
+                                    </p>
                                 </div>
 
                                 <a href="">
@@ -151,7 +176,7 @@
                                 <p>Commenting as <a href="">sham_yash</a></p>
                                 </p>
                             </div>
-                            <form th:action="@{'/comment/' + ${postData.getPostId()} +'/add'}"
+                            <form th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()} +'/add'}"
                                   method="post"
                                   th:object="${commentDto}">
                                 <div class="comment-textarea">
@@ -183,15 +208,27 @@
                                     <div class="comment-conetent-data">
                                         <p th:text="${comment.getContent()}"></p>
                                     </div>
+
                                     <div class="comment-vote-div">
-                                        <a href=""
-                                        ><img th:src="@{/images/upvote.png}" alt="" class="upvote-img"
-                                        /></a>
-                                        <p class="comment-vote-nums">987</p>
-                                        <a href=""
-                                        ><img th:src="@{/images/downvote.png}" alt="" class="downvote-img"
-                                        /></a>
-                                        <p class="comment-vote-nums">567</p>
+                                        <form action="" th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()} + '/comment/' + ${comment.getCommentId()} + '/upvote'}"
+                                        method="post">
+                                            <input
+                                                    type="submit"
+                                                    name=""
+                                                    value="upvote"
+                                                    class="u-vote-form-btn"
+                                            />
+                                        </form>
+                                        <p class="comment-vote-nums" th:text="${comment.getUpVotes() - comment.getDownVotes()}"></p>
+                                        <form action="" th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()} + '/comment/' + ${comment.getCommentId()} + '/down-vote'}"
+                                        method="post">
+                                            <input
+                                                    type="submit"
+                                                    name=""
+                                                    value="downvote"
+                                                    class="d-vote-form-btn"
+                                            />
+                                        </form>
                                         <a href="" class="comment-reply-link"
                                         ><img th:src="@{/images/comments.png}" alt=""
                                               class="reply-img">Reply</a
@@ -206,13 +243,14 @@
 
                                         </div>
                                         <form action=""
-                                              th:action="@{'/comment/' + ${postData.getPostId()} +'/reply/'+ ${comment.getCommentId()}}"
-                                              method="post">
+                                              th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()}+ '/comments/' + ${postData.getPostId()} +'/reply/'+ ${comment.getCommentId()}}"
+                                              method="post" th:object="${commentDto}">
                                             <div class="comment-textarea">
                             <textarea
                                     name=""
                                     cols="55"
                                     rows="8"
+                                    th:field="*{comment}"
                             ></textarea>
                                             </div>
                                             <div class="comment-submmit">
@@ -241,19 +279,31 @@
                                         <div class="comment-conetent-data">
                                             <p th:text="${reply.getContent()}"></p>
                                         </div>
-
+                                                                                                                                                                        <!-- /{accountType}/{username}/{postId}/comment/{commentId}/upvote-reply/{replyId}-->
                                         <div class="comment-vote-div">
-                                            <a href=""
-                                            ><img th:src="@{/images/upvote.png}" alt="" class="upvote-img"
-                                            /></a>
-                                            <p class="comment-vote-nums">987</p>
-                                            <a href=""
-                                            ><img
-                                                    th:src="@{/images/downvote.png}"
-                                                    alt=""
-                                                    class="downvote-img"
-                                            /></a>
-                                            <p class="comment-vote-nums">567</p>
+                                            <form action=""
+                                                  th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()} + '/comment/' + ${comment.getCommentId()} + '/upvote-reply/' + ${reply.getReplyId()}}"
+                                                  method="post"
+                                            >
+                                                <input
+                                                        type="submit"
+                                                        name=""
+                                                        value="upvote"
+                                                        class="u-vote-form-btn"
+                                                />
+                                            </form>
+                                            <p class="comment-vote-nums" th:text="${reply.getUpVotes() - reply.getDownVotes()}"></p>
+                                            <form action=""
+                                                  th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()} + '/comment/' + ${comment.getCommentId()} + '/down-vote-reply/' + ${reply.getReplyId()}}"
+                                            method="post">
+                                                <input
+                                                        type="submit"
+                                                        name=""
+                                                        value="downvote"
+                                                        class="d-vote-form-btn"
+                                                />
+                                            </form>
+
                                         </div>
                                     </div>
                                 </div>

@@ -16,6 +16,7 @@ public class CommunityController {
     CommunityService communityService;
     @Autowired
     UserService userService;
+
     @GetMapping("/new-community")
     public String saveCommunity(@RequestParam("userId") Long userId, Model model){
         model.addAttribute("userId",userId);
@@ -60,8 +61,7 @@ public class CommunityController {
     @GetMapping("/community/addModerator")
     public String addMemberToModerator(@RequestParam("userId") Long userId ,
                                        @RequestParam("communityName") String communityName,
-                                       Model model)
-    {
+                                       Model model) {
 
         Community community = communityService.findCommunityByCommunityName(communityName);
         User user = userService.getUserByID(userId);
@@ -71,6 +71,7 @@ public class CommunityController {
         return "redirect:/users/r?communityName="+communityName;
 
     }
+
     @GetMapping("/community/removeModerator")
     public String removeMemberFromModerator(@RequestParam("userId") Long userId ,
                                             @RequestParam("communityName") String communityName,

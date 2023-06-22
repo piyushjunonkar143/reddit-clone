@@ -93,8 +93,7 @@ public class PostController {
             postService.post(title,images,url,content,userId,communityName,path);
         }
         User user=userService.getUserByID(userId);
-        User resultuser=userService.isUsernameAndPasswordCorrect(user.getUsername(), user.getPassword());
-        model.addAttribute("user",resultuser);
+        model.addAttribute("user",user);
         return "UserProfile";
     }
 

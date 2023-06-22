@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Reddit</title>
+    <title>Dashbord</title>
     <link rel="stylesheet" th:href="@{/css/home.css}"/>
+
 </head>
 <body>
 <main>
@@ -29,12 +30,42 @@
                 />
             </form>
         </div>
+        <div id="header-options">es
+            <a href="">
+                <img th:src="@{/images/popular.png}" alt="home" class=".header-options-img"/>
+            </a>
 
-        <div id="header-options">
-            <a href="/login" class="login">Login</a>
-            <a href="/newRegister" class="register">Register</a>
+            <a href="">
+                <img th:src="@{/images/notify.png}" alt="home"/>
+            </a>
+
+            <a href="">
+                <img th:src="@{/images/message.png}" alt="home"/>
+            </a>
+
+            <a href="">
+                <img th:src="@{/images/plus.png}" alt="home"/>
+            </a>
+        </div>
+
+        <div id="header-profile">
+            <div id="header-profile-pic">
+                <img th:src="@{/images/dp.png}" alt="picture"/>
+            </div>
+
+            <div id="header-profile-details">
+                <div id="username-div">
+                    <p>sham_yaswanth</p>
+                </div>
+
+                <div id="karma-div">
+                    <img th:src="@{/images/karma-star.png}" alt="star"/>
+                    <p>100786 karma</p>
+                </div>
+            </div>
         </div>
     </header>
+
     <article id="mainArticle">
         <div id="community-header"></div>
         <div id="posts-main">
@@ -44,7 +75,6 @@
                         <a href=""><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
                         <p th:text="${postData.getUpVotes() -  postData.getDownVotes()}"></p>
                         <a href=""
-
                         ><img th:src="@{images/downvote.png}" alt="" class="vote-img"
                         /></a>
                     </div>
@@ -132,6 +162,45 @@
 
     <nav id="mainNav">
         <div id="nav-section">
+            <div class="nav-heading"><p>YOUR COMMUNITIES</p></div>
+            <div class="nav-content-box">
+                <a href="#">
+                    <div class="content-element">
+                        <div class="content-img"><img src="plus.png" alt=""/></div>
+                        <div class="content-name"><p>Create Community</p></div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="content-element">
+                        <div class="content-img">
+                            <div class="nav-content-dp">
+                                <img src="dp.png" alt=""/>
+                            </div>
+                        </div>
+                        <div class="content-name"><p>r/Communityname</p></div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="content-element">
+                        <div class="content-img">
+                            <div class="nav-content-dp">
+                                <img src="dp.png" alt=""/>
+                            </div>
+                        </div>
+                        <div class="content-name"><p>r/Communityname</p></div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="content-element">
+                        <div class="content-img">
+                            <div class="nav-content-dp">
+                                <img src="dp.png" alt=""/>
+                            </div>
+                        </div>
+                        <div class="content-name"><p>r/Communityname</p></div>
+                    </div>
+                </a>
+            </div>
             <div class="nav-heading"><p>FEEDS</p></div>
 
             <div class="nav-content-box">
@@ -139,7 +208,7 @@
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/home.png}" alt="" />
+                                <img src="home.png" alt=""/>
                             </div>
                         </div>
                         <div class="content-name"><p>Home</p></div>
@@ -149,7 +218,7 @@
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/popular.png}" alt="" />
+                                <img src="popular.png" alt=""/>
                             </div>
                         </div>
                         <div class="content-name"><p>Popular</p></div>
@@ -159,60 +228,49 @@
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/all.png}" alt="" />
+                                <img src="all.png" alt=""/>
                             </div>
                         </div>
                         <div class="content-name"><p>All</p></div>
                     </div>
                 </a>
             </div>
-
-            <div class="nav-heading"><p>Topics</p></div>
+            <div class="nav-heading"><p>OTHERS</p></div>
             <div class="nav-content-box">
                 <a href="#">
                     <div class="content-element">
-                        <div class="content-img"><img th:src="@{images/games.png}" alt="" /></div>
-                        <div class="content-name"><p>Games</p></div>
+                        <div class="content-img"><img src="plus.png" alt=""/></div>
+                        <div class="content-name"><p>Create Post</p></div>
                     </div>
                 </a>
                 <a href="#">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/sports.png}" alt="" />
+                                <img src="dp.png" alt=""/>
                             </div>
                         </div>
-                        <div class="content-name"><p>Sports</p></div>
+                        <div class="content-name"><p>User Settings</p></div>
                     </div>
                 </a>
                 <a href="#">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/technology.png}" alt="" />
+                                <img src="avatar.png" alt=""/>
                             </div>
                         </div>
-                        <div class="content-name"><p>Technology</p></div>
+                        <div class="content-name"><p>Avatar</p></div>
                     </div>
                 </a>
                 <a href="#">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/bussiness.png}" alt="" />
+                                <img src="logout.png" alt=""/>
                             </div>
                         </div>
-                        <div class="content-name"><p>Bussiness</p></div>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="content-element">
-                        <div class="content-img">
-                            <div class="nav-content-dp">
-                                <img th:src="@{images/logout.png}" alt="" />
-                            </div>
-                        </div>
-                        <div class="content-name"><p>Login and Many more</p></div>
+                        <div class="content-name"><p>Logout</p></div>
                     </div>
                 </a>
             </div>

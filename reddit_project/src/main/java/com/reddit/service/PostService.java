@@ -229,11 +229,15 @@ public class PostService {
 
     public String splitCommunityName(String communityNames) {
         if (communityNames != null && !communityNames.isEmpty()) {
-            String[] name = communityNames.split(",");
-            if (name.length == 1) {
-                return name[0];
-            } else {
-                return name[1];
+            if(communityNames.length()==1){
+                return communityNames;
+            }else {
+                String[] name = communityNames.split(",");
+                if (name.length == 1) {
+                    return name[0];
+                } else {
+                    return name[1];
+                }
             }
         }
         return null;
