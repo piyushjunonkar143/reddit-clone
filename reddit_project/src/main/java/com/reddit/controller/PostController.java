@@ -2,10 +2,8 @@ package com.reddit.controller;
 
 import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
-import com.reddit.service.CommunityService;
-import com.reddit.service.DraftService;
-import com.reddit.service.FileService;
-import com.reddit.service.PostService;
+import com.reddit.entity.User;
+import com.reddit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -35,6 +33,8 @@ public class PostController {
     DraftService draftService;
     @Autowired
     CommunityService communityService;
+    @Autowired
+    UserService userService;
 
     @Value("${project.image}")
     private String path;
@@ -92,7 +92,10 @@ public class PostController {
         } else{
             postService.post(title,images,url,content,userId,communityName,path);
         }
-        return "file-response";
+        User user=userService.getUserByID(userId);
+        User resultuser=userService.isUsernameAndPasswordCorrect(user.getUsername(), user.getPassword());
+        model.addAttribute("user",resultuser);
+        return "UserProfile";
     }
 
     //yashavant

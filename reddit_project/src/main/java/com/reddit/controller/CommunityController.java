@@ -35,6 +35,9 @@ public class CommunityController {
 
         Community savedCommunity=communityService.saveNewCommunity(userId,community,communityType);
         model.addAttribute("community",savedCommunity);
+        User owner =community.getOwnerId();
+        model.addAttribute("user",owner);
+        model.addAttribute("userId",owner.getUserId());
         return "community";
     }
 
