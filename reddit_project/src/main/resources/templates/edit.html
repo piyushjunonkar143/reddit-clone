@@ -151,16 +151,16 @@
       img {
         height: 60px;
       }
-      .postsection {
-        width: 165px;
+    .postsection {
+        width: 193px;
         justify-content: center;
       }
       .imagesection {
-        width: 232px;
+        width: 269px;
         justify-content: center;
       }
       .Link {
-        width: 130px;
+        width: 257px;
         justify-content: center;
       }
       .poll {
@@ -464,6 +464,7 @@
   </div>
 </div>
 <form th:action="@{/save-post}" method="post">
+  <input type="hidden" th:value="${userId}" name="userId">
   <div id="communitydropdown">
     <div class="profile">
       <h6>Your Profile</h6>
@@ -498,10 +499,6 @@
       <div class="Link" onclick="linkpage(event)">
         <img width="50px" src="https://cdn3.iconfinder.com/data/icons/streamline-icon-set-free-pack/48/Streamline-67-256.png"/>
         <h3>Link</h3>
-      </div>
-      <div class="poll" onclick="pollpage(event)">
-        <img width="50px" src="https://cdn3.iconfinder.com/data/icons/ui-ux-web-application-simplicon-set/102/list-items-64.png"/>
-        <h3>Poll</h3>
       </div>
     </div>
     <div class="title">
@@ -538,21 +535,6 @@
         <div class="linksave">
           <input class="draft" type="submit"  name="update draft" value="update Draft" />
           <input class="save" name="post-draft" type="submit" value="Post" />
-        </div>
-      </div>
-    </div>
-
-    <div class="pollbody" id="poll">
-      <div class="textarea">
-          <textarea
-                  class="polltextarea" name="poll"
-                  placeholder="Text(optional)"
-          ></textarea>
-        <div class="buttons">
-          <div class="pollsave">
-            <input class="draft" name="cancel" type="submit" value="Cancel" />
-            <input class="save" type="submit" value="Post" />
-          </div>
         </div>
       </div>
     </div>

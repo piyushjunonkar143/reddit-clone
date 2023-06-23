@@ -426,8 +426,7 @@ article {
     /* border: 2px solid salmon; */
 }
 .post-title{
-    font-size: 2rem;
-
+    font-size: 1rem;
     margin-bottom: 1rem;
 }
 .post-title-content{

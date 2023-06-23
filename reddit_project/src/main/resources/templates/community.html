@@ -7,12 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Dashbord</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <style>
+        .header-profile {
+        width: 172px;
+    height: 54px;
+    display: flex;
+    padding-top: 3px;
+}
+.create-new-post-button{
+    border-radius: 30px;
+    width: 134px;
+    height: 46px;
+    margin-top: 10px;
+    background-color: #7baae5;
+}
+.search-create-new-post-button{
+    width: 781px;
+    height: 86px;
+    margin-bottom: 10px;
+}
+    </style>
 </head>
 <body>
 <main>
     <header id="pageHeader">
         <div id="header-logo">
-            <a href="">
+            <a href="/">
                 <img th:src="@{/images/Reddit-logo.png}" alt="logo" class="header-img"/>
             </a>
         </div>
@@ -40,8 +60,10 @@
                 <img th:src="@{/images/plus.png}" alt="home"/>
             </a>
         </div>
-
-        <div id="header-profile">
+        <form th:action="@{/view-profile}">
+            <input type="hidden" name="userId" th:value="${userId}">
+        <button style="border: none;">
+        <div class="header-profile">
             <div id="header-profile-pic">
                 <img th:src="@{/images/dp.png}" alt="picture"/>
             </div>
@@ -58,8 +80,11 @@
                         <span>karma</span>
                     </p>
                 </div>
+
             </div>
         </div>
+        </button>
+        </form>
     </header>
 
     <article id="mainArticle">
@@ -95,7 +120,9 @@
         <div id="posts-main">
             <div id="posts-div">
                 <!-- NEW POST UPLOAD DIV -->
-
+                <form th:action="@{/new-post}">
+                    <input type="hidden" name="userId" th:value="${userId}">
+                    <button class="search-create-new-post-button">
                 <div id="upload-div">
                     <div id="dp-input-box">
                         <a href="">
@@ -118,6 +145,8 @@
                         </a>
                     </div>
                 </div>
+                 </button>
+                </form>
                 <!-- NEW POST DIV END -->
 
                 <!-- General Media post's start -->
@@ -263,9 +292,14 @@
                         <h4>Total Members :
                             <span th:text="${community.communityMembers != null ? community.communityMembers.size() + 1 : 1}" ></span></h4>
                     </div>
-                    <div id="nav-create-post">
-                        <a href="">Create Post</a>
-                    </div>
+                    <form th:action="@{/new-post}">
+                        <input type="hidden" name="userId" th:value="${userId}">
+                        <button class="create-new-post-button">
+
+                        Create Post
+
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Moderators List -->

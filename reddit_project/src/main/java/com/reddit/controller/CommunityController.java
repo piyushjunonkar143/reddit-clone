@@ -48,6 +48,7 @@ public class CommunityController {
         model.addAttribute("community",community);
         User owner =community.getOwnerId();
         model.addAttribute("user",owner);
+        model.addAttribute("userId",owner.getUserId());
         return "community";
     }
 

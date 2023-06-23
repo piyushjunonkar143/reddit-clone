@@ -159,4 +159,10 @@ public class UserController {
         model.addAttribute("user",user);
         return "UserProfile";
     }
+    @GetMapping("/view-profile")
+    public String profileView(@RequestParam("userId") Long userId,Model model){
+        User user=userService.getUserByID(userId);
+        model.addAttribute("user",user);
+        return "UserProfile";
+    }
 }

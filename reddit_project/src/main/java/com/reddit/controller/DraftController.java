@@ -45,6 +45,7 @@ public class DraftController {
         model.addAttribute("communityList",communityService.findAllCommunities());
         List<Draft> draftPosts = draftService.findAllDraftedPosts();
         model.addAttribute("draftedPosts",draftPosts.size());
+        model.addAttribute("userId",draft.getUser().getUserId());
         return "edit";
     }
     @GetMapping("/update/draft")

@@ -6,19 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Reddit</title>
     <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <style>
+        .post-title{
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+    </style>
 </head>
 <body>
 <main>
     <header id="pageHeader">
         <div id="header-logo">
-            <a href="">
+            <a href="/">
                 <img th:src="@{/images/Reddit-logo.png}" alt="logo" class="header-img"/>
             </a>
         </div>
         <div id="home-nav">
             <img th:src="@{/images/home.png}" alt="home" class="header-img"/>
             <h4 class="header-text">Home</h4>
-        </div>
+       </div>
         <div id="home-search">
             <form action="/search/">
                 <input
@@ -80,7 +86,7 @@
 
                                 <div class="post-media" th:if="${media.getIsVideo()}">
                                     <div class="video-container" style="--aspect-ratio: 2 / 3">
-                                        <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
+                                        <!--           <iframe th:src="${media.getPathUrl()}"></iframe>-->
                                         <video controls>
                                             <source th:src="${media.getPathUrl()}" type="video/mp4"/>
                                             Your browser does not support the video tag.
@@ -126,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div id="posts-nav-div"></div>
+<!--            <div id="posts-nav-div"></div>-->
         </div>
     </article>
 
@@ -135,7 +141,7 @@
             <div class="nav-heading"><p>FEEDS</p></div>
 
             <div class="nav-content-box">
-                <a href="#">
+                <a href="/">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
@@ -205,7 +211,7 @@
                         <div class="content-name"><p>Bussiness</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a href="/login">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">

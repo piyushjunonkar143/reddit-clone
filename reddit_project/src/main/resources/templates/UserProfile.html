@@ -130,7 +130,7 @@ body{
     }
     img.avatar{
     position: relative;
-    margin-left: 125px;
+    margin-left: 137px;
     margin-top: -74px;
     width: 104px;
       }
@@ -221,11 +221,11 @@ body{
   }
 
   .community {
-    background-color: #fff;
+        background-color: #9ec5d7;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 36px;
   }
   .owned-community-container{
      background-color: #fff;
@@ -234,6 +234,7 @@ body{
     border: 2px solid #ccbfbf;
     border-radius: 4px;
     margin-right: 22px;
+    text-align: center;
   }
 
   .community p {
@@ -275,11 +276,148 @@ body{
     margin-bottom: 2rem;
     padding-left: 85px;
 }
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 7.5rem;
+}
+
+.logo {
+  margin-right: 10px; /* Adjust margin as needed */
+}
+
+.search-bar {
+    height: 39px;
+    margin-right: 269px;
+    margin-left: -234px;
+    margin-top: 32px;
+    background-color: #f7dbd1;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  width: 145px;
+      margin-left: -477px;
+}
+
+.user-profile form {
+  margin: 0;
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+}
+
+.header-profile-pic {
+  idth: 58px;
+    background-color: #ebeced;
+    border-radius: 90%;
+    margin-left: 1.2rem;
+    margin-right: 0.8rem;
+}
+
+.username-div {
+  margin-right: 10px; /* Adjust margin as needed */
+}
+#karma-div img {
+        height: 35%;
+    width: 16px;
+    margin-left: 2px;
+}
+.profile-name {
+    position: relative;
+    font-weight: bold;
+        top: 8px;
+    left: 153px;
+}
+.search{
+   margin-right: 318px;
+    margin-right: -227px
+}
+ .post-title{
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+.logout-button {
+          position: relative;
+    left: -413px;
+    top: 43px;
+    background-color: #ff000085;
+    border-radius: 23px;
+    padding: 14px 25px;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+}
+.refresh{
+    border-radius: 16px;
+    margin-top: 16px;
+    position: relative;
+    margin-left: -290px;
+    width: 75px;
+    height: 31px;
+    background-color: #ff00005e;
+}
+
   </style>
 </head>
 <body>
-<div class="user_profile">
+<header calss="head">
+    <div class="logo">
+        <a href="/">
+            <img th:src="@{/images/Reddit-logo.png}" alt="logo" class="header-img" width="122" height="100"/>
+        </a>
+    </div>
+    <div class="search">
+        <form action="/search/" >
+            <input
+                    name="q"
+                    type="search"
+                    class="search-bar"
+                    placeholder="Search Reddit"
+            />
+        </form>
+    </div>
+    <div>
+        <a href="/" class="logout-button">Logout</a>
+        <form th:action="@{/view-profile}">
+            <input type="hidden" name="userId" th:value="${user.userId}">
+            <button class="refresh">
+               Refresh
+            </button>
+        </form>
+    </div>
+<!--    <div class="user-profile">-->
+<!--        <form th:action="@{/view-profile}">-->
+<!--            <input type="hidden" name="userId" th:value="${userId}">-->
+<!--            <button style="border: none;">-->
+<!--                <div class="header-profile">-->
+<!--                    <div id="header-profile-pic">-->
+<!--                        <img th:src="@{/images/dp.png}" alt="picture" width="80" height="80" />-->
+<!--                    </div>-->
 
+<!--                    <div id="header-profile-details">-->
+<!--                        <div id="username-div">-->
+<!--                            <p class="profile-name"><span id="user-name" th:text="${user.username}"></span></p>-->
+<!--                        </div>-->
+
+<!--                        <div id="karma-div">-->
+<!--                            <img class="star" th:src="@{/images/karma-star.png}" alt="star"/>-->
+<!--                            <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>-->
+<!--                                <span>karma</span>-->
+<!--                            </p>-->
+<!--                        </div>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </button>-->
+<!--        </form>-->
+<!--    </div>-->
+</header>
+<div class="user_profile">
   <div class="container1">
     <div class="profile">
       <div class="profile-picture">
@@ -305,16 +443,25 @@ body{
 
     <div class="profile-details">
       <h3 class="profile-name"><span id="name" th:text="${user.username}"></span></h3>
-      <div class="profile-description"><span id="displayName" th:text="${user.displayName}"></span></div><br>
+      <div class="profile-description"><span id="displayName" th:text="'u/'+${user.displayName}"></span></div><br>
       <div class="button1"><button class="round-button1">Create Avatar &rarr;</button></div>
       <div class="karma_dob">
-        <div class="karma_points">
-          <h4>Karma</h4>
-          <p><span id="karma" th:text="${user.karma}"></span></p>
-        </div>
+<!--        <div class="karma_points">-->
+<!--          <h4>Karma</h4>-->
+<!--          <p><span id="karma" th:text="${user.karma}"></span></p>-->
+<!--        </div>-->
+
+          <div class="karma_points">
+              <img th:src="@{/images/karma-star.png}" alt="star"/>
+              <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>
+                  <span>karma</span>
+              </p>
+          </div>
+
+
         <div class="dob">
           <h4>Cake Day</h4>
-          <p>June 16, 2023</p>
+            <span th:text="${#dates.format(user.createdAt,'dd-MMMM-yyyy')}"></span>
         </div>
       </div><br>
       <form th:action="@{/new-post}">
@@ -339,7 +486,7 @@ body{
         </div>
         <br><br>
         <div class="community_moderator-container">
-          <h2>moderator Details</h2>
+          <h2>Moderator Details</h2>
           <div th:if="${user.communityModerators.empty}">
             <p>No Community found.</p>
           </div>
@@ -351,13 +498,13 @@ body{
         </div>
         <br><br><br>
         <div class="owned-community-container">
-            <h2>owned-community</h2>
+            <h2>Owned Community</h2>
             <div th:if="${user.ownedCommunities.empty}">
                 <p>No Community found.</p>
             </div>
             <a th:each="community : ${user.ownedCommunities}" >
                 <div class="community" th:if="${not user.ownedCommunities.empty}">
-                    <p><strong>Community Name:</strong> <a th:href="@{'/view-community/' + ${community.communityName}}"><span th:text="${community.communityName}"></span></a></p>
+                    <p><a th:href="@{'/view-community/' + ${community.communityName}}"><span th:text="'r/'+${community.communityName}"></span></a></p>
                 </div>
             </a>
         </div>
@@ -385,7 +532,7 @@ body{
                             <!--                        <h th:text="${'u/' + postData.getUser().getUsername()}"></h>-->
                             <!--                    </a>-->
 
-                            <p style="margin:0px 5px">. posted by</p>
+                            <p style="margin:0px 5px">posted by</p>
                             <a href="" class="post-c-name">
                                 <h4 th:text="${'u/' + user.getUsername()}"></h4>
                             </a>

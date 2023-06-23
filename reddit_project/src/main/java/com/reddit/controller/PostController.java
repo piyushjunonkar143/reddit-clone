@@ -80,7 +80,6 @@ public class PostController {
         } else if (postDraft != null && postDraft.equals("Post")) {
             postService.saveDraftedPost(title, content, draftId, url,1L,communityName);
             draftService.deleteDraftById(draftId);
-            return "file-response";
         } else if (draftId != null) {
             draftController.updateDraft(draftId, title, content,1l);
             return "redirect:/draft";

@@ -52,6 +52,7 @@ public class PostService {
         }
         post.setUrl(url);
         post.setIsPublished(true);
+        post.setUser(user);
         post.setUpVotes(0L);
         post.setDownVotes(0L);
         Post savePost = postRepository.save(post);
