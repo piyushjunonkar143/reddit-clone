@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,4 +29,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("SELECT p FROM Post p  WHERE " +
             "(p.title ILIKE %:word%) OR (p.content ILIKE %:word%)")
     Page<Post> findPostsBySearchOrderByPublishedAt(@Param("word") String keyword,Pageable pageable);
+
+    @Query("SELECT DISTINCT p FROM Post p JOIN p.community c WHERE " +
+            "(c.communityId in (:ids)) OR (c.isPrivate = FALSE AND c.isRestrict = FALSE)")
+    Page<Post> findLoggedInUserPostsOrderByPublishedAt(@Param("ids") List<Long> communityIds,Pageable pageable);
 }

@@ -5,6 +5,7 @@ import com.reddit.entity.Community;
 import com.reddit.entity.User;
 import com.reddit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,9 +15,14 @@ import java.util.Set;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder encoder;
      public void saveUser(User user){
          String displayName=user.getUsername().replaceAll(" ", "_");
          user.setDisplayName(displayName);
+         user.setRoles("user");
+         user.setKarma(1L);
+         user.setPassword(encoder.encode(user.getPassword()));
          userRepository.save(user);
      }
 
@@ -53,5 +59,9 @@ public class UserService {
         moderatedCommunities.remove(community);
         user.setCommunityModerators(moderatedCommunities);
         userRepository.save(user);
+    }
+
+    public User getByUsername(String name) {
+        return userRepository.findByUsername(name);
     }
 }

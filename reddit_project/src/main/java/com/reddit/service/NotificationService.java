@@ -20,36 +20,40 @@ public class NotificationService {
     @Autowired
     PostRepository postRepository;
 
-    public void saveUpvoteNotification(Long postId, long userId) {
+    public void saveUpvoteNotification(Long postId, User user) {
         Notification notification = new Notification();
         Long ownerId = postRepository.findById(postId).get().getUser().getUserId();
-        User user = userRepository.findById(ownerId).get();
+        Long userId = user.getUserId();
         List<Notification> userNotifications = new ArrayList<>();
         String username = userRepository.findById(userId).get().getUsername();
         String message = username + " " + "upVoted" + "your post";
-        notification.setNotificationMessage(message);
-        notification.setUser(userRepository.findById(ownerId).get());
-        userNotifications.add(notificationRepository.save(notification));
-        user.setNotifications(userNotifications);
-        userRepository.save(user);
+        if(userId!=ownerId) {
+            notification.setNotificationMessage(message);
+            notification.setUser(userRepository.findById(ownerId).get());
+            userNotifications.add(notificationRepository.save(notification));
+            user.setNotifications(userNotifications);
+            userRepository.save(user);
+        }
     }
 
     public List<Notification> findAllNotifications() {
         return notificationRepository.findAll();
     }
 
-    public void saveDownVoteNotification(Long postId, long userId) {
+    public void saveDownVoteNotification(Long postId, User user) {
         Notification notification = new Notification();
         Long ownerId = postRepository.findById(postId).get().getUser().getUserId();
-        User user = userRepository.findById(ownerId).get();
+        Long userId = user.getUserId();
         List<Notification> userNotifications = new ArrayList<>();
         String username = userRepository.findById(userId).get().getUsername();
         String message = username + " " + "downVoted" + "your post";
-        notification.setNotificationMessage(message);
-        notification.setUser(userRepository.findById(ownerId).get());
-        userNotifications.add(notificationRepository.save(notification));
-        user.setNotifications(userNotifications);
-        userRepository.save(user);
+        if(userId!=ownerId) {
+            notification.setNotificationMessage(message);
+            notification.setUser(userRepository.findById(ownerId).get());
+            userNotifications.add(notificationRepository.save(notification));
+            user.setNotifications(userNotifications);
+            userRepository.save(user);
+        }
     }
 
     public void deleteByPostId(Long notificationId) {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,8 +24,9 @@ public class CommunityService {
     @Autowired
     UserRepository userRepository;
 
-    public Community saveNewCommunity(Long userId, Community community, String radio) {
+    public Community saveNewCommunity(Principal principal, Community community, String radio) {
         community.setCommunityName(community.getCommunityName().replaceAll(" ",""));
+        Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         Set<Community> ownedCommunities = new HashSet<>();
         User user=userService.getUserByID(userId);
         community.setOwnerId(user);
@@ -40,9 +42,12 @@ public class CommunityService {
             community.setIsPrivate(false);
             community.setIsRestrict(false);
         }
+        Set<User> userSet = new HashSet<>();
+        userSet.add(user);
+        community.setCommunityMembers(userSet);
+        community.setCommunityModerators(userSet);
         Community community1 = communityRepository.save(community);
         ownedCommunities.add(community1);
-        System.out.println(ownedCommunities.size());
         user.setOwnedCommunities(ownedCommunities);
         userRepository.save(user);
         return community1;
@@ -93,5 +98,10 @@ public class CommunityService {
             members.add(user);
             communityRepository.save(community);
         }
+    }
+
+    public void addSettingsOfCommunity(Community community, String about) {
+        community.setAbout(about);
+        communityRepository.save(community);
     }
 }

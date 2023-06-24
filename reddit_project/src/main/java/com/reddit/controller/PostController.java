@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +56,8 @@ public class PostController {
     }
 
     @PostMapping("/save-post")
-    public String fileUpload(@RequestParam(value = "userId", required = false) Long userId,
+    public String fileUpload(Principal principal,
+                             @RequestParam(value = "userId", required = false) Long userId,
                              @RequestParam(value = "communityName", required = false) String communityName,
                              @RequestParam(value = "link draft", required = false) String linkDraft,
                              @RequestParam(value = "post-draft", required = false) String postDraft,
@@ -72,24 +74,24 @@ public class PostController {
         if (cancelButton != null && (!cancelButton.isEmpty())) {
             return "redirect:/new-post";
         } else if (updateDraftLink != null && updateDraftLink.equals("update Draft")) {
-            draftService.updateDraftLink(title, url, draftId,1L);
+            draftService.updateDraftLink(title, url, draftId,principal);
             return "redirect:/draft";
         } else if (linkDraft != null && linkDraft.equals("save Draft")) {
-            draftService.draftPostUrl(title, url, userId);
+            draftService.draftPostUrl(title, url, principal);
             return "redirect:/draft";
         } else if (postDraft != null && postDraft.equals("Post")) {
-            postService.saveDraftedPost(title, content, draftId, url,1L,communityName);
+            postService.saveDraftedPost(title, content, draftId, url,principal,communityName);
             draftService.deleteDraftById(draftId);
         } else if (draftId != null) {
-            draftController.updateDraft(draftId, title, content,1l);
+            draftController.updateDraft(draftId, title, content,principal);
             return "redirect:/draft";
         } else if (draft != null && !draft.isEmpty()) {
-            draftController.saveDraftPost(title, content, model,1L);
+            draftController.saveDraftPost(title, content, model,principal);
             List<Draft> draftPosts = draftService.findAllDraftedPosts();
             model.addAttribute("draftedPosts", draftPosts);
             return "draft";
         } else{
-            postService.post(title,images,url,content,userId,communityName,path);
+            postService.post(title,images,url,content,principal,communityName,path);
         }
         User user=userService.getUserByID(userId);
         model.addAttribute("user",user);
@@ -110,8 +112,11 @@ public class PostController {
     public String viewPost(@PathVariable Long postId,
                            @PathVariable String typeOfAccount,
                            @PathVariable String username,
+                           Principal principal,
                            Model model) {
         System.out.println(username);
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("user",user);
         model.addAttribute("postData", postService.getPostByType(typeOfAccount, username, postId));
         model.addAttribute("commentDto", new CommentDto());
         return "view-post";

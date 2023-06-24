@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 
 @Service
@@ -30,13 +31,9 @@ public class PostService {
     @Autowired
     FileService fileService;
 
-    public void savePostUrl(String title, String url, Long userId, String communityName) {
-        String name = "";
-        if ((!communityName.trim().equals(","))) {
-            name = splitCommunityName(communityName);
-        } else {
-            name = communityName;
-        }
+    public void savePostUrl(String title, String url, Principal principal, String communityName) {
+        String name = splitCommunityName(communityName);
+        Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         Community community = null;
         User user = userService.getUserByID(userId);
         Set<Post> userPosts = new HashSet<>();
@@ -51,8 +48,8 @@ public class PostService {
             post.setIsCommunity(false);
         }
         post.setUrl(url);
-        post.setIsPublished(true);
         post.setUser(user);
+        post.setIsPublished(true);
         post.setUpVotes(0L);
         post.setDownVotes(0L);
         Post savePost = postRepository.save(post);
@@ -64,17 +61,11 @@ public class PostService {
             community.setCommunityPosts(communityPosts);
             communityRepository.save(community);
         }
-        user.setUserPosts(userPosts);
-        userRepository.save(user);
     }
 
-    public void savePostContent(String title, String content, Long userId, String communityName) {
-        String name = "";
-        if ((!communityName.trim().equals(","))) {
-            name = splitCommunityName(communityName);
-        } else {
-            name = communityName;
-        }
+    public void savePostContent(String title, String content, Principal principal, String communityName) {
+        String name = splitCommunityName(communityName);
+        Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         User user = userService.getUserByID(userId);
         Community community = null;
         Set<Post> userPosts = new HashSet<>();
@@ -106,8 +97,9 @@ public class PostService {
         userRepository.save(user);
     }
 
-    public void saveMedia(String title, List<Media> savedMediaList, Long userId, String communityName) {
+    public void saveMedia(String title, List<Media> savedMediaList, Principal principal, String communityName) {
         String name = splitCommunityName(communityName);
+        Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         User user = userService.getUserByID(userId);
         Community community = null;
         Set<Post> userPosts = new HashSet<>();
@@ -139,8 +131,9 @@ public class PostService {
         userRepository.save(user);
     }
 
-    public void savePost(String title, List<Media> savedMediaList, String url, String content, Long userId, String communityName) {
+    public void savePost(String title, List<Media> savedMediaList, String url, String content, Principal principal, String communityName) {
         String name = splitCommunityName(communityName);
+        Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         User user = userService.getUserByID(userId);
         Community community = null;
         Set<Post> userPosts = new HashSet<>();
@@ -159,10 +152,8 @@ public class PostService {
         post.setUser(user);
         post.setMediaList(savedMediaList);
         post.setIsPublished(true);
-
         post.setUpVotes(0L);
         post.setDownVotes(0L);
-
         Post savePost = postRepository.save(post);
         userPosts.add(savePost);
         user.setUserPosts(userPosts);
@@ -176,8 +167,9 @@ public class PostService {
         userRepository.save(user);
     }
 
-    public void saveDraftedPost(String title, String content, UUID draftId, String url, Long userId, String communityName) {
+    public void saveDraftedPost(String title, String content, UUID draftId, String url, Principal principal, String communityName) {
         String name = splitCommunityName(communityName);
+        Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         User user = userService.getUserByID(userId);
         Community community = null;
         Post post = new Post();
@@ -245,18 +237,18 @@ public class PostService {
 
     }
 
-    public void post(String title, List<MultipartFile> images, String url, String content, Long userId, String communityName, String path) throws IOException {
+    public void post(String title, List<MultipartFile> images, String url, String content, Principal principal, String communityName, String path) throws IOException {
         if ((images != null && (!images.isEmpty())) && (url != null && (!url.isEmpty())) && (content != null
                 && (!content.isEmpty()))) {
             List<Media> savedMediaList = fileService.uploadImage(path, images);
-            savePost(title, savedMediaList, url, content, 1L, communityName);
+            savePost(title, savedMediaList, url, content, principal, communityName);
         } else if (url != null && (!url.isEmpty())) {
-            savePostUrl(title, url, 1L, communityName);
+            savePostUrl(title, url, principal, communityName);
         } else if (content != null && (!content.isEmpty())) {
-            savePostContent(title, content, 1L, communityName);
+            savePostContent(title, content, principal, communityName);
         } else if (images != null && (!images.isEmpty())) {
             List<Media> savedMediaList = fileService.uploadImage(path, images);
-            saveMedia(title, savedMediaList, 1L, communityName);
+            saveMedia(title, savedMediaList, principal, communityName);
         }
     }
 }
