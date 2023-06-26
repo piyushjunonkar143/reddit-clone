@@ -9,6 +9,7 @@ import com.reddit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -120,7 +121,7 @@ public class PostController {
                            Model model, Principal principal) {
         model.addAttribute("postData", postService.getPostByType(typeOfAccount, username, postId));
         model.addAttribute("commentDto", new CommentDto());
-        if(principal != null) {
+        if (principal != null) {
             model.addAttribute("loggedUserData", userRepository.findByUsernameIgnoreCase(principal.getName()).get());
         }
         return "view-post";
@@ -128,39 +129,30 @@ public class PostController {
 
 
     @GetMapping("/saved-posts")
-    public String savedPosts(@RequestParam(value = "postId",required = false)Long postId,Principal principal,Model model){
-        List<Post> savedPostList = postService.savedPosts(postId,principal);
+    public String savedPosts(@RequestParam(value = "postId", required = false) Long postId, Principal principal, Model model) {
+        List<Post> savedPostList = postService.savedPosts(postId, principal);
         return "redirect:/view-saved-posts";
     }
 
     @GetMapping("/view-saved-posts")
-    public String viewSavedPosts(Model model,Principal principal){
+    public String viewSavedPosts(Model model, Principal principal) {
         User user = userService.getByUsername(principal.getName());
-        model.addAttribute("savedPosts",user.getSavedPosts());
+        model.addAttribute("savedPosts", user.getSavedPosts());
         return "saved-posts";
     }
 
     @GetMapping("/t/{categoryName}")
-    public String postByCategory(@PathVariable String categoryName,Model model ){
-        if(categoryName.equals("sports")){
-            List<Post> sportsPosts = postService.findPostsByCategory("Sports");
-            model.addAttribute("allPosts",sportsPosts);
-            return "home-world";
-        } else if (categoryName.equals("gaming")) {
-            List<Post> gamingPosts = postService.findPostsByCategory("Gaming");
-            model.addAttribute("allPosts",gamingPosts);
-            return "home-world";
-        } else if (categoryName.equals("business")) {
-            List<Post> businessPosts = postService.findPostsByCategory("Business");
-            model.addAttribute("allPosts",businessPosts);
-            return "home-world";
-        } else if (categoryName.equals("technology")) {
-            List<Post> technologyPosts = postService.findPostsByCategory("Technology");
-            model.addAttribute("allPosts",technologyPosts);
-            return "home-world";
-        }
-        List<Post> otherPosts = postService.findPostsByCategory("Others");
-        model.addAttribute("allPosts",otherPosts);
+    public String postByCategory(@RequestParam(value = "page", defaultValue = "1") int page,
+                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                 @PathVariable String categoryName, Model model) {
+
+        Page<Post> pagePosts = postService.findPostsByCategory(page, size, categoryName);
+        model.addAttribute("category", categoryName);
+        model.addAttribute("feedType",null);
+        model.addAttribute("allPosts",pagePosts.getContent());
+        model.addAttribute("totalPagesCount",pagePosts.getTotalPages());
+        model.addAttribute("page",page);
+        model.addAttribute("size",size);
         return "home-world";
     }
 }

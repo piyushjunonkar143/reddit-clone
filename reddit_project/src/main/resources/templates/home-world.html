@@ -181,11 +181,11 @@
                 <div class="page-btns">
                     <a href=""
                        th:if="${page > 1}"
-                       th:href="@{'/' + ${feedType != null ? 'feed/' + feedType + '?page=' : 'home?page='} + ${page - 1} +'&size=' + ${size}}"
+                       th:href="@{'/' + ${feedType != null ? 'feed/' + feedType + '?' : ''} + ${category != null ? 't/' + category + '?' : ''} + ${feedType == null && category == null ? 'home?' : ''} +'page=' + ${page - 1} + '&size=' + ${size}}"
                        class="page-btn prev">&lt; &lt; Previous</a>
                     <a href=""
                        th:if="${page <= totalPagesCount - 1}"
-                       th:href="@{'/' + ${feedType != null ? 'feed/' + feedType + '?page=' : 'home?page='} + ${page + 1} +'&size=' + ${size}}"
+                       th:href="@{'/' + ${feedType != null ? 'feed/' + feedType + '?' : ''} + ${category != null ? 't/' + category + '?' : ''} + ${feedType == null && category == null ? 'home?' : ''} +  'page=' + ${page + 1} + '&size=' + ${size}}"
                        class="page-btn next">Next &gt; &gt;</a>
                 </div>
             </div>

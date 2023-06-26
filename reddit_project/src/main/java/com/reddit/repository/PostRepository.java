@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post,Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p JOIN p.community c WHERE c.communityName ILIKE :name AND p.postId = :postId")
     Optional<Post> findPostsByCommunityName(@Param("name") String communityName,
                                             @Param("postId") Long postId);
@@ -30,18 +30,18 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query("SELECT p FROM Post p  WHERE " +
             "(p.title ILIKE %:word%) OR (p.content ILIKE %:word%)")
-    Page<Post> findPostsBySearchOrderByPublishedAt(@Param("word") String keyword,Pageable pageable);
+    Page<Post> findPostsBySearchOrderByPublishedAt(@Param("word") String keyword, Pageable pageable);
 
     @Query("SELECT DISTINCT p FROM Post p JOIN p.community c WHERE " +
             "(c.communityId in (:ids)) OR (c.isPrivate = FALSE AND c.isRestrict = FALSE)")
-    Page<Post> findLoggedInUserPostsOrderByPublishedAt(@Param("ids") List<Long> communityIds,Pageable pageable);
+    Page<Post> findLoggedInUserPostsOrderByPublishedAt(@Param("ids") List<Long> communityIds, Pageable pageable);
 
     @Query("SELECT p FROM Post p JOIN p.community c WHERE c.communityName ILIKE :name ")
-    Page<Post> findCommunityPostsOrderByPublishedAt(@Param("name") String communityName,Pageable page);
+    Page<Post> findCommunityPostsOrderByPublishedAt(@Param("name") String communityName, Pageable page);
 
     @Query("SELECT p FROM Post  p ORDER BY  p.upVotes DESC")
     Page<Post> getPostByPopularity(Pageable page);
 
-    @Query("SELECT p FROM Post p WHERE p.community.categoryName = :categoryName")
-    List<Post> findPostsByCategory(String categoryName);
+    @Query("SELECT p FROM Post p WHERE p.community.categoryName ILIKE :categoryName")
+    Page<Post> findPostsByCategory(String categoryName, Pageable page);
 }

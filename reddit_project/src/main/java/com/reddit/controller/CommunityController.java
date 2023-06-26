@@ -162,11 +162,12 @@ public class CommunityController {
     @GetMapping("/add-settings")
     public String addSettingsCommunity(@RequestParam(name = "about" , required = false) String about,
                                        @RequestParam("communityName") String communityName,
+                                       @RequestParam("communityCategory") String communityCategory,
                                        @RequestParam("owner") Long userId, Model model){
 
         Community community = communityService.findCommunityByCommunityName(communityName);
         User user = userService.getUserByID(userId);
-        communityService.addSettingsOfCommunity(community,about);
+        communityService.addSettingsOfCommunity(community,about,communityCategory);
         return "redirect:/view-community/"+communityName;
     }
 }

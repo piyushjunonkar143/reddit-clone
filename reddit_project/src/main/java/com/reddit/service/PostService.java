@@ -8,8 +8,13 @@ import com.reddit.repository.CommunityRepository;
 import com.reddit.repository.PostRepository;
 import com.reddit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -222,9 +227,9 @@ public class PostService {
 
     public String splitCommunityName(String communityNames) {
         if (communityNames != null && !communityNames.isEmpty()) {
-            if(communityNames.length()==1){
+            if (communityNames.length() == 1) {
                 return communityNames;
-            }else {
+            } else {
                 String[] name = communityNames.split(",");
                 if (name.length == 1) {
                     return name[0];
@@ -257,10 +262,10 @@ public class PostService {
         Post post = postRepository.findById(postId).get();
         List<Post> userSavedPosts = user.getSavedPosts();
         List<User> postSavedByUser = post.getSavedByUsers();
-        if(!userSavedPosts.contains(post)) {
+        if (!userSavedPosts.contains(post)) {
             userSavedPosts.add(post);
         }
-        if(!postSavedByUser.contains(user)) {
+        if (!postSavedByUser.contains(user)) {
             postSavedByUser.add(user);
         }
         userRepository.save(user);
@@ -268,7 +273,16 @@ public class PostService {
         return userSavedPosts;
     }
 
-    public List<Post> findPostsByCategory(String categoryName) {
-        return postRepository.findPostsByCategory(categoryName);
+    public Page<Post> findPostsByCategory(int page, int size, String categoryName) {
+        Pageable pageable = PageRequest.of(page > 1 ? page - 1 : 0, size, Sort.by(Sort.Direction.DESC, "publishedAt"));
+
+        switch (categoryName.toLowerCase()) {
+            case "sports", "gaming", "business", "technology" -> {
+                return postRepository.findPostsByCategory(categoryName, pageable);
+            }
+            default -> {
+                return postRepository.findPostsByCategory("others", pageable);
+            }
+        }
     }
 }

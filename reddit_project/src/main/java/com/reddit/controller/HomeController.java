@@ -47,6 +47,7 @@ public class HomeController {
             model.addAttribute("feedType",null);
             model.addAttribute("page",page);
             model.addAttribute("size",size);
+            model.addAttribute("category",null);
             return "home";
         }
 
@@ -56,6 +57,7 @@ public class HomeController {
         model.addAttribute("feedType",null);
         model.addAttribute("page",page);
         model.addAttribute("size",size);
+        model.addAttribute("category",null);
         return "home-world";
     }
 
@@ -89,6 +91,7 @@ public class HomeController {
             model.addAttribute("page",page);
             model.addAttribute("size",size);
             model.addAttribute("totalPagesCount",feeds.getTotalPages());
+            model.addAttribute("category",null);
             return "home-world";
         }
 
@@ -100,6 +103,7 @@ public class HomeController {
         model.addAttribute("feedType",feedType);
         model.addAttribute("page",page);
         model.addAttribute("size",size);
+        model.addAttribute("category",null);
         return "home";
     }
 }
