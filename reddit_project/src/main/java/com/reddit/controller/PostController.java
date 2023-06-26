@@ -48,10 +48,12 @@ public class PostController {
     }
 
     @GetMapping("/new-post")
-    public String viewPost(@RequestParam(value = "userId",required = false) Long userId, Model model) {
+    public String viewPost(@RequestParam(value="communityName",required = false)String communityName,Principal principal ,Model model) {
+        User user=userService.getByUsername(principal.getName());
         model.addAttribute("draftedPosts", draftService.findAllDraftedPosts().size());
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", user.getUserId());
         model.addAttribute("communityList",communityService.findAllCommunities());
+        model.addAttribute("communityName",communityName);
         return "NewPost";
     }
 

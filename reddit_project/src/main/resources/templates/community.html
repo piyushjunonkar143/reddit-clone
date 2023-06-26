@@ -121,7 +121,7 @@
             <div id="posts-div">
                 <!-- NEW POST UPLOAD DIV -->
                 <form th:action="@{/new-post}">
-                    <input type="hidden" name="userId" th:value="${userId}">
+                    <input type="hidden" name="communityName" th:value="${community.communityName}">
                     <button class="search-create-new-post-button">
                 <div id="upload-div">
                     <div id="dp-input-box">
@@ -293,7 +293,7 @@
                             <span th:text="${community.communityMembers != null ? community.communityMembers.size() + 1 : 1}" ></span></h4>
                     </div>
                     <form th:action="@{/new-post}">
-                        <input type="hidden" name="userId" th:value="${userId}">
+                        <input type="hidden" name="communityName" th:value="${community.communityName}">
                         <button class="create-new-post-button">
 
                         Create Post

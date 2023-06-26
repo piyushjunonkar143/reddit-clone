@@ -20,7 +20,9 @@ body{
     margin-top: 17px;
     justify-content: space-around;
     float: right;
-    overflow: auto;
+    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: scroll;
     height: 979px;
  }
 
@@ -113,7 +115,7 @@ body{
       height: 100%;
     }
     .dob{
-        margin-right: 10px;
+        margin-right: 101px;
     }
     .button4 {
         position: relative;
@@ -155,7 +157,11 @@ body{
     background-color: #f9f9f9;
     flex: auto;
   }
-
+  .post-data {
+    width: 133%;
+    /* border: 2px solid purple; */
+    margin-left: 33px;
+}
   .view_post {
     display: block;
     text-decoration: none;
@@ -261,26 +267,37 @@ body{
         width: 52%;
 
     margin-right: 2.5rem;
-    background-color: white;
     top: 16px;
     left: 50px;
     position: relative;
+    padding-left: 51px;
 }
 .posts {
+        position: relative;
     /* border: 2px solid red; */
     min-height: 8.6rem;
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-left: -31px;
+      margin-right: 30px;
     display: flex;
-    background-color: ##ffffff;
+    background-color: white;
     margin-bottom: 2rem;
-    padding-left: 85px;
 }
+.post-user-data {
+    display: flex;
+    padding-top: 1rem;
+    padding-left: 0px;
+}
+
 .head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-left: 7.5rem;
+  background-color: white;
+}
+header {
+    background-color: white;
+        margin-top: -18px;
 }
 
 .logo {
@@ -338,19 +355,21 @@ body{
     margin-right: -26px;
 }
  .post-title{
-    font-size: 1.25rem;
+    font-size: 1.102rem;
     margin-bottom: 1rem;
 }
 .logout-button {
-          position: relative;
+             position: relative;
     left: -413px;
     top: 43px;
     background-color: #ff000085;
     border-radius: 23px;
-    padding: 14px 25px;
+    padding: 7px 16px;
     color: #FFFFFF;
     font-weight: bold;
     text-decoration: none;
+    border-style: outset;
+    border-color: #848f9b;
 }
 .refresh{
     border-radius: 16px;
@@ -366,9 +385,43 @@ body{
     height: 60px;
     width: 101px;
 }
+.star{
+    width: 16px;
+    margin-left: -28px;
+    margin-bottom: -20px;
+}
+.karma_points{
+        margin-left: 61px;
+}
+.user-img{
+        width: 39px;
+    height: 46px;
+    position: relative;
+    margin-right: 10px;
+    margin-top: -11px;
+}
+.community-img{
+    position: relative;
+    margin-right: 10px;
+    margin-top: -11px;
+}
+.post-vote-container {
+    background-color: #f8f9fa;
+    /* border: 2px solid green; */
+    width: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+}
+.post-content p {
+    width: 335px;
+    font-size: 1.2rem;
+}
   </style>
 </head>
 <body>
+
 <header calss="head">
     <div class="logo">
         <a href="/">
@@ -386,7 +439,7 @@ body{
         </form>
     </div>
     <div>
-        <a href="/" class="logout-button">Logout</a>
+        <a href="/logout" class="logout-button">Logout</a>
         <form th:action="@{/view-profile}">
             <input type="hidden" name="userId" th:value="${user.userId}">
             <button class="refresh">
@@ -456,7 +509,7 @@ body{
 <!--        </div>-->
 
           <div class="karma_points">
-              <img th:src="@{/images/karma-star.png}" alt="star"/>
+              <img th:src="@{/images/karma-star.png}" alt="star" class="star"/>
               <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>
                   <span>karma</span>
               </p>
@@ -484,7 +537,7 @@ body{
           </div>
           <a th:each="community : ${user.communityMembers}" >
             <div class="community" th:if="${not user.communityMembers.empty}">
-              <p><strong>Community Name:</strong> <span th:text="${community.communityName}"></span></p>
+                <p><a th:href="@{'/view-community/' + ${community.communityName}}"><span th:text="${community.communityName}"></span></a></p>
             </div>
           </a>
         </div>
@@ -496,7 +549,7 @@ body{
           </div>
           <a th:each="community : ${user.communityModerators}" >
             <div class="community" th:if="${not user.communityModerators.empty}">
-              <p><strong>Community Name:</strong> <span th:text="${community.communityName}"></span></p>
+                <p><a th:href="@{'/view-community/' + ${community.communityName}}"><span th:text="${community.communityName}"></span></a></p>
             </div>
           </a>
         </div>
@@ -518,39 +571,59 @@ body{
     <div class="all-posts">
         <div id="post-div">
             <div class="posts" th:each="post : ${user.userPosts}">
-                            <div class="post-vote-container">
-                                <a href=""><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
-                                <p>34567</p>
-                                <a href=""
-                                ><img th:src="@{images/downvote.png}" alt="" class="vote-img"
-                                /></a>
-                            </div>
+                <div class="post-vote-container">
+                    <form action="" method="post" th:id="${'up-form-' + post.getPostId()}"
+                          th:action="@{'/'+${post.isCommunity ? 'r/' + post.getCommunity().getCommunityName() : 'u/' + post.getUser().getUsername()} +'/'+ ${post.getPostId()}  + '/upvote'}"></form>
+                    <img
+                            th:src="@{/images/upvote.png}"
+                            alt=""
+                            class="vote-img upvote"
+                            th:id="${'post-up-' + post.getPostId()}"
+                    />
+                    <p th:text="${post.getUpVotes() -  post.getDownVotes()}"></p>
+                    <form action="" method="post"  th:id="${'down-form-' + post.getPostId()}"
+                          th:action="@{'/'+${post.isCommunity ? 'r/' + post.getCommunity().getCommunityName() : 'u/' + post.getUser().getUsername()} +'/'+ ${post.getPostId()}  + '/down-vote'}"></form>
+                    <img
+                            th:src="@{/images/downvote.png}"
+                            alt=""
+                            class="vote-img downvote"
+                            th:id="${'post-down-' + post.getPostId()}"
+                    />
+                </div>
                 <div th:if="${not user.userPosts.empty}">
                     <div class="post-data">
                         <div class="post-user-data">
-                            <a href="" class="post-c-name" th:if="${post.getIsCommunity()}">
-                                <h4 th:text="${'r/' + post.getCommunity()}"></h4>
+                            <span th:if="${post.getIsCommunity()}">
+                            <img class="community-img" src="https://styles.redditmedia.com/t5_7moa1s/styles/communityIcon_gqjf6knu4e7a1.png" width="35px" height="35px"/>
+                            </span>
+                            <a th:href="@{'/view-community/' + ${post.getCommunity().getCommunityName()}}" class="post-c-name" th:if="${post.getIsCommunity()}">
+                                <h4 th:text="${'r/' + post.getCommunity().getCommunityName()}"></h4>
+                            </a>
+                            <span th:if="${!post.getIsCommunity()}">
+                            <img class="user-img" th:src="@{/images/dp.png}" width="35px" height="35px"/>
+                            </span>
+                            <a href="" class="post-c-name" th:if="${!post.getIsCommunity()}">
+                                <strong><h th:text="${'u/' + post.getUser().getUsername()}"></h></strong>
                             </a>
 
-                            <!--                    <a href="" class="post-c-name" th:if="${!postData.getIsCommunity()}">-->
-                            <!--                        <h th:text="${'u/' + postData.getUser().getUsername()}"></h>-->
-                            <!--                    </a>-->
-
-                            <p style="margin:0px 5px">posted by</p>
+                            <p style="margin:0px 5px">. posted by</p>
                             <a href="" class="post-c-name">
-                                <h4 th:text="${'u/' + user.getUsername()}"></h4>
+                                <h4 th:text="${'u/' + post.getUser().getUsername()}"></h4>
                             </a>
                             <p style="margin-left: 5px">on
                                 <span th:text="${#dates.format(post.getPublishedAt(),'dd-MMMM-yyyy')}"></span>
                             </p>
                         </div>
-                        <a href="">
-                            <!--                   th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}"-->
+                        <a href=""
+                            th:href="@{'/' + ${post.isCommunity ? 'r/'+ post.getCommunity().getCommunityName() : 'u/' + post.getUser().getUsername()} + '/comments/' + ${post.getPostId()}}">
                             <div class="post-content">
                                 <h5 th:text="${post.getTitle()}" class="post-title"></h5>
+                                <div th:if="${post.getContent() != null}" style="border: 1px solid #d9d1d1; padding: 20px;">
                                 <p th:if="${post.getContent() != null}" th:text="${post.getContent()}"></p>
+                                </div>
                             </div>
                         </a>
+                        <div th:if="${post.getMediaList() != null && post.getMediaList().size() > 0 }" style="border: 1px solid #d9d1d1; padding: 20px;">
                         <div th:if="${post.getMediaList() != null && post.getMediaList().size() > 0 }"
                              th:remove="tag">
                             <div th:with="media=${post.getMediaList().get(0)}" th:remove="tag" >
@@ -574,7 +647,7 @@ body{
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div></div>
 
                         <div class="post-options">
                             <a href="">
@@ -604,5 +677,6 @@ body{
         </div>
     </div>
   </div>
+<script th:src="@{/js/home.js}"></script>
 </body>
 </html>

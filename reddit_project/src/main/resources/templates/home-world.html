@@ -8,8 +8,20 @@
     <link rel="stylesheet" th:href="@{/css/home.css}"/>
     <style>
         .post-title{
-    font-size: 1.25rem;
+    font-size: 1.02rem;
     margin-bottom: 1rem;
+}
+.user-img{
+        width: 39px;
+    height: 46px;
+    position: relative;
+    margin-right: 10px;
+    margin-top: -11px;
+}
+.community-img{
+    position: relative;
+    margin-right: 10px;
+    margin-top: -11px;
 }
     </style>
 </head>
@@ -57,12 +69,18 @@
 
                     <div class="post-data">
                         <div class="post-user-data">
+                            <span th:if="${postData.getIsCommunity()}">
+                            <img class="community-img" src="https://styles.redditmedia.com/t5_7moa1s/styles/communityIcon_gqjf6knu4e7a1.png" width="35px" height="35px"/>
+                            </span>
                             <a href="" class="post-c-name" th:if="${postData.getIsCommunity()}">
                                 <h4 th:text="${'r/' + postData.getCommunity().getCommunityName()}"></h4>
                             </a>
 
+                            <span th:if="${!postData.getIsCommunity()}">
+                            <img class="user-img" th:src="@{/images/dp.png}" width="35px" height="35px"/>
+                            </span>
                             <a href="" class="post-c-name" th:if="${!postData.getIsCommunity()}">
-                                <h th:text="${'u/' + postData.getUser().getUsername()}"></h>
+                                <strong><h th:text="${'u/' + postData.getUser().getUsername()}"></h></strong>
                             </a>
 
                             <p style="margin:0px 5px">. posted by</p>
@@ -77,9 +95,12 @@
                            th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                             <div class="post-content">
                                 <h5 th:text="${postData.getTitle()}" class="post-title"></h5>
+                                <div th:if="${postData.getContent() != null}" style="border: 1px solid #d9d1d1; padding: 20px;">
                                 <p class = "post-title-content" th:if="${postData.getContent() != null}" th:text="${postData.getContent()}"></p>
+                                </div>
                             </div>
                         </a>
+                        <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }" style="border: 1px solid #d9d1d1; padding: 20px;">
                         <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
                              th:remove="tag">
                             <div th:with="media=${postData.getMediaList().get(0)}" th:remove="tag" >
@@ -103,6 +124,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
 
                         <div class="post-options">
