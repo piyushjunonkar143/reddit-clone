@@ -3,6 +3,7 @@ package com.reddit.controller;
 import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
 import com.reddit.entity.User;
+import com.reddit.repository.UserRepository;
 import com.reddit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,8 @@ public class PostController {
     CommunityService communityService;
     @Autowired
     UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
     @Value("${project.image}")
     private String path;
@@ -43,17 +46,17 @@ public class PostController {
     @GetMapping("/community-post")
     public String communityPost(@RequestParam(value = "communityName") String communityName, Model model) {
         model.addAttribute("communityName", communityName);
-        model.addAttribute("communityList",communityService.findAllCommunities());
+        model.addAttribute("communityList", communityService.findAllCommunities());
         return "NewPost";
     }
 
     @GetMapping("/new-post")
-    public String viewPost(@RequestParam(value="communityName",required = false)String communityName,Principal principal ,Model model) {
-        User user=userService.getByUsername(principal.getName());
+    public String viewPost(@RequestParam(value = "communityName", required = false) String communityName, Principal principal, Model model) {
+        User user = userService.getByUsername(principal.getName());
         model.addAttribute("draftedPosts", draftService.findAllDraftedPosts().size());
         model.addAttribute("userId", user.getUserId());
-        model.addAttribute("communityList",communityService.findAllCommunities());
-        model.addAttribute("communityName",communityName);
+        model.addAttribute("communityList", communityService.findAllCommunities());
+        model.addAttribute("communityName", communityName);
         return "NewPost";
     }
 
@@ -76,34 +79,33 @@ public class PostController {
         if (cancelButton != null && (!cancelButton.isEmpty())) {
             return "redirect:/new-post";
         } else if (updateDraftLink != null && updateDraftLink.equals("update Draft")) {
-            draftService.updateDraftLink(title, url, draftId,principal);
+            draftService.updateDraftLink(title, url, draftId, principal);
             return "redirect:/draft";
         } else if (linkDraft != null && linkDraft.equals("save Draft")) {
             draftService.draftPostUrl(title, url, principal);
             return "redirect:/draft";
         } else if (postDraft != null && postDraft.equals("Post")) {
-            postService.saveDraftedPost(title, content, draftId, url,principal,communityName);
+            postService.saveDraftedPost(title, content, draftId, url, principal, communityName);
             draftService.deleteDraftById(draftId);
         } else if (draftId != null) {
-            draftController.updateDraft(draftId, title, content,principal);
+            draftController.updateDraft(draftId, title, content, principal);
             return "redirect:/draft";
         } else if (draft != null && !draft.isEmpty()) {
-            draftController.saveDraftPost(title, content, model,principal);
+            draftController.saveDraftPost(title, content, model, principal);
             List<Draft> draftPosts = draftService.findAllDraftedPosts();
             model.addAttribute("draftedPosts", draftPosts);
             return "draft";
-        } else{
-            postService.post(title,images,url,content,principal,communityName,path);
+        } else {
+            postService.post(title, images, url, content, principal, communityName, path);
         }
-        User user=userService.getUserByID(userId);
-        model.addAttribute("user",user);
+        User user = userService.getUserByID(userId);
+        model.addAttribute("user", user);
         return "UserProfile";
     }
 
     //yashavant
     @GetMapping("/media/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        System.out.println("image controller");
         Resource file = fileService.load(path, filename);
 
         return ResponseEntity.ok()
@@ -114,13 +116,12 @@ public class PostController {
     public String viewPost(@PathVariable Long postId,
                            @PathVariable String typeOfAccount,
                            @PathVariable String username,
-                           Principal principal,
-                           Model model) {
-        System.out.println(username);
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user",user);
+                           Model model, Principal principal) {
         model.addAttribute("postData", postService.getPostByType(typeOfAccount, username, postId));
         model.addAttribute("commentDto", new CommentDto());
+        if(principal != null) {
+            model.addAttribute("loggedUserData", userRepository.findByUsernameIgnoreCase(principal.getName()).get());
+        }
         return "view-post";
     }
 }

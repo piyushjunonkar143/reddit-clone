@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -79,7 +80,7 @@
             </a>
         </div>
 
-        <button class="non-border-button" style="border: none; outline: none;" onclick="location.href='/profile-view'">
+        <button class="non-border-button" style="border: none; outline: none;" onclick="location.href='/profile-view'" sec:authorize="isAuthenticated()">
             <div id="header-profile">
                 <div id="header-profile-pic">
                     <img th:src="@{/images/dp.png}" alt="picture"/>
@@ -205,8 +206,8 @@
                     </div>
                     <div id="post-comments-div">
                         <div class="create-comment">
-                            <div class="commenter-div">
-                                <p>Commenting as <a href="">sham_yash</a></p>
+                            <div class="commenter-div" sec:authorize="isAuthenticated()">
+                                <p>Commenting as <span th:text="${loggedUserData.getUsername()}"></span></p>
                                 </p>
                             </div>
                             <form th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()} +'/add'}"
@@ -271,9 +272,9 @@
 
                                 <div class="add-reply">
                                     <div class="create-comment">
-                                        <div class="commenter-div">
-                                            <p>Commenting as <a href="">sham_yash</a></p>
-
+                                        <div class="commenter-div" sec:authorize="isAuthenticated()">
+                                            <p>Commenting as <span th:text="${loggedUserData.getUsername()}"></span></p>
+                                            </p>
                                         </div>
                                         <form action=""
                                               th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()}+ '/comments/' + ${postData.getPostId()} +'/reply/'+ ${comment.getCommentId()}}"
@@ -388,14 +389,14 @@
                             <div id="nav-karma-inside"><p>Karma</p></div>
                             <div id="karma-count">
                                 <img th:src="@{/images/karma-star.png}" alt=""/>
-                                <p>98767</p>
+                                <p th:text="${postData.getUser().getKarma()}"></p>
                                 <!--                                <p th:text="${postData.getUser().getKarma()}"></p>-->
                             </div>
                         </div>
 
                         <div id="nav-cake">
                             <div id="nav-cake-heading"><p>Cake day</p></div>
-                            <div><p>21 Dec 2020</p></div>
+                            <div><p th:text="${#dates.format(postData.getUser().getCreatedAt(),'dd-MMMM-yyyy')}"></p></div>
                         </div>
                     </div>
 

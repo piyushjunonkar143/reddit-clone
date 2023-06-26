@@ -69,7 +69,7 @@ public class VoteService {
                     replyDownVoteRepository.findByPostIdAndCommentIdAndUserId(replyId, commentId, user.getUserId());
             if (downvoteOptional.isPresent()) {
                 replyDownVoteRepository.delete(downvoteOptional.get());
-                decrementReplyDownVote(commentId);
+                decrementReplyDownVote(replyId);
             }
 
             ReplyUpVote upvote = new ReplyUpVote();
@@ -90,7 +90,7 @@ public class VoteService {
 
             if (upvoteOptional.isPresent()) {
                 replyUpVoteRepository.delete(upvoteOptional.get());
-                decrementReplyUpVote(commentId);
+                decrementReplyUpVote(replyId);
             }
 
             ReplyDownVote downVote = new ReplyDownVote();
@@ -98,7 +98,7 @@ public class VoteService {
             downVote.setReplyId(replyId);
             downVote.setUserId(user.getUserId());
             replyDownVoteRepository.save(downVote);
-            incrementReplyDownVote(commentId);
+            incrementReplyDownVote(replyId);
         }
     }
 

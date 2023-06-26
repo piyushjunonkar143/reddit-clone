@@ -1,11 +1,13 @@
 package com.reddit.controller;
 
 import com.reddit.entity.Community;
+import com.reddit.entity.Post;
 import com.reddit.entity.User;
 import com.reddit.repository.PostRepository;
 import com.reddit.service.CommunityService;
 import com.reddit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -50,19 +52,27 @@ public class CommunityController {
     }
 
     @GetMapping("/view-community/{communityName}")
-    public String viewCommunity(@PathVariable("communityName") String communityName, Model model,Principal principal){
+    public String viewCommunity(@RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value = "size", defaultValue = "10") int size,
+                                @PathVariable("communityName") String communityName,
+                                Model model,Principal principal
+    ){
         Community community = communityService.findCommunityByCommunityName(communityName);
         model.addAttribute("community",community);
         if(principal!=null){
             User user=userService.getByUsername(principal.getName());
             model.addAttribute("userData",user);
         }
-        model.addAttribute("postsData",
-                postRepository.findCommunityPostsOrderByPublishedAt(
-                                communityName,
-                                PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "publishedAt")))
-                        .getContent()
-        );
+
+        Page<Post> communityPosts = postRepository.findCommunityPostsOrderByPublishedAt
+                (communityName, PageRequest.of
+                        (page > 1 ? page - 1 : 0, size, Sort.by(Sort.Direction.DESC, "publishedAt"))
+                );
+
+        model.addAttribute("allPosts",communityPosts.getContent());
+        model.addAttribute("totalPagesCount",communityPosts.getTotalPages());
+        model.addAttribute("page",page);
+        model.addAttribute("size",size);
         return "community";
     }
 

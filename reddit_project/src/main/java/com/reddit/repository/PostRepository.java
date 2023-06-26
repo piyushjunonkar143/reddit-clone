@@ -38,4 +38,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query("SELECT p FROM Post p JOIN p.community c WHERE c.communityName ILIKE :name ")
     Page<Post> findCommunityPostsOrderByPublishedAt(@Param("name") String communityName,Pageable page);
+
+    @Query("SELECT p FROM Post  p ORDER BY  p.upVotes DESC")
+    Page<Post> getPostByPopularity(Pageable page);
 }
