@@ -251,4 +251,24 @@ public class PostService {
             saveMedia(title, savedMediaList, principal, communityName);
         }
     }
+
+    public List<Post> savedPosts(Long postId, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        Post post = postRepository.findById(postId).get();
+        List<Post> userSavedPosts = user.getSavedPosts();
+        List<User> postSavedByUser = post.getSavedByUsers();
+        if(!userSavedPosts.contains(post)) {
+            userSavedPosts.add(post);
+        }
+        if(!postSavedByUser.contains(user)) {
+            postSavedByUser.add(user);
+        }
+        userRepository.save(user);
+        postRepository.save(post);
+        return userSavedPosts;
+    }
+
+    public List<Post> findPostsByCategory(String categoryName) {
+        return postRepository.findPostsByCategory(categoryName);
+    }
 }

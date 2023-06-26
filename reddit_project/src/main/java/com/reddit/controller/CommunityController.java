@@ -27,19 +27,17 @@ public class CommunityController {
     PostRepository postRepository;
 
     @GetMapping("/new-community")
-    public String createNewCommunity(@RequestParam("userId") Long userId, Model model){
-        model.addAttribute("userId",userId);
+    public String createNewCommunity(Model model){
         model.addAttribute("community",new Community());
         return "create-community";
     }
 
     @PostMapping("/save_community")
-    public String saveCommunity(Principal principal,@RequestParam("userId")Long userId, @ModelAttribute("community") Community community,
+    public String saveCommunity(Principal principal, @ModelAttribute("community") Community community,
                                 @RequestParam("communityType") String communityType,
                                 Model model){
         if (communityService.isCommunityNameExists(community.getCommunityName())) {
             model.addAttribute("message", true);
-            model.addAttribute("userId",userId);
             return "redirect:/new-community";
         }
 
@@ -160,6 +158,7 @@ public class CommunityController {
         model.addAttribute("community", community);
         return "edit-community";
     }
+
     @GetMapping("/add-settings")
     public String addSettingsCommunity(@RequestParam(name = "about" , required = false) String about,
                                        @RequestParam("communityName") String communityName,
@@ -168,9 +167,6 @@ public class CommunityController {
         Community community = communityService.findCommunityByCommunityName(communityName);
         User user = userService.getUserByID(userId);
         communityService.addSettingsOfCommunity(community,about);
-        model.addAttribute("community",community);
-        model.addAttribute("user", user);
-        model.addAttribute("userId",user.getUserId());
-        return "community";
+        return "redirect:/view-community/"+communityName;
     }
 }

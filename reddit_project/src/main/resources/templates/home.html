@@ -83,9 +83,10 @@
                 <img th:src="@{/images/notify.png}" alt="home"/>
             </a>
 
-            <a href="">
+            <a th:href="@{/chat}">
                 <img th:src="@{/images/message.png}" alt="home"/>
             </a>
+
 
             <a href="/new-post">
                 <img th:src="@{/images/plus.png}" alt="home"/>
@@ -225,10 +226,9 @@
                                 </div>
                             </a>
 
-                            <a href=""
-                               th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
+                            <a href="" th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                                 <div class="post-save">
-                                    <img th:src="@{images/save.png}" alt="" class="save-img"/>
+                                    <a th:href="@{/saved-posts(postId=${postData.getPostId()})}"><img th:src="@{images/save.png}" alt="" class="save-img"/></a>
                                     <p>Save</p>
                                 </div>
                             </a>
@@ -307,6 +307,16 @@
                             </div>
                         </div>
                         <div class="content-name"><p>All</p></div>
+                    </div>
+                </a>
+                <a th:href="@{/view-saved-posts}">
+                    <div class="content-element">
+                        <div class="content-img">
+                            <div class="nav-content-dp">
+                                <img th:src="@{/images/save.png}" alt=""/>
+                            </div>
+                        </div>
+                        <div class="content-name"><p>SavedPosts</p></div>
                     </div>
                 </a>
             </div>

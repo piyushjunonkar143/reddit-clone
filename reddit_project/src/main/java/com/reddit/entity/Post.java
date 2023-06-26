@@ -71,4 +71,7 @@ import java.util.List;
         @OneToMany(orphanRemoval = true)
         @JoinColumn(name = "post_votes")
         private List<Vote> postVotes;
+
+        @ManyToMany(mappedBy = "savedPosts")
+        private List<User> savedByUsers;
     }

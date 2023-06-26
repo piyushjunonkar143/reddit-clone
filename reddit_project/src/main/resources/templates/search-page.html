@@ -31,7 +31,7 @@
                 />
             </form>
         </div>
-        <div id="header-options">
+        <div id="header-options" sec:authorize="isAnonymous()">
             <a href="/login" class="login">Login</a>
             <a href="/newRegister" class="register">Register</a>
         </div>

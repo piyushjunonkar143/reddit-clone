@@ -232,13 +232,13 @@
 
             <div class="nav-heading"><p>Topics</p></div>
             <div class="nav-content-box">
-                <a href="#">
+                <a th:href="@{/t/gaming}">
                     <div class="content-element">
                         <div class="content-img"><img th:src="@{/images/games.png}" alt="" /></div>
-                        <div class="content-name"><p>Games</p></div>
+                        <div class="content-name"><p>Gaming</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a th:href="@{/t/sports}">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
@@ -248,7 +248,7 @@
                         <div class="content-name"><p>Sports</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a th:href="@{/t/technology}">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
@@ -258,14 +258,24 @@
                         <div class="content-name"><p>Technology</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a th:href="@{/t/business}">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
                                 <img th:src="@{/images/bussiness.png}" alt="" />
                             </div>
                         </div>
-                        <div class="content-name"><p>Bussiness</p></div>
+                        <div class="content-name"><p>Business</p></div>
+                    </div>
+                </a>
+                <a th:href="@{/t/others}">
+                    <div class="content-element">
+                        <div class="content-img">
+                            <div class="nav-content-dp">
+                                <img src="https://cdn3.iconfinder.com/data/icons/roundome-ui-essential-solid/32/UI_essential_interface_user_interface_basic_UI_others-64.png" alt="" />
+                            </div>
+                        </div>
+                        <div class="content-name"><p>Others</p></div>
                     </div>
                 </a>
                 <a href="/login">

@@ -39,8 +39,8 @@ public class SecurityConfiguration {
                     "/uploads/**",
                     "/media/**",
                     "/u/**",
-                    "/feed/**"
-
+                    "/feed/**",
+                    "/t/**"
             };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

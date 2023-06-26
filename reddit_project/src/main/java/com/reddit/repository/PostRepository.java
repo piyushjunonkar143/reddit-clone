@@ -41,4 +41,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query("SELECT p FROM Post  p ORDER BY  p.upVotes DESC")
     Page<Post> getPostByPopularity(Pageable page);
+
+    @Query("SELECT p FROM Post p WHERE p.community.categoryName = :categoryName")
+    List<Post> findPostsByCategory(String categoryName);
 }

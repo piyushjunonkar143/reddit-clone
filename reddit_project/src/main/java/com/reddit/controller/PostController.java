@@ -2,6 +2,7 @@ package com.reddit.controller;
 
 import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
+import com.reddit.entity.Post;
 import com.reddit.entity.User;
 import com.reddit.repository.UserRepository;
 import com.reddit.service.*;
@@ -123,5 +124,43 @@ public class PostController {
             model.addAttribute("loggedUserData", userRepository.findByUsernameIgnoreCase(principal.getName()).get());
         }
         return "view-post";
+    }
+
+
+    @GetMapping("/saved-posts")
+    public String savedPosts(@RequestParam(value = "postId",required = false)Long postId,Principal principal,Model model){
+        List<Post> savedPostList = postService.savedPosts(postId,principal);
+        return "redirect:/view-saved-posts";
+    }
+
+    @GetMapping("/view-saved-posts")
+    public String viewSavedPosts(Model model,Principal principal){
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("savedPosts",user.getSavedPosts());
+        return "saved-posts";
+    }
+
+    @GetMapping("/t/{categoryName}")
+    public String postByCategory(@PathVariable String categoryName,Model model ){
+        if(categoryName.equals("sports")){
+            List<Post> sportsPosts = postService.findPostsByCategory("Sports");
+            model.addAttribute("allPosts",sportsPosts);
+            return "home-world";
+        } else if (categoryName.equals("gaming")) {
+            List<Post> gamingPosts = postService.findPostsByCategory("Gaming");
+            model.addAttribute("allPosts",gamingPosts);
+            return "home-world";
+        } else if (categoryName.equals("business")) {
+            List<Post> businessPosts = postService.findPostsByCategory("Business");
+            model.addAttribute("allPosts",businessPosts);
+            return "home-world";
+        } else if (categoryName.equals("technology")) {
+            List<Post> technologyPosts = postService.findPostsByCategory("Technology");
+            model.addAttribute("allPosts",technologyPosts);
+            return "home-world";
+        }
+        List<Post> otherPosts = postService.findPostsByCategory("Others");
+        model.addAttribute("allPosts",otherPosts);
+        return "home-world";
     }
 }

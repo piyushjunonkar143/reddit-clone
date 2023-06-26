@@ -57,8 +57,8 @@ public class Community {
     )
     private Set<User> communityModerators;
 
-    @ManyToMany(mappedBy = "communities")
-    private List<Categories> categories;
+    @Column(name = "category_name")
+    private String categoryName;
 
     @OneToMany(mappedBy = "community")
     private List<Post> communityPosts;
