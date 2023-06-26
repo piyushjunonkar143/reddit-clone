@@ -104,4 +104,31 @@ public class CommunityService {
         community.setAbout(about);
         communityRepository.save(community);
     }
+
+    public boolean isMember(String communityName, String username) {
+        Community community = communityRepository.findByCommunityName(communityName);
+        User user = userRepository.findByUsername(username);
+        Set<User> memberList = community.getCommunityMembers();
+        return memberList.contains(user);
+    }
+
+    public void addMember(String communityName, String username) {
+        Community community = communityRepository.findByCommunityName(communityName);
+        User user = userRepository.findByUsername(username);
+        Set<User> memberList = community.getCommunityMembers();
+        memberList.add(user);
+        communityRepository.save(community);
+    }
+
+    public void removeMember(String communityName, String username) {
+        Community community = communityRepository.findByCommunityName(communityName);
+        User user = userRepository.findByUsername(username);
+        if(community.getCommunityModerators().contains(user)){
+            Set<User> moderators = community.getCommunityModerators();
+            moderators.remove(user);
+        }
+        Set<User> memberList = community.getCommunityMembers();
+        memberList.remove(user);
+        communityRepository.save(community);
+    }
 }

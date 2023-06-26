@@ -2,9 +2,12 @@ package com.reddit.controller;
 
 import com.reddit.entity.Community;
 import com.reddit.entity.User;
+import com.reddit.repository.PostRepository;
 import com.reddit.service.CommunityService;
 import com.reddit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +21,8 @@ public class CommunityController {
     CommunityService communityService;
     @Autowired
     UserService userService;
+    @Autowired
+    PostRepository postRepository;
 
     @GetMapping("/new-community")
     public String createNewCommunity(@RequestParam("userId") Long userId, Model model){
@@ -45,12 +50,19 @@ public class CommunityController {
     }
 
     @GetMapping("/view-community/{communityName}")
-    public String viewCommunity(@PathVariable("communityName") String communityName, Model model){
+    public String viewCommunity(@PathVariable("communityName") String communityName, Model model,Principal principal){
         Community community = communityService.findCommunityByCommunityName(communityName);
         model.addAttribute("community",community);
-        User owner =community.getOwnerId();
-        model.addAttribute("user",owner);
-        model.addAttribute("userId",owner.getUserId());
+        if(principal!=null){
+            User user=userService.getByUsername(principal.getName());
+            model.addAttribute("userData",user);
+        }
+        model.addAttribute("postsData",
+                postRepository.findCommunityPostsOrderByPublishedAt(
+                                communityName,
+                                PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "publishedAt")))
+                        .getContent()
+        );
         return "community";
     }
 
@@ -100,17 +112,36 @@ public class CommunityController {
         return "redirect:/users/r?communityName="+communityName;
     }
 
-    @GetMapping("/join-community")
+    @PostMapping("/join-communtiy")
     public String joinCommunity(@RequestParam("communityName") String communityName,
-                                @RequestParam("userId") Long userId,
-                                Model model){
-        User user = userService.getUserByID(userId);
+                                Principal principal,
+                                Model model) {
+        String username = principal.getName();
         Community community = communityService.findCommunityByCommunityName(communityName);
-        communityService.joinUserIntoCommunity(community,user);
-        model.addAttribute("community", community);
-        model.addAttribute("user", user);
-        model.addAttribute("userId",user.getUserId());
-        return "community";
+        if (community.getOwnerId().getUsername().equals(username)) {
+            return "redirect:/view-community/" + communityName;
+        }
+        boolean isMember = communityService.isMember(community.getCommunityName(), username);
+        if (!isMember) {
+            communityService.addMember(community.getCommunityName(), username);
+        }
+        return "redirect:/view-community/"+communityName;
+    }
+
+    @PostMapping("/remove-community")
+    public String removeCommuntiy(@RequestParam("communityName") String communityName, Principal principal){
+        String username = principal.getName();
+        Community community = communityService.findCommunityByCommunityName(communityName);
+        if(community.getOwnerId().getUsername().equals(username)){
+            return "redirect:/view-community/" + communityName;
+        }
+
+        boolean isMember = communityService.isMember(community.getCommunityName(), username);
+        if (isMember) {
+            communityService.removeMember(community.getCommunityName(), username);
+        }
+
+        return "redirect:/view-community/"+communityName;
     }
     //anu
     @GetMapping("/view-settings")

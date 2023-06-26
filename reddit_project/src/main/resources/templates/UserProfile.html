@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>User Profile</title>
@@ -259,15 +259,14 @@ body{
  top: -432px;
  width: 90%;
     min-height: 10%;
-<!--    /* border: 2px solid black; */-->
+<!--/* border: 2px solid black; */-->
     display: flex;
     padding-left: 10%;
  }
  #post-div {
         width: 52%;
-
+    top: -981px;
     margin-right: 2.5rem;
-    top: 16px;
     left: 50px;
     position: relative;
     padding-left: 51px;
@@ -482,6 +481,8 @@ header {
           <img class="user-profile-picture" th:src="@{/uploads/__${user.profilePhoto.fileName}__}">
           </div>
         <img class="avatar" src="https://i.redd.it/snoovatar/avatars/84676aee-4389-407c-be62-68182ed59e6f.png">
+          <span sec:authorize="{isAuthenticated()}">
+          <span th:if="${#authentication.getPrincipal().getUsername() == user.username}">
        <form th:action="@{/selectPhoto}" method="get">
            <input type="hidden" name="userId" th:value="${user.userId}">
         <button class="add-img-btn">
@@ -489,12 +490,15 @@ header {
         </button>
        </form>
 
+
           <form th:action="@{/change_password_email}" method="get">
               <input type="hidden" name="userId" th:value="${user.userId}">
               <button class="setting-img-btn">
                   <img width="35px" src="https://images.cdn4.stockunlimited.net/preview1300/setting-button_1386478.jpg" style="border-radius: 50%;">
               </button>
           </form>
+        </span>
+          </span>
       </div>
     </div>
 
@@ -521,6 +525,8 @@ header {
             <span th:text="${#dates.format(user.createdAt,'dd-MMMM-yyyy')}"></span>
         </div>
       </div><br>
+        <span sec:authorize="{isAuthenticated()}">
+        <span th:if="${#authentication.getPrincipal().getUsername() == user.username}">
       <form th:action="@{/new-post}">
           <input type="hidden" name="userId" th:value="${user.userId}">
         <div class="button3"><button class="round-button2">New Post &rarr;</button></div><br>
@@ -529,7 +535,8 @@ header {
             <input type="hidden" name="userId" th:value="${user.userId}">
             <div class="button3"><button class="round-button2">New Community &rarr;</button></div><br><br>
         </form>
-
+        </span>
+        </span>
         <div class="moderator-container">
           <h2>Joined Community Details</h2>
           <div th:if="${user.communityMembers.empty}">
@@ -542,6 +549,8 @@ header {
           </a>
         </div>
         <br><br>
+        <span sec:authorize="{isAuthenticated()}">
+        <span th:if="${#authentication.getPrincipal().getUsername() == user.username}">
         <div class="community_moderator-container">
           <h2>Moderator Details</h2>
           <div th:if="${user.communityModerators.empty}">
@@ -553,6 +562,8 @@ header {
             </div>
           </a>
         </div>
+        </span>
+        </span>
         <br><br><br>
         <div class="owned-community-container">
             <h2>Owned Community</h2>

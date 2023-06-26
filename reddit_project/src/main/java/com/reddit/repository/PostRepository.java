@@ -2,7 +2,9 @@ package com.reddit.repository;
 
 import com.reddit.entity.Post;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,4 +35,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("SELECT DISTINCT p FROM Post p JOIN p.community c WHERE " +
             "(c.communityId in (:ids)) OR (c.isPrivate = FALSE AND c.isRestrict = FALSE)")
     Page<Post> findLoggedInUserPostsOrderByPublishedAt(@Param("ids") List<Long> communityIds,Pageable pageable);
+
+    @Query("SELECT p FROM Post p JOIN p.community c WHERE c.communityName ILIKE :name ")
+    Page<Post> findCommunityPostsOrderByPublishedAt(@Param("name") String communityName,Pageable page);
 }

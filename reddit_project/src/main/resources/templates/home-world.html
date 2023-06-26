@@ -72,14 +72,14 @@
                             <span th:if="${postData.getIsCommunity()}">
                             <img class="community-img" src="https://styles.redditmedia.com/t5_7moa1s/styles/communityIcon_gqjf6knu4e7a1.png" width="35px" height="35px"/>
                             </span>
-                            <a href="" class="post-c-name" th:if="${postData.getIsCommunity()}">
+                            <a th:href="@{'/view-community/' + ${postData.getCommunity().getCommunityName()}}" class="post-c-name" th:if="${postData.getIsCommunity()}">
                                 <h4 th:text="${'r/' + postData.getCommunity().getCommunityName()}"></h4>
                             </a>
 
                             <span th:if="${!postData.getIsCommunity()}">
                             <img class="user-img" th:src="@{/images/dp.png}" width="35px" height="35px"/>
                             </span>
-                            <a href="" class="post-c-name" th:if="${!postData.getIsCommunity()}">
+                            <a th:href="@{'/u/' + ${postData.getUser().getUsername()}}" class="post-c-name" th:if="${!postData.getIsCommunity()}">
                                 <strong><h th:text="${'u/' + postData.getUser().getUsername()}"></h></strong>
                             </a>
 
