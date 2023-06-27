@@ -136,7 +136,7 @@
             <div id="posts-div">
                 <!-- NEW POST UPLOAD DIV -->
                 <span sec:authorize="{isAuthenticated()}">
-                <span th:if="${#authentication.getPrincipal().getUsername() == community.ownerId.username}">
+                <span th:if="${#authentication.getPrincipal().getUsername() == community.ownerId.username || community.getCommunityMembers().contains(userData)}">
                 <form th:action="@{/new-post}">
                     <input type="hidden" name="communityName" th:value="${community.communityName}">
                     <button class="search-create-new-post-button">
@@ -312,7 +312,7 @@
                             <span th:text="${community.communityMembers != null ? community.communityMembers.size() + 1 : 1}" ></span></h4>
                     </div>
                     <span sec:authorize="{isAuthenticated()}">
-                    <span th:if="${#authentication.getPrincipal().getUsername() == community.ownerId.username}">
+                    <span th:if="${#authentication.getPrincipal().getUsername() == community.ownerId.username || community.getCommunityMembers().contains(userData)}">
                     <form th:action="@{/new-post}">
                         <input type="hidden" name="communityName" th:value="${community.communityName}">
                         <button class="create-new-post-button">
@@ -326,10 +326,13 @@
                 </div>
 
                 <!-- Moderators List -->
+                <span sec:authorize="{isAuthenticated()}">
+                    <span th:if="${#authentication.getPrincipal().getUsername() == community.ownerId.username || community.getCommunityMembers().contains(userData)}">
                 <div id="div-about-moderators">
                     <div class="div-about-community-heading">
                         <h3>Moderators</h3>
                     </div>
+
                     <div id="nav-contact-moderators">
                         <a href="" id="message-mod">Message Moderator </a>
                         <div id="mod-names">
@@ -342,14 +345,17 @@
                             </div>
 
                         </div>
-                        <div >
-                            <a href="" class="mod-name-link all-mod">View All Mods</a>
-                        </div>
+<!--                        <div >-->
+<!--                            <a href="" class="mod-name-link all-mod">View All Mods</a>-->
+<!--                        </div>-->
                         <div id="all-mods">
                             <a th:href="@{/users/r(communityName=${community.communityName})}">View Members</a>
                         </div>
                     </div>
+
                 </div>
+                        </span>
+                    </span>
             </div>
         </div>
     </article>

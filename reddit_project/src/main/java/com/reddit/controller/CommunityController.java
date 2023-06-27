@@ -53,7 +53,18 @@ public class CommunityController {
     public String viewCommunity(@PathVariable("communityName") String communityName, Model model,Principal principal){
         Community community = communityService.findCommunityByCommunityName(communityName);
         model.addAttribute("community",community);
+
+
+
+        if(principal == null &&(community.getIsPrivate() ||community.getIsRestrict())){
+            return "redirect:/home";
+        }
         if(principal!=null){
+            String username=principal.getName();
+            if((community.getIsPrivate() || community.getIsRestrict()) && community.getOwnerId().getUsername() != username && !community.getCommunityMembers().contains(userService.getByUsername(username)))
+            {
+                return "redirect:/home";
+            }
             User user=userService.getByUsername(principal.getName());
             model.addAttribute("userData",user);
         }
@@ -67,9 +78,15 @@ public class CommunityController {
     }
 
     @GetMapping("/users/r")
-    public String viewMembers(@RequestParam(value = "communityName") String communityName, Model model){
+    public String viewMembers(Principal principal,@RequestParam(value = "communityName") String communityName, Model model){
+        User user = userService.getByUsername(principal.getName());
         Community community = communityService.findCommunityByCommunityName(communityName);
+        boolean isModerator = communityService.isModerator(community,user);
         model.addAttribute("community",community);
+        model.addAttribute("isModerator" , isModerator);
+        if(user.getUsername() != community.getOwnerId().getUsername() && !isModerator){
+            return "redirect:/view-community/" + communityName;
+        }
         return "viewmembers";
 
     }
@@ -159,7 +176,7 @@ public class CommunityController {
         User user = userService.getUserByID(userId);
         communityService.addSettingsOfCommunity(community,about);
         model.addAttribute("community",community);
-        model.addAttribute("user", user);
+        model.addAttribute("userData", user);
         model.addAttribute("userId",user.getUserId());
         return "community";
     }

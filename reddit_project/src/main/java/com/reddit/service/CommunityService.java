@@ -25,7 +25,7 @@ public class CommunityService {
     UserRepository userRepository;
 
     public Community saveNewCommunity(Principal principal, Community community, String radio) {
-        community.setCommunityName(community.getCommunityName().replaceAll(" ",""));
+        community.setCommunityName(community.getCommunityName().replaceAll(" ","_"));
         Long userId = userRepository.findByUsername(principal.getName()).getUserId();
         Set<Community> ownedCommunities = new HashSet<>();
         User user=userService.getUserByID(userId);
@@ -130,5 +130,13 @@ public class CommunityService {
         Set<User> memberList = community.getCommunityMembers();
         memberList.remove(user);
         communityRepository.save(community);
+    }
+
+    public boolean isModerator(Community community, User user) {
+        Set<User> moderator = community.getCommunityModerators();
+        if(moderator.contains(user)){
+            return true;
+        }
+        return false;
     }
 }

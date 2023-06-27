@@ -42,8 +42,10 @@ public class UserController {
     public String checkLoginUser(Principal principal,Model model){
         User user = userService.getByUsername(principal.getName());
         user=userService.isUsernameAndPasswordCorrect(user.getUsername(),user.getPassword());
-        model.addAttribute("user",user);
+
         if(user != null){
+            model.addAttribute("user",user);
+            model.addAttribute("userData",user);
             return "UserProfile";
         }
         return "LoginPage.html";
@@ -102,6 +104,7 @@ public class UserController {
         }
             User user = userService.getUserByID(userId);
             model.addAttribute("user", user);
+        model.addAttribute("userData",user);
         return "UserProfile";
     }
 
@@ -130,6 +133,7 @@ public class UserController {
             userService.saveUser(user);
             User savedUser=userService.getUserByID(userId);
             model.addAttribute("user",savedUser);
+            model.addAttribute("userData",savedUser);
             return "UserProfile";
         }
         return "user-setting";
@@ -144,6 +148,7 @@ public class UserController {
         userService.saveUser(user);
         User savedUser=userService.getUserByID(userId);
         model.addAttribute("user",savedUser);
+        model.addAttribute("userData",savedUser);
         return "UserProfile";
     }
 
@@ -151,18 +156,24 @@ public class UserController {
     public String cancelChanges(@RequestParam("userId")Long userId,Model model){
         User user=userService.getUserByID(userId);
         model.addAttribute("user",user);
+        model.addAttribute("userData",user);
         return "UserProfile";
     }
     @GetMapping("/view-profile")
     public String profileView(@RequestParam("userId") Long userId,Model model){
         User user=userService.getUserByID(userId);
         model.addAttribute("user",user);
+        model.addAttribute("userData",user);
         return "UserProfile";
     }
 
     //yashavant's optional
     @GetMapping("/u/{username}")
-    public String getUserProfile(@PathVariable String username, Model model){
+    public String getUserProfile(Principal principal,@PathVariable String username, Model model){
+        if(principal != null) {
+            User userData = userService.getByUsername(principal.getName());
+            model.addAttribute("userData", userData);
+        }
         User user = userRepository.findByUsernameIgnoreCase(username).orElseThrow();
         model.addAttribute("user",user);
         return "UserProfile";

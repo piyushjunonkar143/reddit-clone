@@ -7,11 +7,9 @@
     <style>
 
            button {
-              display: inline-block;
-              justify-content: space-between;
-              margin-left:800px;
-              padding: 10px 20px;
-              width:100px;
+
+              width:5rem;
+              height:3rem;
               background-color: #eaeaea;
               border: none;
               border-radius: 4px;
@@ -23,15 +21,27 @@
               background-color: #04AA6D;
               color: white;
      }
+     .community-mod{
+      display:flex;
+      flex-direction:row;
+      column-gap:1rem;
+     }
      button:hover {
               opacity: 0.8;
       }
 
     .community-userinfo{
+                display:flex;
+                justify-content:space-between;
+                margin-right:2rem;
                 background-color: #f1f1f1;
                 border: 1px solid #ccc;
                 padding: 10px;
                 margin-bottom: 20px;
+                margin-top:2rem;
+                margin-left:10rem;
+                width:50rem;
+                padding-top:2rem;
 }
 
 
@@ -42,10 +52,13 @@
     <a th:href="@{/view-community/{communityName}(communityName=${community.communityName})}"   class="btn btn-primary">
         &#8592; Back
     </a></div>
-    <div  class="community-userinfo" th:each="members : ${community.communityMembers}" >
-        <p th:text=" 'u/'+ ${members.username}"></p>
+<div   th:each="members : ${community.communityMembers}" >
+    <div class="community-userinfo" th:unless="${members != null && community != null && members.username == community.getOwnerId().username}" >
 
-            <span th:if="${community.communityModerators.contains(members)}">
+        <p  th:text="'u/' + ${members.username}"></p>
+        <div class="community-mod">
+
+        <span th:if="${community.communityModerators.contains(members) && !(isModerator)}">
             <form th:action="@{/community/removeModerator}" method="get">
                 <input type="hidden" th:name="communityName" th:value="${community.communityName}" />
                 <input type="hidden" th:name="userId" th:value="${members.userId}" />
@@ -53,7 +66,7 @@
             </form></span>
 
 
-            <span th:unless="${community.communityModerators.contains(members)}">
+            <span th:unless="${community.communityModerators.contains(members)  }">
             <form th:action="@{/community/addModerator}" method="get">
         <input type="hidden" th:name="communityName" th:value="${community.communityName}" />
         <input type="hidden" th:name="userId" th:value="${members.userId}" />
@@ -61,12 +74,12 @@
         </form>
             </span>
 
-        <form th:action="@{/community/banUser}" method="get">
-            <input type="hidden" th:name="communityName" th:value="${community.communityName}" />
-            <input type="hidden" th:name="userId" th:value="${members.userId}" />
-            <button class="ban" type="submit" value="ban">Ban</button>
-        </form><br>
+            <form th:action="@{/community/banUser}" method="get">
+                <input type="hidden" th:name="communityName" th:value="${community.communityName}" />
+                <input type="hidden" th:name="userId" th:value="${members.userId}" />
+                <button class="ban" type="submit" value="ban">Ban</button>
+            </form><br></div>
     </div>
+</div>
 </body>
 </html>
-

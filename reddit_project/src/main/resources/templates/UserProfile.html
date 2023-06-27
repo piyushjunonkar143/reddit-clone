@@ -296,7 +296,8 @@ body{
 }
 header {
     background-color: white;
-        margin-top: -18px;
+    margin-top: -18px;
+    width: 1786px;
 }
 
 .logo {
@@ -322,14 +323,8 @@ header {
   margin: 0;
 }
 
-.header-profile {
-  display: flex;
-  align-items: center;
-}
-
 .header-profile-pic {
-  idth: 58px;
-    background-color: #ebeced;
+  width: 58px;
     border-radius: 90%;
     margin-left: 1.2rem;
     margin-right: 0.8rem;
@@ -417,6 +412,59 @@ header {
     width: 335px;
     font-size: 1.2rem;
 }
+
+#header-profile-details {
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: column;
+    color: black;
+    /* border: 2px solid green; */
+    margin-left: -174px;
+    margin-top: 27px;
+}
+
+#karma-div img {
+    height: 35%;
+    width: 16px;
+    margin-top: -1px;
+    margin-right: 4px;
+}
+.logout-class{
+    width: 0px;
+}
+#header-profile-pic {
+    width: 121px;
+    border-radius: 15%;
+    margin-left: 1.2rem;
+    margin-right: 4.8rem;
+    margin-bottom: -9px;
+}
+#header-profile-pic img {
+    width: 29%;
+    margin-right: 72px;
+    margin-top: 23px;
+}
+#username-div {
+    /* border: 2px solid olive; */
+    font-size: 14px;
+    /* text-align: center; */
+    margin-left: 27px;
+}
+#karma-div {
+    color: black;
+    display: flex;
+    margin-left: 7px;
+}
+.header-profile {
+    display: flex;
+    align-items: center;
+    margin-top: -7px;
+}
+.view-profile-form {
+    position: relative;
+    margin-left: -106px;
+    top: 22px;
+}
   </style>
 </head>
 <body>
@@ -437,7 +485,8 @@ header {
             />
         </form>
     </div>
-    <div>
+
+    <div class="logout-class">
         <a href="/logout" class="logout-button">Logout</a>
         <form th:action="@{/view-profile}">
             <input type="hidden" name="userId" th:value="${user.userId}">
@@ -446,32 +495,33 @@ header {
             </button>
         </form>
     </div>
-<!--    <div class="user-profile">-->
-<!--        <form th:action="@{/view-profile}">-->
-<!--            <input type="hidden" name="userId" th:value="${userId}">-->
-<!--            <button style="border: none;">-->
-<!--                <div class="header-profile">-->
-<!--                    <div id="header-profile-pic">-->
-<!--                        <img th:src="@{/images/dp.png}" alt="picture" width="80" height="80" />-->
-<!--                    </div>-->
+    <span sec:authorize="{isAuthenticated()}">
+            <form th:action="@{/view-profile}" class="view-profile-form">
+            <input type="hidden" name="userId" th:value="${userData.userId}">
+        <button style="border: none;">
+        <div class="header-profile">
+            <div id="header-profile-pic">
+                <img th:src="@{/images/dp.png}" alt="picture"/>
+            </div>
 
-<!--                    <div id="header-profile-details">-->
-<!--                        <div id="username-div">-->
-<!--                            <p class="profile-name"><span id="user-name" th:text="${user.username}"></span></p>-->
-<!--                        </div>-->
+            <div id="header-profile-details">
+                <div id="username-div">
+                    <p class="form-profile-name"><span id="name" th:text="${userData.username}"></span></p>
 
-<!--                        <div id="karma-div">-->
-<!--                            <img class="star" th:src="@{/images/karma-star.png}" alt="star"/>-->
-<!--                            <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>-->
-<!--                                <span>karma</span>-->
-<!--                            </p>-->
-<!--                        </div>-->
+                </div>
 
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </button>-->
-<!--        </form>-->
-<!--    </div>-->
+                <div id="karma-div">
+                    <img th:src="@{/images/karma-star.png}" alt="star"/>
+                    <p class="karma-point"><span th:text="${userData.karma} ?: 1"></span>
+                        <span>karma</span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        </button>
+        </form>
+        </span>
 </header>
 <div class="user_profile">
   <div class="container1">
@@ -503,7 +553,7 @@ header {
     </div>
 
     <div class="profile-details">
-      <h3 class="profile-name"><span id="name" th:text="${user.username}"></span></h3>
+      <h3 class="profile-name"><span id="username" th:text="${user.username}"></span></h3>
       <div class="profile-description"><span id="displayName" th:text="'u/'+${user.displayName}"></span></div><br>
       <div class="button1"><button class="round-button1">Create Avatar &rarr;</button></div>
       <div class="karma_dob">
