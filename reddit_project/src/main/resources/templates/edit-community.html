@@ -6,6 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashbord</title>
   <link rel="stylesheet" th:href="@{/css/settings.css}"/>
+  <style>
+    .categories{
+        position: relative;
+        left: 11em;
+         height: 3em;
+    }
+    .catgeoriesoption{
+        height: 2em;
+        width: 11em;
+    }
+  </style>
 </head>
 <body>
 <main>
@@ -74,6 +85,16 @@
             </div>
             <div id="change-dp-btns">
               <input type="file" class="dp-btns" id="upload-btn" />
+            </div>
+            <div class="categories">
+              <select class="catgeoriesoption" name="communityCategory">
+                <option>Select a category</option>
+                <option>Gaming</option>
+                <option>Sports</option>
+                <option>Technology</option>
+                <option>Business</option>
+                <option>Others</option>
+              </select>
             </div>
           </div>
           <!--                 <div class="setting-about">-->

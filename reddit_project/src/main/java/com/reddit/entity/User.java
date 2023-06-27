@@ -75,4 +75,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
+    @ManyToMany
+    private List<Post> savedPosts;
+
 }

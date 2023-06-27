@@ -4,39 +4,39 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Reddit</title>
+    <title>Reddit | Home</title>
     <link rel="stylesheet" th:href="@{/css/home.css}"/>
     <style>
         .post-title{
-    font-size: 1.02rem;
-    margin-bottom: 1rem;
-}
-.user-img{
-        width: 39px;
-    height: 46px;
-    position: relative;
-    margin-right: 10px;
-    margin-top: -11px;
-}
-.community-img{
-    position: relative;
-    margin-right: 10px;
-    margin-top: -11px;
-}
+            font-size: 1.02rem;
+            margin-bottom: 1rem;
+        }
+        .user-img{
+            width: 39px;
+            height: 46px;
+            position: relative;
+            margin-right: 10px;
+            margin-top: -11px;
+        }
+        .community-img{
+            position: relative;
+            margin-right: 10px;
+            margin-top: -11px;
+        }
     </style>
 </head>
 <body>
 <main>
     <header id="pageHeader">
         <div id="header-logo">
-            <a href="/">
+            <a href="/home">
                 <img th:src="@{/images/Reddit-logo.png}" alt="logo" class="header-img"/>
             </a>
         </div>
         <div id="home-nav">
             <img th:src="@{/images/home.png}" alt="home" class="header-img"/>
             <h4 class="header-text">Home</h4>
-       </div>
+        </div>
         <div id="home-search">
             <form action="/search/">
                 <input
@@ -53,34 +53,51 @@
             <a href="/newRegister" class="register">Register</a>
         </div>
     </header>
+
     <article id="mainArticle">
         <div id="community-header"></div>
         <div id="posts-main">
             <div id="posts-div">
                 <div class="post" th:each="postData : ${allPosts}">
                     <div class="post-vote-container">
-                        <a href=""><img th:src="@{images/upvote.png}" alt="" class="vote-img"/></a>
+                        <form action="" method="post" th:id="${'up-form-' + postData.getPostId()}"
+                              th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()}  + '/upvote'}"></form>
+                        <img
+                                th:src="@{/images/upvote.png}"
+                                alt=""
+                                class="vote-img upvote"
+                                th:id="${'post-up-' + postData.getPostId()}"
+                        />
                         <p th:text="${postData.getUpVotes() -  postData.getDownVotes()}"></p>
-                        <a href=""
-
-                        ><img th:src="@{images/downvote.png}" alt="" class="vote-img"
-                        /></a>
+                        <form action="" method="post" th:id="${'down-form-' + postData.getPostId()}"
+                              th:action="@{'/'+${postData.isCommunity ? 'r/' + postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} +'/'+ ${postData.getPostId()}  + '/down-vote'}"></form>
+                        <img
+                                th:src="@{/images/downvote.png}"
+                                alt=""
+                                class="vote-img downvote"
+                                th:id="${'post-down-' + postData.getPostId()}"
+                        />
                     </div>
 
                     <div class="post-data">
                         <div class="post-user-data">
                             <span th:if="${postData.getIsCommunity()}">
-                            <img class="community-img" src="https://styles.redditmedia.com/t5_7moa1s/styles/communityIcon_gqjf6knu4e7a1.png" width="35px" height="35px"/>
+                            <img class="community-img"
+                                 src="https://styles.redditmedia.com/t5_7moa1s/styles/communityIcon_gqjf6knu4e7a1.png"
+                                 width="35px" height="35px"/>
                             </span>
-                            <a th:href="@{'/view-community/' + ${postData.getCommunity().getCommunityName()}}" class="post-c-name" th:if="${postData.getIsCommunity()}">
+                            <a th:href="@{'/view-community/' + ${postData.getCommunity().getCommunityName()}}"
+                               class="post-c-name" th:if="${postData.getIsCommunity()}">
                                 <h4 th:text="${'r/' + postData.getCommunity().getCommunityName()}"></h4>
                             </a>
-
                             <span th:if="${!postData.getIsCommunity()}">
                             <img class="user-img" th:src="@{/images/dp.png}" width="35px" height="35px"/>
                             </span>
-                            <a th:href="@{'/u/' + ${postData.getUser().getUsername()}}" class="post-c-name" th:if="${!postData.getIsCommunity()}">
-                                <strong><h th:text="${'u/' + postData.getUser().getUsername()}"></h></strong>
+                            <a th:href="@{'/u/' + ${postData.getUser().getUsername()}}" class="post-c-name"
+                               th:if="${!postData.getIsCommunity()}">
+                                <strong>
+                                    <h th:text="${'u/' + postData.getUser().getUsername()}"></h>
+                                </strong>
                             </a>
 
                             <p style="margin:0px 5px">. posted by</p>
@@ -95,56 +112,64 @@
                            th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                             <div class="post-content">
                                 <h5 th:text="${postData.getTitle()}" class="post-title"></h5>
-                                <div th:if="${postData.getContent() != null}" style="border: 1px solid #d9d1d1; padding: 20px;">
-                                <p class = "post-title-content" th:if="${postData.getContent() != null}" th:text="${postData.getContent()}"></p>
+                                <div th:if="${postData.getContent() != null}"
+                                     style="border: 1px solid #d9d1d1; padding: 20px;">
+                                    <p class="post-title-content" th:if="${postData.getContent() != null}"
+                                       th:text="${postData.getContent()}"></p>
                                 </div>
                             </div>
                         </a>
-                        <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }" style="border: 1px solid #d9d1d1; padding: 20px;">
                         <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
-                             th:remove="tag">
-                            <div th:with="media=${postData.getMediaList().get(0)}" th:remove="tag" >
+                             style="border: 1px solid #d9d1d1; padding: 20px;">
+                            <div th:if="${postData.getMediaList() != null && postData.getMediaList().size() > 0 }"
+                                 th:remove="tag">
+                                <div th:with="media=${postData.getMediaList().get(0)}" th:remove="tag">
 
-                                <div class="post-media" th:if="${media.getIsVideo()}">
-                                    <div class="video-container" style="--aspect-ratio: 2 / 3">
-                                        <!--           <iframe th:src="${media.getPathUrl()}"></iframe>-->
-                                        <video controls>
-                                            <source th:src="${media.getPathUrl()}" type="video/mp4"/>
-                                            Your browser does not support the video tag.
-                                        </video>
+                                    <div class="post-media" th:if="${media.getIsVideo()}">
+                                        <div class="video-container" style="--aspect-ratio: 2 / 3">
+                                            <!--                                            <iframe th:src="${media.getPathUrl()}"></iframe>-->
+                                            <video controls>
+                                                <source th:src="${media.getPathUrl()}" type="video/mp4"/>
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div th:if="${!media.getIsVideo()}" th:remove="tag">
+                                    <div th:if="${!media.getIsVideo()}" th:remove="tag">
 
-                                    <div class="post-media">
-                                        <div class="image-container" style="--aspect-ratio: 2 / 3">
-                                            <img th:src="${media.getPathUrl()}" alt=""/>
+                                        <div class="post-media">
+                                            <div class="image-container" style="--aspect-ratio: 2 / 3">
+                                                <img th:src="${media.getPathUrl()}" alt=""/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
 
                         <div class="post-options">
-                            <a href="" th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
+                            <a href=""
+                               th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                                 <div class="post-comments">
                                     <img th:src="@{images/comments.png}" alt="" class="comments-img"/>
-                                    <p th:if="${postData.getComments() != null}" th:text="${postData.getComments().size() + ' Comments'}" style="margin-right: 10px">
+                                    <p th:if="${postData.getComments() != null}"
+                                       th:text="${postData.getComments().size() + ' Comments'}"
+                                       style="margin-right: 10px">
 
                                     </p>
                                 </div>
                             </a>
 
-                            <a href="" th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}" >
+                            <a href=""
+                               th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                                 <div class="post-share">
                                     <img th:src="@{images/share.png}" alt="" class="share-img"/>
                                     <p>share</p>
                                 </div>
                             </a>
 
-                            <a href="" th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
+                            <a href=""
+                               th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                                 <div class="post-save">
                                     <img th:src="@{images/save.png}" alt="" class="save-img"/>
                                     <p>Save</p>
@@ -153,8 +178,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="page-btns">
+                    <a href=""
+                       th:if="${page > 1}"
+                       th:href="@{'/' + ${feedType != null ? 'feed/' + feedType + '?' : ''} + ${category != null ? 't/' + category + '?' : ''} + ${feedType == null && category == null ? 'home?' : ''} +'page=' + ${page - 1} + '&size=' + ${size}}"
+                       class="page-btn prev">&lt; &lt; Previous</a>
+                    <a href=""
+                       th:if="${page <= totalPagesCount - 1}"
+                       th:href="@{'/' + ${feedType != null ? 'feed/' + feedType + '?' : ''} + ${category != null ? 't/' + category + '?' : ''} + ${feedType == null && category == null ? 'home?' : ''} +  'page=' + ${page + 1} + '&size=' + ${size}}"
+                       class="page-btn next">Next &gt; &gt;</a>
+                </div>
             </div>
-<!--            <div id="posts-nav-div"></div>-->
+            <div id="posts-nav-div"></div>
         </div>
     </article>
 
@@ -163,31 +198,31 @@
             <div class="nav-heading"><p>FEEDS</p></div>
 
             <div class="nav-content-box">
-                <a href="/">
+                <a href="/home">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/home.png}" alt="" />
+                                <img th:src="@{/images/home.png}" alt="" />
                             </div>
                         </div>
                         <div class="content-name"><p>Home</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a href="/feed/popular">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/popular.png}" alt="" />
+                                <img th:src="@{/images/popular.png}" alt="" />
                             </div>
                         </div>
                         <div class="content-name"><p>Popular</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a href="/feed/all">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/all.png}" alt="" />
+                                <img th:src="@{/images/all.png}" alt="" />
                             </div>
                         </div>
                         <div class="content-name"><p>All</p></div>
@@ -197,47 +232,57 @@
 
             <div class="nav-heading"><p>Topics</p></div>
             <div class="nav-content-box">
-                <a href="#">
+                <a th:href="@{/t/gaming}">
                     <div class="content-element">
-                        <div class="content-img"><img th:src="@{images/games.png}" alt="" /></div>
-                        <div class="content-name"><p>Games</p></div>
+                        <div class="content-img"><img th:src="@{/images/games.png}" alt="" /></div>
+                        <div class="content-name"><p>Gaming</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a th:href="@{/t/sports}">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/sports.png}" alt="" />
+                                <img th:src="@{/images/sports.png}" alt="" />
                             </div>
                         </div>
                         <div class="content-name"><p>Sports</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a th:href="@{/t/technology}">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/technology.png}" alt="" />
+                                <img th:src="@{/images/technology.png}" alt="" />
                             </div>
                         </div>
                         <div class="content-name"><p>Technology</p></div>
                     </div>
                 </a>
-                <a href="#">
+                <a th:href="@{/t/business}">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/bussiness.png}" alt="" />
+                                <img th:src="@{/images/bussiness.png}" alt="" />
                             </div>
                         </div>
-                        <div class="content-name"><p>Bussiness</p></div>
+                        <div class="content-name"><p>Business</p></div>
+                    </div>
+                </a>
+                <a th:href="@{/t/others}">
+                    <div class="content-element">
+                        <div class="content-img">
+                            <div class="nav-content-dp">
+                                <img src="https://cdn3.iconfinder.com/data/icons/roundome-ui-essential-solid/32/UI_essential_interface_user_interface_basic_UI_others-64.png" alt="" />
+                            </div>
+                        </div>
+                        <div class="content-name"><p>Others</p></div>
                     </div>
                 </a>
                 <a href="/login">
                     <div class="content-element">
                         <div class="content-img">
                             <div class="nav-content-dp">
-                                <img th:src="@{images/logout.png}" alt="" />
+                                <img th:src="@{/images/logout.png}" alt="" />
                             </div>
                         </div>
                         <div class="content-name"><p>Login and Many more</p></div>
@@ -247,5 +292,6 @@
         </div>
     </nav>
 </main>
+<script th:src="@{/js/home.js}"></script>
 </body>
 </html>

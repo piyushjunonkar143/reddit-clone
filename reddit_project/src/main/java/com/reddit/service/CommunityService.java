@@ -100,8 +100,9 @@ public class CommunityService {
         }
     }
 
-    public void addSettingsOfCommunity(Community community, String about) {
+    public void addSettingsOfCommunity(Community community, String about, String category) {
         community.setAbout(about);
+        community.setCategoryName(category);
         communityRepository.save(community);
     }
 

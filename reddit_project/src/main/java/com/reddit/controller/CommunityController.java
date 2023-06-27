@@ -174,7 +174,7 @@ public class CommunityController {
 
         Community community = communityService.findCommunityByCommunityName(communityName);
         User user = userService.getUserByID(userId);
-        communityService.addSettingsOfCommunity(community,about);
+//        communityService.addSettingsOfCommunity(community,about);
         model.addAttribute("community",community);
         model.addAttribute("userData", user);
         model.addAttribute("userId",user.getUserId());

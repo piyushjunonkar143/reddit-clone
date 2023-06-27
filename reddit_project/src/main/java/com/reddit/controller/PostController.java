@@ -2,11 +2,14 @@ package com.reddit.controller;
 
 import com.reddit.dto.CommentDto;
 import com.reddit.entity.Draft;
+import com.reddit.entity.Post;
 import com.reddit.entity.User;
+import com.reddit.repository.UserRepository;
 import com.reddit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +39,8 @@ public class PostController {
     CommunityService communityService;
     @Autowired
     UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
     @Value("${project.image}")
     private String path;
@@ -43,17 +48,17 @@ public class PostController {
     @GetMapping("/community-post")
     public String communityPost(@RequestParam(value = "communityName") String communityName, Model model) {
         model.addAttribute("communityName", communityName);
-        model.addAttribute("communityList",communityService.findAllCommunities());
+        model.addAttribute("communityList", communityService.findAllCommunities());
         return "NewPost";
     }
 
     @GetMapping("/new-post")
-    public String viewPost(@RequestParam(value="communityName",required = false)String communityName,Principal principal ,Model model) {
-        User user=userService.getByUsername(principal.getName());
+    public String viewPost(@RequestParam(value = "communityName", required = false) String communityName, Principal principal, Model model) {
+        User user = userService.getByUsername(principal.getName());
         model.addAttribute("draftedPosts", draftService.findAllDraftedPosts().size());
         model.addAttribute("userId", user.getUserId());
-        model.addAttribute("communityList",communityService.findAllCommunities());
-        model.addAttribute("communityName",communityName);
+        model.addAttribute("communityList", communityService.findAllCommunities());
+        model.addAttribute("communityName", communityName);
         return "NewPost";
     }
 
@@ -76,34 +81,33 @@ public class PostController {
         if (cancelButton != null && (!cancelButton.isEmpty())) {
             return "redirect:/new-post";
         } else if (updateDraftLink != null && updateDraftLink.equals("update Draft")) {
-            draftService.updateDraftLink(title, url, draftId,principal);
+            draftService.updateDraftLink(title, url, draftId, principal);
             return "redirect:/draft";
         } else if (linkDraft != null && linkDraft.equals("save Draft")) {
             draftService.draftPostUrl(title, url, principal);
             return "redirect:/draft";
         } else if (postDraft != null && postDraft.equals("Post")) {
-            postService.saveDraftedPost(title, content, draftId, url,principal,communityName);
+            postService.saveDraftedPost(title, content, draftId, url, principal, communityName);
             draftService.deleteDraftById(draftId);
         } else if (draftId != null) {
-            draftController.updateDraft(draftId, title, content,principal);
+            draftController.updateDraft(draftId, title, content, principal);
             return "redirect:/draft";
         } else if (draft != null && !draft.isEmpty()) {
-            draftController.saveDraftPost(title, content, model,principal);
+            draftController.saveDraftPost(title, content, model, principal);
             List<Draft> draftPosts = draftService.findAllDraftedPosts();
             model.addAttribute("draftedPosts", draftPosts);
             return "draft";
-        } else{
-            postService.post(title,images,url,content,principal,communityName,path);
+        } else {
+            postService.post(title, images, url, content, principal, communityName, path);
         }
-        User user=userService.getUserByID(userId);
-        model.addAttribute("user",user);
+        User user = userService.getUserByID(userId);
+        model.addAttribute("user", user);
         return "UserProfile";
     }
 
     //yashavant
     @GetMapping("/media/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        System.out.println("image controller");
         Resource file = fileService.load(path, filename);
 
         return ResponseEntity.ok()
@@ -114,13 +118,41 @@ public class PostController {
     public String viewPost(@PathVariable Long postId,
                            @PathVariable String typeOfAccount,
                            @PathVariable String username,
-                           Principal principal,
-                           Model model) {
-        System.out.println(username);
-        User user = userService.getByUsername(principal.getName());
-        model.addAttribute("user",user);
+                           Model model, Principal principal) {
         model.addAttribute("postData", postService.getPostByType(typeOfAccount, username, postId));
         model.addAttribute("commentDto", new CommentDto());
+        if (principal != null) {
+            model.addAttribute("loggedUserData", userRepository.findByUsernameIgnoreCase(principal.getName()).get());
+        }
         return "view-post";
+    }
+
+
+    @GetMapping("/saved-posts")
+    public String savedPosts(@RequestParam(value = "postId", required = false) Long postId, Principal principal, Model model) {
+        List<Post> savedPostList = postService.savedPosts(postId, principal);
+        return "redirect:/view-saved-posts";
+    }
+
+    @GetMapping("/view-saved-posts")
+    public String viewSavedPosts(Model model, Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        model.addAttribute("savedPosts", user.getSavedPosts());
+        return "saved-posts";
+    }
+
+    @GetMapping("/t/{categoryName}")
+    public String postByCategory(@RequestParam(value = "page", defaultValue = "1") int page,
+                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                 @PathVariable String categoryName, Model model) {
+
+        Page<Post> pagePosts = postService.findPostsByCategory(page, size, categoryName);
+        model.addAttribute("category", categoryName);
+        model.addAttribute("feedType",null);
+        model.addAttribute("allPosts",pagePosts.getContent());
+        model.addAttribute("totalPagesCount",pagePosts.getTotalPages());
+        model.addAttribute("page",page);
+        model.addAttribute("size",size);
+        return "home-world";
     }
 }

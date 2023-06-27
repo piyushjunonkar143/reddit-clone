@@ -11,7 +11,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.UUID;
 
 @Configuration
 @EnableMethodSecurity()
@@ -32,8 +38,9 @@ public class SecurityConfiguration {
                     "/images/**",
                     "/uploads/**",
                     "/media/**",
-                    "/u/**"
-
+                    "/u/**",
+                    "/feed/**",
+                    "/t/**"
             };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,10 +64,37 @@ public class SecurityConfiguration {
                                 .logoutSuccessUrl("/home"))
                 .exceptionHandling(exception->
                         exception
-                                .accessDeniedPage("/access-denied"));
+                                .accessDeniedPage("/access-denied"))
+
+                .oauth2Login(oauth2Login ->
+                        oauth2Login
+                                .loginPage("/login")
+                                .userInfoEndpoint(uie -> uie.oidcUserService(oidcLoginHandler()))
+                );
+
 
         return http.build();
     }
+
+    private OAuth2UserService<OidcUserRequest, OidcUser> oidcLoginHandler() {
+        return userRequest -> {
+            LoginProvider provider = LoginProvider.valueOf(userRequest.getClientRegistration().getClientName().toUpperCase());
+            OidcUserService userService = new OidcUserService();
+            OidcUser oidcUser = userService.loadUser(userRequest);
+
+            return SecurityUserOAuth.builder()
+                    .username(oidcUser.getFullName())
+                    .name(oidcUser.getFullName())
+                    .email(oidcUser.getEmail())
+                    .userId(oidcUser.getName())
+                    .password(passwordEncoder().encode(UUID.randomUUID().toString()))
+                    .attributes(oidcUser.getAttributes())
+                    .authorities(oidcUser.getAuthorities())
+                    .provider(provider)
+                    .build();
+        };
+    }
+
     private final UserDetailServiceJPA userDetailServiceJPA;
 
     @Bean
@@ -72,4 +106,12 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
+//    @Bean
+//    ApplicationListener<AuthenticationSuccessEvent> successLogger() {
+//        return event -> {
+//            log.info("success : {}", event.getAuthentication());
+//        };
+//    }
 }

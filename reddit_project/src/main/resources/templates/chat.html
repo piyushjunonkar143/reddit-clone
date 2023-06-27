@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            width: 300px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            padding-left: 2em;
+        }
+
+        table {
+            width: 92%;
+            border-collapse: collapse;
+            position: relative;
+            left: 3em;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        td{
+            padding: 0px 136px;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            padding: 1em;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .delete{
+         width: 82px;
+            margin: 20px auto;
+        }
+          .home a{
+
+            text-decoration: none;
+    position: relative;
+    top: 0.1em;
+    font-size: 22px;
+    left: 0.5em;
+        }
+     .home   img{
+            height: 2em;
+
+        }
+        .home{
+
+            display: flex;
+            align-items: center;
+            margin: 2em;
+        }
+    </style>
+    </style>
+</head>
+<body>
+<div class="home">
+  <img src="https://cdn1.iconfinder.com/data/icons/uiux-001-solid/32/Home-64.png">
+  <a th:href="@{/home}">Home</a>
+</div>
+<form th:action="@{/send}" method="get">
+  <label for="recipient">Recipient:</label>
+  <select name="receiverName" id="recipient">
+    <option th:each="user : ${users}" th:if="${#authentication.principal.username!=user.getUsername()}" th:value="${user.getUsername()}"  th:text="${user.getUsername()}"></option>
+  </select>
+  <br>
+  <label for="message">Message:</label>
+  <input type="text" name="message" id="message">
+  <br>
+  <input type="submit" value="Send">
+</form>
+
+<h2>Inbox for: <span th:text="${chats}"></span></h2>
+<table>
+  <thead>
+  <tr>
+    <th>Sender</th>
+    <th>Message</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="message : ${messages}">
+    <td th:text="${message.getSenderName()}"></td>
+    <td th:text="${message.getMessage()}"></td>
+    <td>
+      <form class="delete" th:action="@{/delete-messages}">
+        <input type="hidden" th:value="${message.getChatId()}" name="chatId">
+        <input type="submit" value="delete">
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

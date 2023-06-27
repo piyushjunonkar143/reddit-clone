@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -30,9 +31,9 @@
                 />
             </form>
         </div>
-        <div id="header-options">
-            <a href="" class="login">Login</a>
-            <a href="" class="register">Register</a>
+        <div id="header-options" sec:authorize="isAnonymous()">
+            <a href="/login" class="login">Login</a>
+            <a href="/newRegister" class="register">Register</a>
         </div>
     </header>
 
@@ -46,7 +47,7 @@
                            th:href="@{'/search/?q=' + ${searchWord} + '&type=post'}"
                            th:classappend="${(!type.equalsIgnoreCase('user'))
                            && (!type.equalsIgnoreCase('sr')) ? 'option-active' : ''}"
-                           >Posts</a>
+                        >Posts</a>
                     </div>
 
                     <div class="result-option">
@@ -95,7 +96,8 @@
                                         <span class="result-values" th:text="${post.getUpVotes()}"></span>upvote
                                     </p>
                                     <p class="value-name">
-                                        <span class="result-values" th:text="${post.getComments() != null ? post.getComments().size() : '0' }"></span>Comments
+                                        <span class="result-values"
+                                              th:text="${post.getComments() != null ? post.getComments().size() : '0' }"></span>Comments
                                     </p>
                                 </div>
                             </div>
@@ -107,11 +109,14 @@
                         <div class="result" th:each="community : ${searchData}">
                             <div class="community-result">
                                 <div>
-                                    <div class="result-user-info">
-                                        <p>
-                                            <span th:text="'r/'+${community.getCommunityName()}"></span>
-                                        </p>
-                                    </div>
+                                    <a style="color: black;"
+                                       th:href="@{'/view-community/' + ${community.getCommunityName()} }">
+                                        <div class="result-user-info">
+                                            <p>
+                                                <span th:text="'r/'+${community.getCommunityName()}"></span>
+                                            </p>
+                                        </div>
+                                    </a>
                                     <div class="result-user-data">
                                         <div class="result-user-about">
                                             <p th:if="${community.getAbout() != null}"
@@ -120,7 +125,26 @@
                                     </div>
                                 </div>
                                 <div class="follow-btn">
-                                    <form action="">
+                                    <form
+                                            sec:authorize="isAuthenticated()"
+                                            th:if="${!community.getOwnerId().getUsername().equalsIgnoreCase(userData.getUsername())}"
+                                            th:action="@{${community.getCommunityMembers().contains(userData) ? '/remove-community':'/join-communtiy' }}"
+                                            method="post">
+                                        <input type="hidden" name="communityName"
+                                               th:value="${community.communityName}"/>
+                                        <input
+                                                type="submit"
+                                                th:value="${community.getCommunityMembers().contains(userData) ? 'joined' : 'join'}"
+                                                class="community-join"
+                                        />
+                                    </form>
+
+                                    <form
+                                            sec:authorize="isAnonymous()"
+                                            action="/join-community"
+                                            method="post">
+                                        <input type="hidden" name="communityName"
+                                               th:value="${community.communityName}"/>
                                         <input
                                                 type="submit"
                                                 value="join"
@@ -136,27 +160,29 @@
                     <div th:if="${type.equalsIgnoreCase('user')}">
                         <div class="result" th:each="user : ${searchData}">
                             <div class="community-result">
-                                <div>
-                                    <div class="result-user-info">
-                                        <p>
-                                            <span th:text="'u/' + ${user.getUsername()}"></span>. 2678 karma
-                                        </p>
-                                    </div>
-                                    <div class="result-user-data">
-                                        <div class="result-user-about">
-                                            <p>About the user not added yet</p>
+                                <a style="color: black">
+                                    <div>
+                                        <div class="result-user-info">
+                                            <p>
+                                                <span th:text="'u/' + ${user.getUsername()}"></span>. <span th:text="${user.getKarma()}"></span> karma
+                                            </p>
+                                        </div>
+                                        <div class="result-user-data">
+                                            <div class="result-user-about">
+                                                <p>About the user not added yet</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="follow-btn">
-                                    <form action="">
-                                        <input
-                                                type="submit"
-                                                value="follow"
-                                                class="community-join"
-                                        />
-                                    </form>
-                                </div>
+                                </a>
+                                <!--                                <div class="follow-btn">-->
+                                <!--                                    <form action="">-->
+                                <!--                                        <input-->
+                                <!--                                                type="submit"-->
+                                <!--                                                value="follow"-->
+                                <!--                                                class="community-join"-->
+                                <!--                                        />-->
+                                <!--                                    </form>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>

@@ -774,3 +774,25 @@ textarea {
     background: red;
     color: white;
 }
+.login,
+.register {
+    /* border: 1px solid red; */
+    width: 20%;
+    padding: 0.4rem 3.5rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    /* text-align: center; */
+    display: flex;
+    font-weight: 600;
+    justify-content: center;
+    border-radius: 2.1rem;
+}
+.login {
+    background-color: red;
+    color: white;
+}
+.register {
+    background-color: rgb(0, 71, 116);
+    color: white;
+
+}

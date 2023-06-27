@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+body{
+    background-color: lightgrey;
+    display: flex;
+    flex-wrap: wrap;
+}
+.posted,.date{
+    position: relative;
+    left: 27px;
+}
+.main{
+    margin: 0.5em;
+}
+.header p{
+    margin:1rem;
+
+}
+.contents{
+    padding: 0rem 1rem;
+}
+.contents .title{
+    font-size: 18px;
+    font-weight: 600;
+
+}
+.content{
+    font-size: 18px;
+}
+.url{
+    font-size: 18px;
+}
+#imageheaders{
+    height: auto;
+    border: 1px solid;
+    background: ghostwhite;
+    margin: 1.4em;
+}
+.imagecontents .title{
+      margin: 1rem;
+     }
+ .post-media{
+   display: flex;
+   justify-content: center;
+ }
+ .image-container{
+     padding: 6em;
+ }
+ .image-container img{
+    max-width: 29em;
+    padding-bottom: 12rem;
+    transform: scale(1.4);
+ }
+ .details{
+      display: flex;
+ }
+ .titles{
+ font-size:px;
+ font-weight:700;
+ }
+ .header{
+ border:1px solid;
+ max-height: 9em;
+background-color:ghostwhite;
+    margin: 2.5rem;
+ }
+ .imagemain{
+  border:1px solid;
+ }
+ .imageposted,.imagedate{
+    margin: 1em;
+    position: relative;
+    left: 13px;
+ }
+ .userdetails{
+    display:flex;
+    margin: 1em;
+ }
+ .imagemain{
+   height: 22em;
+    width: 32em;
+ }
+ #imagecontainer{
+     display: none;
+    justify-content: center;
+    position: relative;
+    top: 43px;
+ }
+ #imagecontainer img{
+     transform: scaleY(1.5);
+ }
+ .items{
+   display:flex;
+   flex-wrap:wrap;
+   margin-right:1.4rem;
+   margin-bottom:0.5rem;
+ }
+ button{
+     position: relative;
+    top: 0.4em;
+    left: 0.5em;
+    background: #f1f1f1;
+    border-radius: 10px;
+    width: 9em;
+    color: black;
+    height: 2em;
+  }
+  video{
+  height:14rem;
+  }
+   #videocontainer{
+     display: none;
+    justify-content: center;
+    position: relative;
+    top: 43px;
+ }
+.heading{
+       position: relative;
+    left: 18em;
+    font-size: 28px;
+}
+.username{
+     display: flex;
+    position: relative;
+    left: 48em;
+    top: -4em;
+    font-size: 18px;
+}
+.home{
+    display: flex;
+    align-items: center;
+    position: relative;
+    left: 10em;
+    top:4em;
+}
+.home img{
+    height: 20px;
+}
+.home a{
+    text-decoration: none;
+    font-size: 19px;
+    margin: 0.4em;
+}
+.container{
+ width:100%;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="home">
+    <img src="https://cdn1.iconfinder.com/data/icons/uiux-001-solid/32/Home-64.png">
+    <a th:href="@{/home}">Home</a>
+</div>
+<div class="heading">
+    <p>Saved Posts</p>
+</div>
+<div class="username">
+    <p th:text="${#authentication.principal.username}"></p>
+</div>
+</div>
+<div class="items" th:each="post:${savedPosts}">
+    <div th:if="${post.getContent!=null or post.getUrl!=null}" class="header">
+        <div class="details">
+            <p th:text="${#authentication.principal.username}"></p>
+            <p class="posted">posted by:</p>
+            <p th:text="${post.getUser.getUsername()}"></p>
+            <p class="date">on:</p>
+            <p th:text="${#dates.format(post.publishedAt, 'dd-MMMM-YYYY')}"></p>
+        </div>
+        <div class="title">
+            <p class="titles" th:text="${post.getTitle()}"></p>
+            <p class="content" th:text="${post.getContent()}"></p>
+            <p class="url" th:text="${post.getUrl()}"></p>
+        </div>
+    </div>
+
+    <div id="imageheaders" th:if="${post.getContent==null and post.getUrl==null}" th:each="media: ${post.getMediaList()}" >
+        <div th:if="${!media.getIsVideo()}" >
+            <button onclick="toggleMedia()">ViewImage</button>
+        </div>
+        <div th:if="${media.getIsVideo()}" >
+            <button onclick="toggleVideo()">ViewVideo</button>
+        </div>
+        <div class="userdetails">
+            <p th:text="${#authentication.principal.username}"></p>
+            <p class="imageposted">posted by:</p>
+            <p th:text="${post.getUser.getUsername()}"></p>
+            <p class="imagedate">on:</p>
+            <p th:text="${#dates.format(post.publishedAt, 'dd-MMMM-YYYY')}"></p>
+        </div>
+        <div class="imagecontents">
+            <p class="title" th:text="${post.getTitle()}"></p>
+        </div>
+        <div th:if="${!media.getIsVideo()}" id="imagecontainer">
+            <img  th:src="${media.getPathUrl()}" alt=""/>
+        </div>
+        <div th:if="${media.getIsVideo()}" id="videocontainer">
+            <video  controls>
+                <source th:src="${media.getPathUrl()}" type="video/mp4"/>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+</div>
+<script>
+var imageContainer = document.getElementById("imagecontainer");
+var videoContainer = document.getElementById("videocontainer");
+function toggleMedia() {
+var imageHeader = document.getElementById("imageheaders");
+    if (imageContainer.style.display === "none") {
+        imageContainer.style.display = "flex";
+        imageHeader.style.height="26rem";
+    } else {
+        imageContainer.style.display = "none";
+        imageHeader.style.height = "auto";
+    }
+}
+function toggleVideo() {
+var imageHeader = document.getElementById("imageheaders");
+    if (videoContainer.style.display === "none") {
+        videoContainer.style.display = "flex";
+       imageHeader.style.height = "26rem";
+    } else {
+        videoContainer.style.display = "none";
+        imageHeader.style.height = "auto";
+    }
+}
+</script>
+</body>
+</html>
