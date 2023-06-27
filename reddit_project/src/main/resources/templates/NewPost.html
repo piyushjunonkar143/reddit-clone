@@ -463,8 +463,7 @@
       <h6>Your Profile</h6>
       <img class="profilepic"src="https://cdn2.iconfinder.com/data/icons/itty-bitty-animal-avatars/128/itty_bitty_tiger_01-64.png"/>
 
-      <label class="username"><input type="radio" name="profilename" value="u/arun">
-        u/arun</label>
+    <label class="username" th:text="${#authentication.principal.username}"></label>
     </div>
     <hr class="bottomline" />
     <div class="community">
