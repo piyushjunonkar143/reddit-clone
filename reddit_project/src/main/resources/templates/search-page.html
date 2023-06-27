@@ -28,6 +28,9 @@
                         class="search-bar"
                         placeholder="Search Reddit"
                         th:value="${searchWord != null && searchWord != '' ? searchWord : ''}"
+                        required
+                        pattern="^[^\s]+$"
+                        title="Spaces Not Allowed"
                 />
             </form>
         </div>

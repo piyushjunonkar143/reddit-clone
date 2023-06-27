@@ -48,6 +48,8 @@ public class HomeController {
             model.addAttribute("page",page);
             model.addAttribute("size",size);
             model.addAttribute("category",null);
+            model.addAttribute("savedPosts",userService.findByUsername(principal.getName()).getSavedPosts());
+
             return "home";
         }
 
@@ -104,6 +106,7 @@ public class HomeController {
         model.addAttribute("page",page);
         model.addAttribute("size",size);
         model.addAttribute("category",null);
+        model.addAttribute("savedPosts",userService.findByUsername(principal.getName()).getSavedPosts());
         return "home";
     }
 }

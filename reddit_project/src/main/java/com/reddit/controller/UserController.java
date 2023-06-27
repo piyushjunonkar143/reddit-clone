@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/profile-view")
     public String checkLoginUser(Principal principal,Model model){
         User user = userService.getByUsername(principal.getName());
-        user=userService.isUsernameAndPasswordCorrect(user.getUsername(),user.getPassword());
+        //user=userService.isUsernameAndPasswordCorrect(user.getUsername(),user.getPassword());
 
         if(user != null){
             model.addAttribute("user",user);

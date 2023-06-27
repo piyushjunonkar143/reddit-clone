@@ -497,7 +497,7 @@ header {
     </div>
     <span sec:authorize="{isAuthenticated()}">
             <form th:action="@{/view-profile}" class="view-profile-form">
-            <input type="hidden" name="userId" th:value="${userData.userId}">
+            <input type="hidden" name="userId" th:value="${user.userId}">
         <button style="border: none;">
         <div class="header-profile">
             <div id="header-profile-pic">
@@ -506,13 +506,13 @@ header {
 
             <div id="header-profile-details">
                 <div id="username-div">
-                    <p class="form-profile-name"><span id="name" th:text="${userData.username}"></span></p>
+                    <p class="form-profile-name"><span id="name" th:text="${user.username}"></span></p>
 
                 </div>
 
                 <div id="karma-div">
                     <img th:src="@{/images/karma-star.png}" alt="star"/>
-                    <p class="karma-point"><span th:text="${userData.karma} ?: 1"></span>
+                    <p class="karma-point"><span th:text="${user.karma} ?: 1"></span>
                         <span>karma</span>
                     </p>
                 </div>
@@ -714,7 +714,8 @@ header {
                             <a href="">
                                 <div class="post-comments">
                                     <img th:src="@{images/comments.png}" alt="" class="comments-img"/>
-                                    <p>35 Comments</p>
+                                    <p th:if="${post.getComments() != null}"
+                                       th:text="${post.getComments().size() + ' Comments'}"></p>
                                 </div>
                             </a>
 

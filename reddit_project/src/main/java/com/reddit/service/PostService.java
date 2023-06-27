@@ -285,4 +285,11 @@ public class PostService {
             }
         }
     }
+
+    public void removeSavedPosts(Long postId, Principal principal) {
+        Post post = postRepository.findById(postId).get();
+        User user = userService.getByUsername(principal.getName());
+        user.getSavedPosts().remove(post);
+        userRepository.save(user);
+    }
 }

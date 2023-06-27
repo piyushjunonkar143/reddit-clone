@@ -25,20 +25,22 @@ public class CommunityController {
     PostRepository postRepository;
 
     @GetMapping("/new-community")
-    public String createNewCommunity(@RequestParam("userId") Long userId, Model model){
-        model.addAttribute("userId",userId);
+    public String createNewCommunity( Model model){
         model.addAttribute("community",new Community());
         return "create-community";
     }
 
     @PostMapping("/save_community")
-    public String saveCommunity(Principal principal,@RequestParam("userId")Long userId, @ModelAttribute("community") Community community,
+    public String saveCommunity(Principal principal, @ModelAttribute("community") Community community,
                                 @RequestParam("communityType") String communityType,
                                 Model model){
+        if(communityService.isValidCommunityName(community.getCommunityName())== false){
+            model.addAttribute("notValid", true);
+            return "create-community";
+        }
         if (communityService.isCommunityNameExists(community.getCommunityName())) {
             model.addAttribute("message", true);
-            model.addAttribute("userId",userId);
-            return "redirect:/new-community";
+            return "create-community";
         }
 
         Community savedCommunity=communityService.saveNewCommunity(principal,community,communityType);
@@ -170,11 +172,12 @@ public class CommunityController {
     @GetMapping("/add-settings")
     public String addSettingsCommunity(@RequestParam(name = "about" , required = false) String about,
                                        @RequestParam("communityName") String communityName,
+                                       @RequestParam("communityCategory") String communityCategory,
                                        @RequestParam("owner") Long userId, Model model){
 
         Community community = communityService.findCommunityByCommunityName(communityName);
         User user = userService.getUserByID(userId);
-//        communityService.addSettingsOfCommunity(community,about);
+        communityService.addSettingsOfCommunity(community,about,communityCategory);
         model.addAttribute("community",community);
         model.addAttribute("userData", user);
         model.addAttribute("userId",user.getUserId());

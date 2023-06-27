@@ -64,7 +64,7 @@ public class PostController {
 
     @PostMapping("/save-post")
     public String fileUpload(Principal principal,
-                             @RequestParam(value = "userId", required = false) Long userId,
+//                             @RequestParam(value = "userId", required = false) Long userId,
                              @RequestParam(value = "communityName", required = false) String communityName,
                              @RequestParam(value = "link draft", required = false) String linkDraft,
                              @RequestParam(value = "post-draft", required = false) String postDraft,
@@ -100,7 +100,7 @@ public class PostController {
         } else {
             postService.post(title, images, url, content, principal, communityName, path);
         }
-        User user = userService.getUserByID(userId);
+        User user = userService.getByUsername(principal.getName());
         model.addAttribute("user", user);
         return "UserProfile";
     }
@@ -131,7 +131,7 @@ public class PostController {
     @GetMapping("/saved-posts")
     public String savedPosts(@RequestParam(value = "postId", required = false) Long postId, Principal principal, Model model) {
         List<Post> savedPostList = postService.savedPosts(postId, principal);
-        return "redirect:/view-saved-posts";
+        return "redirect:/";
     }
 
     @GetMapping("/view-saved-posts")
@@ -155,4 +155,11 @@ public class PostController {
         model.addAttribute("size",size);
         return "home-world";
     }
+
+    @GetMapping("/remove-saved")
+    public String removeSavedPosts(@RequestParam(value = "postId", required = false) Long postId,Principal principal){
+        postService.removeSavedPosts(postId,principal);
+        return "redirect:/";
+    }
+
 }

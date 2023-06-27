@@ -71,6 +71,9 @@
                         type="search"
                         class="search-bar"
                         placeholder="Search Reddit"
+                        required
+                        pattern="^[^\s]+$"
+                        title="Spaces Not Allowed"
                 />
             </form>
         </div>
@@ -228,8 +231,9 @@
 
                             <a href="" th:href="@{'/' + ${postData.isCommunity ? 'r/'+ postData.getCommunity().getCommunityName() : 'u/' + postData.getUser().getUsername()} + '/comments/' + ${postData.getPostId()}}">
                                 <div class="post-save">
-                                    <a th:href="@{/saved-posts(postId=${postData.getPostId()})}"><img th:src="@{images/save.png}" alt="" class="save-img"/></a>
-                                    <p>Save</p>
+                                    <img th:src="@{images/save.png}" alt="" class="save-img"/>
+                                    <a th:href="@{/remove-saved(postId=${postData.getPostId()})}"><p th:if="${savedPosts.contains(postData)}">Saved</p></a>
+                                    <a th:href="@{/saved-posts(postId=${postData.getPostId()})}"> <p th:unless="${savedPosts.contains(postData)}">Save</p></a>
                                 </div>
                             </a>
                         </div>

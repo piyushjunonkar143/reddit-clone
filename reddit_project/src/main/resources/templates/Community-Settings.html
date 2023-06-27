@@ -27,15 +27,16 @@
         <img th:src="@{images/popular.png}" alt="home" class=".header-options-img"/>
       </a>
 
-      <a href="">
-        <img th:src="@{images/notify.png}" alt="home"/>
+      <a th:href="@{/notification-page}">
+        <img th:src="@{/images/notify.png}" alt="home"/>
       </a>
 
-      <a href="">
-        <img th:src="@{images/message.png}" alt="home"/>
+      <a th:href="@{/chat}">
+        <img th:src="@{/images/message.png}" alt="home"/>
       </a>
 
-      <a href="">
+
+      <a th:href="@{/new-post(communityName=${community.communityName})}">
         <img th:src="@{images/plus.png}" alt="home"/>
       </a>
     </div>
@@ -93,13 +94,13 @@
               <img th:src="@{images/dp.png}" alt="" id="dp-input"/>
             </a>
           </div>
-          <div id="new-post-input">
+         <a><div id="new-post-input">
             <input
                     type="text"
                     id="post-input-box"
                     placeholder="Create Post"
             />
-          </div>
+         </div></a>
           <div id="new-post-media">
             <a href="">
               <img th:src="@{images/image.png}" alt="image"/>

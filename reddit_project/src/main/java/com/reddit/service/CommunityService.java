@@ -45,7 +45,7 @@ public class CommunityService {
         Set<User> userSet = new HashSet<>();
         userSet.add(user);
         community.setCommunityMembers(userSet);
-        community.setCommunityModerators(userSet);
+       // community.setCommunityModerators(userSet);
         Community community1 = communityRepository.save(community);
         ownedCommunities.add(community1);
         user.setOwnedCommunities(ownedCommunities);
@@ -139,5 +139,10 @@ public class CommunityService {
             return true;
         }
         return false;
+    }
+    public boolean isValidCommunityName(String communityName){
+        String pattern = "^[a-zA-Z][a-zA-Z0-9_]*$";
+        boolean isValid = communityName.matches(pattern);
+        return isValid;
     }
 }

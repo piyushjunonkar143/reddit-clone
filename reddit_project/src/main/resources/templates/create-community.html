@@ -92,7 +92,8 @@
         <div class="name">
             <span>Name</span>
             <span>community names including capitalizatiion cannot be changed</span>
-            <span th:if="${message}" class="error">Community name already exists!</span>
+            <span th:if="${message}" class="error">Community Name Already Exists!</span>
+            <span th:if="${notValid}" class="error">Invalid Community Name!</span>
         </div>
 
         <div class="communitynameinput">
